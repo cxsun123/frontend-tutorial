@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>前端教学示例中心</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #223041;
+      background: #f4f7fb url('background.png') center / cover no-repeat;
+      padding: 32px;
+    }
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .hero {
+      padding: 34px 0 26px;
+      border-bottom: 1px solid #dce5ee;
+      margin-bottom: 26px;
+    }
+    .eyebrow {
+      color: #2d7fb8;
+      font-weight: 700;
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.1;
+      color: #102033;
+      margin-bottom: 14px;
+    }
+    .hero p {
+      max-width: 760px;
+      color: #5f7083;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .toolbar h2 {
+      font-size: 1.25rem;
+      color: #1a5276;
+    }
+    .hint {
+      color: #7a8a9a;
+      font-size: 0.92rem;
+    }
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .course-card {
+      background: #fff;
+      border: 1px solid #dde7f0;
+      border-radius: 10px;
+      padding: 22px;
+      box-shadow: 0 10px 26px rgba(31, 53, 76, 0.07);
+      display: flex;
+      flex-direction: column;
+      min-height: 230px;
+    }
+    .course-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .course-card h3 {
+      font-size: 1.22rem;
+      color: #102033;
+      line-height: 1.35;
+    }
+    .tag {
+      flex: 0 0 auto;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #eaf4fb;
+      color: #2d7fb8;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+    .course-card p {
+      color: #617285;
+      line-height: 1.7;
+      margin-bottom: 18px;
+      flex: 1;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+    .btn-primary {
+      background: #2478b7;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #1a649b; }
+    .btn-ghost {
+      color: #2478b7;
+      background: #edf6fc;
+      border: 1px solid #cfe5f5;
+    }
+    .btn-ghost:hover { background: #e2f0fa; }
+    .coming-soon {
+      margin-top: 24px;
+      padding: 18px 20px;
+      border: 1px dashed #b8cadb;
+      border-radius: 10px;
+      color: #637386;
+      background: rgba(255,255,255,0.62);
+    }
+    @media (max-width: 720px) {
+      body { padding: 18px; }
+      .toolbar { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">Frontend Course Hub</div>
+      <h1>前端教学示例中心</h1>
+      <p>这里集中放置 HTML、CSS、JavaScript 等课程的示例页面与课件。每套课程都包含可运行示例、代码试验场和独立 PPT，后续可继续扩展 React、Next.js 等教学模块。</p>
+    </section>
+
+    <div class="toolbar">
+      <h2>当前课程</h2>
+      <div class="hint">点击“教学示例”进入章节目录；点击“PPT 课件”会在新页面打开。</div>
+    </div>
+
+    <section class="course-grid" aria-label="课程列表">
+      <article class="course-card">
+        <div class="course-top">
+          <h3>HTML 元素及属性</h3>
+          <span class="tag">HTML</span>
+        </div>
+        <p>覆盖表单、表格、多媒体、文本格式化、语义化、全局属性和事件处理器等基础内容。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="html-examples/index.html">教学示例</a>
+          <a class="btn btn-ghost" href="HTML.pptx" target="_blank" rel="noopener">PPT 课件</a>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-top">
+          <h3>CSS2 / CSS3 样式与布局</h3>
+          <span class="tag">CSS</span>
+        </div>
+        <p>覆盖选择器、盒模型、文本颜色、布局定位、Flex/Grid、响应式设计、过渡动画和 CSS3 增强。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="css-examples/index.html">教学示例</a>
+          <a class="btn btn-ghost" href="CSS2_CSS3.pptx" target="_blank" rel="noopener">PPT 课件</a>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <div class="course-top">
+          <h3>JavaScript 交互编程</h3>
+          <span class="tag">JS</span>
+        </div>
+        <p>覆盖基础语法、流程控制、函数、数组对象、DOM、事件表单、异步编程和现代 JS 能力。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="js-examples/index.html">教学示例</a>
+          <a class="btn btn-ghost" href="JavaScript.pptx" target="_blank" rel="noopener">PPT 课件</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="coming-soon">
+      后续课程可按同样结构扩展：新增目录、章节示例、课件文件，然后在这里添加一张课程卡片，例如 React、Next.js、TypeScript、Node.js。
+    </section>
+  </main>
+</body>
+</html>
