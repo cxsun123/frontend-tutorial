@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03 - 颜色与背景</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav-bar">
+  <a class="home" href="index.html">CSS2 / CSS3 首页</a>
+  <a href="01-selectors.html">选择器</a>
+  <a href="02-box-model.html">盒模型</a>
+  <a href="03-text-color.html">颜色与背景</a>
+  <a href="04-layout.html">布局定位</a>
+  <a href="05-flex-grid.html">Flex / Grid</a>
+  <a href="06-responsive.html">响应式</a>
+  <a href="07-effects.html">过渡动画</a>
+  <a href="08-css3.html">CSS3增强</a>
+</nav>
+
+<h1>03 - 颜色与背景</h1>
+<p>CSS 颜色值、文本颜色、背景色、透明度与渐变。</p>
+
+<!-- ==================== 1. 颜色名称 ==================== -->
+<div class="section">
+  <h2>1. CSS 颜色名称</h2>
+  <div class="note">CSS 支持 140+ 预定义颜色名，可直接用英文单词指定颜色。</div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      <span style="background:Tomato;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">Tomato</span>
+      <span style="background:Orange;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">Orange</span>
+      <span style="background:DodgerBlue;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">DodgerBlue</span>
+      <span style="background:MediumSeaGreen;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">MediumSeaGreen</span>
+      <span style="background:Gray;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">Gray</span>
+      <span style="background:SlateBlue;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">SlateBlue</span>
+      <span style="background:Violet;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">Violet</span>
+      <span style="background:HotPink;padding:10px 18px;border-radius:6px;color:#fff;font-weight:bold;">HotPink</span>
+    </div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.color-name span {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  margin: 4px;
+}
+&lt;/style&gt;
+
+&lt;div class="color-name"&gt;
+  &lt;span style="background:Tomato"&gt;Tomato&lt;/span&gt;
+  &lt;span style="background:Orange"&gt;Orange&lt;/span&gt;
+  &lt;span style="background:DodgerBlue"&gt;DodgerBlue&lt;/span&gt;
+  &lt;span style="background:MediumSeaGreen"&gt;MediumSeaGreen&lt;/span&gt;
+  &lt;span style="background:Gray"&gt;Gray&lt;/span&gt;
+  &lt;span style="background:SlateBlue"&gt;SlateBlue&lt;/span&gt;
+  &lt;span style="background:Violet"&gt;Violet&lt;/span&gt;
+  &lt;span style="background:HotPink"&gt;HotPink&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 2. HEX 十六进制 ==================== -->
+<div class="section">
+  <h2>2. HEX 十六进制颜色</h2>
+  <div class="note">用 # 开头，后跟 6 位十六进制数（RRGGBB），或 3 位简写（#F00 = #FF0000）。</div>
+
+  <div class="demo-box">
+    <table style="width:100%;border-collapse:collapse;text-align:center;">
+      <tr>
+        <td style="padding:12px;"><div style="width:80px;height:80px;background:#FF0000;border-radius:8px;margin:0 auto;"></div><code>#FF0000</code><br>纯红</td>
+        <td style="padding:12px;"><div style="width:80px;height:80px;background:#00FF00;border-radius:8px;margin:0 auto;"></div><code>#00FF00</code><br>纯绿</td>
+        <td style="padding:12px;"><div style="width:80px;height:80px;background:#0000FF;border-radius:8px;margin:0 auto;"></div><code>#0000FF</code><br>纯蓝</td>
+        <td style="padding:12px;"><div style="width:80px;height:80px;background:#333;border-radius:8px;margin:0 auto;"></div><code>#333</code><br>简写深灰</td>
+        <td style="padding:12px;"><div style="width:80px;height:80px;background:#3498db;border-radius:8px;margin:0 auto;"></div><code>#3498db</code><br>天蓝</td>
+      </tr>
+    </table>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.hex-demo div {
+  width: 80px; height: 80px;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 8px;
+  text-align: center;
+  line-height: 80px;
+  color: white;
+  font-weight: bold;
+}
+&lt;/style&gt;
+
+&lt;div class="hex-demo"&gt;
+  &lt;div style="background:#FF0000"&gt;#FF0000&lt;/div&gt;
+  &lt;div style="background:#00FF00;color:#333"&gt;#00FF00&lt;/div&gt;
+  &lt;div style="background:#0000FF"&gt;#0000FF&lt;/div&gt;
+  &lt;div style="background:#333"&gt;#333&lt;/div&gt;
+  &lt;div style="background:#3498db"&gt;#3498db&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 3. RGB 颜色 ==================== -->
+<div class="section">
+  <h2>3. RGB 颜色</h2>
+  <div class="note"><code>rgb(红, 绿, 蓝)</code>，每个值 0–255。rgb(255,0,0) 红，rgb(0,255,0) 绿，rgb(0,0,255) 蓝。</div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;">
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;background:rgb(255,0,0);border-radius:8px;"></div>
+        <code>rgb(255,0,0)</code>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;background:rgb(0,255,0);border-radius:8px;"></div>
+        <code>rgb(0,255,0)</code>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;background:rgb(0,0,255);border-radius:8px;"></div>
+        <code>rgb(0,0,255)</code>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;background:rgb(255,165,0);border-radius:8px;"></div>
+        <code>rgb(255,165,0)</code>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;background:rgb(128,0,128);border-radius:8px;"></div>
+        <code>rgb(128,0,128)</code>
+      </div>
+    </div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.rgb-demo &gt; div {
+  width: 100px; height: 100px;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 8px;
+  text-align: center;
+  line-height: 100px;
+  color: white;
+  font-weight: bold;
+}
+&lt;/style&gt;
+
+&lt;div class="rgb-demo"&gt;
+  &lt;div style="background:rgb(255,0,0)"&gt;红&lt;/div&gt;
+  &lt;div style="background:rgb(0,255,0);color:#333"&gt;绿&lt;/div&gt;
+  &lt;div style="background:rgb(0,0,255)"&gt;蓝&lt;/div&gt;
+  &lt;div style="background:rgb(255,165,0)"&gt;橙&lt;/div&gt;
+  &lt;div style="background:rgb(128,0,128)"&gt;紫&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 4. RGBA 透明色 ==================== -->
+<div class="section">
+  <h2>4. RGBA 与透明度</h2>
+  <div class="note"><code>rgba(红, 绿, 蓝, 透明度)</code>，透明度 0（全透明）到 1（不透明）。也可用 <code>opacity</code> 属性控制整个元素的透明度。</div>
+
+  <div class="demo-box">
+    <div style="position:relative;height:120px;background:#ecf0f1;border-radius:8px;overflow:hidden;">
+      <div style="position:absolute;top:10px;left:10px;width:100px;height:100px;background:rgba(255,0,0,1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">1.0</div>
+      <div style="position:absolute;top:10px;left:130px;width:100px;height:100px;background:rgba(255,0,0,0.75);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">0.75</div>
+      <div style="position:absolute;top:10px;left:250px;width:100px;height:100px;background:rgba(255,0,0,0.5);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#333;font-weight:bold;">0.5</div>
+      <div style="position:absolute;top:10px;left:370px;width:100px;height:100px;background:rgba(255,0,0,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#333;font-weight:bold;">0.25</div>
+      <div style="position:absolute;top:10px;left:490px;width:100px;height:100px;background:rgba(255,0,0,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#333;font-weight:bold;">0.1</div>
+    </div>
+    <p style="margin-top:12px;color:#666;">opacity 属性示例：</p>
+    <div style="display:flex;gap:12px;">
+      <div style="width:80px;height:80px;background:#3498db;border-radius:8px;opacity:1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">1.0</div>
+      <div style="width:80px;height:80px;background:#3498db;border-radius:8px;opacity:0.6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">0.6</div>
+      <div style="width:80px;height:80px;background:#3498db;border-radius:8px;opacity:0.3;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">0.3</div>
+    </div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.rgba-demo {
+  position: relative;
+  height: 120px;
+  background: #ecf0f1;
+  border-radius: 8px;
+}
+.rgba-demo &gt; div {
+  position: absolute;
+  top: 10px;
+  width: 100px; height: 100px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+/* opacity 控制整个元素（含子元素）透明度 */
+.opacity-demo {
+  width: 80px; height: 80px;
+  background: #3498db;
+  border-radius: 8px;
+  opacity: 0.5;
+  color: white;
+}
+&lt;/style&gt;
+
+&lt;div class="rgba-demo"&gt;
+  &lt;div style="left:10px;  background:rgba(255,0,0,1)"&gt;1.0&lt;/div&gt;
+  &lt;div style="left:130px; background:rgba(255,0,0,0.75)"&gt;0.75&lt;/div&gt;
+  &lt;div style="left:250px; background:rgba(255,0,0,0.5)"&gt;0.5&lt;/div&gt;
+  &lt;div style="left:370px; background:rgba(255,0,0,0.25)"&gt;0.25&lt;/div&gt;
+  &lt;div style="left:490px; background:rgba(255,0,0,0.1)"&gt;0.1&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="opacity-demo"&gt;opacity: 0.5&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 5. HSL 颜色 ==================== -->
+<div class="section">
+  <h2>5. HSL 颜色</h2>
+  <div class="note"><code>hsl(色相, 饱和度%, 亮度%)</code>。色相 0–360（红→黄→绿→青→蓝→品→红），饱和度 0%（灰）–100%（纯色），亮度 0%（黑）–100%（白）。</div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      <div style="text-align:center;">
+        <div style="width:90px;height:90px;background:hsl(0,100%,50%);border-radius:8px;"></div>
+        <code>hsl(0,100%,50%)</code><br><small>红色</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:90px;height:90px;background:hsl(60,100%,50%);border-radius:8px;"></div>
+        <code>hsl(60,100%,50%)</code><br><small>黄色</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:90px;height:90px;background:hsl(120,100%,50%);border-radius:8px;"></div>
+        <code>hsl(120,100%,50%)</code><br><small>绿色</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:90px;height:90px;background:hsl(200,100%,50%);border-radius:8px;"></div>
+        <code>hsl(200,100%,50%)</code><br><small>天蓝</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:90px;height:90px;background:hsl(270,100%,50%);border-radius:8px;"></div>
+        <code>hsl(270,100%,50%)</code><br><small>紫色</small>
+      </div>
+    </div>
+    <p style="margin-top:14px;color:#666;">同一色相，不同饱和度和亮度：</p>
+    <div style="display:flex;gap:8px;">
+      <div style="width:70px;height:50px;background:hsl(210,100%,20%);border-radius:6px;"></div>
+      <div style="width:70px;height:50px;background:hsl(210,100%,40%);border-radius:6px;"></div>
+      <div style="width:70px;height:50px;background:hsl(210,100%,60%);border-radius:6px;"></div>
+      <div style="width:70px;height:50px;background:hsl(210,80%,80%);border-radius:6px;"></div>
+      <div style="width:70px;height:50px;background:hsl(210,50%,95%);border-radius:6px;border:1px solid #ddd;"></div>
+    </div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.hsl-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.hsl-item { text-align: center; }
+.hsl-item div {
+  width: 90px; height: 90px;
+  border-radius: 8px;
+}
+/* 同一色相不同亮度 */
+.shade-row { display: flex; gap: 8px; margin-top: 14px; }
+.shade-row div {
+  width: 70px; height: 50px;
+  border-radius: 6px;
+}
+&lt;/style&gt;
+
+&lt;div class="hsl-row"&gt;
+  &lt;div class="hsl-item"&gt;
+    &lt;div style="background:hsl(0,100%,50%)"&gt;&lt;/div&gt;
+    &lt;code&gt;hsl(0,100%,50%)&lt;/code&gt;
+  &lt;/div&gt;
+  &lt;div class="hsl-item"&gt;
+    &lt;div style="background:hsl(60,100%,50%)"&gt;&lt;/div&gt;
+    &lt;code&gt;hsl(60,100%,50%)&lt;/code&gt;
+  &lt;/div&gt;
+  &lt;div class="hsl-item"&gt;
+    &lt;div style="background:hsl(120,100%,50%)"&gt;&lt;/div&gt;
+    &lt;code&gt;hsl(120,100%,50%)&lt;/code&gt;
+  &lt;/div&gt;
+  &lt;div class="hsl-item"&gt;
+    &lt;div style="background:hsl(200,100%,50%)"&gt;&lt;/div&gt;
+    &lt;code&gt;hsl(200,100%,50%)&lt;/code&gt;
+  &lt;/div&gt;
+  &lt;div class="hsl-item"&gt;
+    &lt;div style="background:hsl(270,100%,50%)"&gt;&lt;/div&gt;
+    &lt;code&gt;hsl(270,100%,50%)&lt;/code&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="shade-row"&gt;
+  &lt;div style="background:hsl(210,100%,20%)"&gt;&lt;/div&gt;
+  &lt;div style="background:hsl(210,100%,40%)"&gt;&lt;/div&gt;
+  &lt;div style="background:hsl(210,100%,60%)"&gt;&lt;/div&gt;
+  &lt;div style="background:hsl(210,80%,80%)"&gt;&lt;/div&gt;
+  &lt;div style="background:hsl(210,50%,95%)"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 6. HSLA 透明色 ==================== -->
+<div class="section">
+  <h2>6. HSLA 透明色</h2>
+  <div class="note"><code>hsla(色相, 饱和度%, 亮度%, 透明度)</code>，在 HSL 基础上增加第四个参数控制透明度。</div>
+
+  <div class="demo-box">
+    <div style="position:relative;height:100px;background:repeating-conic-gradient(#ddd 0% 25%, #fff 0% 50%) 50%/20px 20px;border-radius:8px;overflow:hidden;">
+      <div style="position:absolute;top:10px;left:10px;width:120px;height:80px;background:hsla(0,100%,50%,0.9);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">hsla(0,...,0.9)</div>
+      <div style="position:absolute;top:10px;left:150px;width:120px;height:80px;background:hsla(120,100%,50%,0.6);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#333;font-weight:bold;">hsla(120,...,0.6)</div>
+      <div style="position:absolute;top:10px;left:290px;width:120px;height:80px;background:hsla(220,100%,50%,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#333;font-weight:bold;">hsla(220,...,0.4)</div>
+      <div style="position:absolute;top:10px;left:430px;width:120px;height:80px;background:hsla(280,100%,50%,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#333;font-weight:bold;">hsla(280,...,0.2)</div>
+    </div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.hsla-demo {
+  position: relative;
+  height: 100px;
+  /* 棋盘格背景，方便观察透明效果 */
+  background: repeating-conic-gradient(#ddd 0% 25%, #fff 0% 50%) 50% / 20px 20px;
+  border-radius: 8px;
+}
+.hsla-demo &gt; div {
+  position: absolute;
+  top: 10px;
+  width: 120px; height: 80px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+&lt;/style&gt;
+
+&lt;div class="hsla-demo"&gt;
+  &lt;div style="left:10px;  background:hsla(0,100%,50%,0.9);color:white"&gt;hsla(0,...,0.9)&lt;/div&gt;
+  &lt;div style="left:150px; background:hsla(120,100%,50%,0.6)"&gt;hsla(120,...,0.6)&lt;/div&gt;
+  &lt;div style="left:290px; background:hsla(220,100%,50%,0.4)"&gt;hsla(220,...,0.4)&lt;/div&gt;
+  &lt;div style="left:430px; background:hsla(280,100%,50%,0.2)"&gt;hsla(280,...,0.2)&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 7. 背景色 ==================== -->
+<div class="section">
+  <h2>7. CSS 背景色</h2>
+  <div class="note"><code>background-color</code> 为元素设置背景色，支持所有颜色值格式。</div>
+
+  <div class="demo-box">
+    <div style="padding:20px;border-radius:8px;background-color:lightblue;text-align:center;font-weight:bold;">background-color: lightblue</div>
+    <div style="margin-top:10px;padding:20px;border-radius:8px;background-color:#ff6347;color:white;text-align:center;font-weight:bold;">background-color: #ff6347</div>
+    <div style="margin-top:10px;padding:20px;border-radius:8px;background-color:rgb(46,204,113);color:white;text-align:center;font-weight:bold;">background-color: rgb(46,204,113)</div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.bg-demo div {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+&lt;/style&gt;
+
+&lt;div class="bg-demo"&gt;
+  &lt;div style="background-color:lightblue"&gt;background-color: lightblue&lt;/div&gt;
+  &lt;div style="background-color:#ff6347;color:white"&gt;background-color: #ff6347&lt;/div&gt;
+  &lt;div style="background-color:rgb(46,204,113);color:white"&gt;background-color: rgb(46,204,113)&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 8. 文本颜色 ==================== -->
+<div class="section">
+  <h2>8. CSS 文本颜色 color</h2>
+  <div class="note"><code>color</code> 属性设置文本（前景）颜色。</div>
+
+  <div class="demo-box">
+    <p style="color:#e74c3c;font-size:1.2em;font-weight:bold;">color: #e74c3c — 红色标题</p>
+    <p style="color:#27ae60;">color: #27ae60 — 绿色段落</p>
+    <p style="color:rgb(52,152,219);">color: rgb(52,152,219) — 蓝色段落</p>
+    <p style="color:hsl(280,80%,40%);">color: hsl(280,80%,40%) — 紫色段落</p>
+  </div>
+
+  <pre><code>&lt;p style="color:#e74c3c;font-weight:bold;"&gt;color: #e74c3c — 红色标题&lt;/p&gt;
+&lt;p style="color:#27ae60;"&gt;color: #27ae60 — 绿色段落&lt;/p&gt;
+&lt;p style="color:rgb(52,152,219);"&gt;color: rgb(52,152,219) — 蓝色段落&lt;/p&gt;
+&lt;p style="color:hsl(280,80%,40%);"&gt;color: hsl(280,80%,40%) — 紫色段落&lt;/p&gt;</code></pre>
+</div>
+
+<!-- ==================== 9. 线性渐变 ==================== -->
+<div class="section">
+  <h2>9. 线性渐变 linear-gradient</h2>
+  <div class="note"><code>linear-gradient(方向, 颜色1, 颜色2, ...)</code>。方向可以是角度（45deg）或关键字（to right, to bottom right 等）。</div>
+
+  <div class="demo-box">
+    <div style="height:80px;border-radius:8px;background:linear-gradient(to right,#e74c3c,#f39c12,#2ecc71);margin-bottom:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">linear-gradient(to right, 红, 橙, 绿)</div>
+    <div style="height:80px;border-radius:8px;background:linear-gradient(135deg,#667eea,#764ba2);margin-bottom:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">linear-gradient(135deg, #667eea, #764ba2)</div>
+    <div style="height:80px;border-radius:8px;background:linear-gradient(to bottom,#1a5276,#2980b9,#3498db);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">linear-gradient(to bottom, 深蓝 → 浅蓝)</div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.gradient-demo div {
+  height: 80px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+&lt;/style&gt;
+
+&lt;div class="gradient-demo"&gt;
+  &lt;div style="background:linear-gradient(to right,#e74c3c,#f39c12,#2ecc71)"&gt;
+    linear-gradient(to right, 红, 橙, 绿)
+  &lt;/div&gt;
+  &lt;div style="background:linear-gradient(135deg,#667eea,#764ba2)"&gt;
+    linear-gradient(135deg, #667eea, #764ba2)
+  &lt;/div&gt;
+  &lt;div style="background:linear-gradient(to bottom,#1a5276,#2980b9,#3498db)"&gt;
+    linear-gradient(to bottom, 深蓝 → 浅蓝)
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 10. 径向渐变 ==================== -->
+<div class="section">
+  <h2>10. 径向渐变 radial-gradient</h2>
+  <div class="note"><code>radial-gradient(形状, 颜色1, 颜色2, ...)</code>。形状可以是 circle（圆形）或 ellipse（椭圆，默认）。</div>
+
+  <div class="demo-box">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="width:160px;height:160px;border-radius:8px;background:radial-gradient(circle,#fff,#3498db,#1a5276);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:bold;">circle</div>
+      <div style="width:160px;height:160px;border-radius:8px;background:radial-gradient(circle,#f1c40f,#e67e22,#e74c3c);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:bold;">circle 暖色</div>
+      <div style="width:160px;height:160px;border-radius:8px;background:radial-gradient(ellipse,#2ecc71,#27ae60,#1a5276);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:bold;">ellipse</div>
+    </div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.radial-demo div {
+  width: 160px; height: 160px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+&lt;/style&gt;
+
+&lt;div class="radial-demo" style="display:flex;gap:16px;"&gt;
+  &lt;div style="background:radial-gradient(circle,#fff,#3498db,#1a5276)"&gt;circle&lt;/div&gt;
+  &lt;div style="background:radial-gradient(circle,#f1c40f,#e67e22,#e74c3c)"&gt;circle 暖色&lt;/div&gt;
+  &lt;div style="background:radial-gradient(ellipse,#2ecc71,#27ae60,#1a5276)"&gt;ellipse&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 11. 综合练习 ==================== -->
+<div class="section">
+  <h2>11. 综合练习</h2>
+  <div class="note">把颜色、背景和渐变组合起来，创建真实的 UI 组件。</div>
+
+  <div class="demo-box">
+    <div style="max-width:420px;margin:0 auto;">
+      <div style="background:linear-gradient(135deg,#1a5276,#2980b9);border-radius:12px 12px 0 0;padding:28px 24px;color:white;text-align:center;">
+        <div style="width:64px;height:64px;background:rgba(255,255,255,0.2);border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;">🎨</div>
+        <h3 style="margin:0 0 6px;">CSS 颜色实验室</h3>
+        <p style="margin:0;opacity:0.85;font-size:0.9em;">探索 CSS 颜色的无限可能</p>
+      </div>
+      <div style="background:white;border-radius:0 0 12px 12px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,0.1);">
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <div style="flex:1;padding:12px;border-radius:8px;background:rgba(231,76,60,0.1);text-align:center;">
+            <div style="font-size:1.4em;font-weight:bold;color:#e74c3c;">HEX</div>
+            <div style="font-size:0.8em;color:#888;">#FF6347</div>
+          </div>
+          <div style="flex:1;padding:12px;border-radius:8px;background:rgba(46,204,113,0.1);text-align:center;">
+            <div style="font-size:1.4em;font-weight:bold;color:#27ae60;">RGB</div>
+            <div style="font-size:0.8em;color:#888;">rgb(0,255,0)</div>
+          </div>
+          <div style="flex:1;padding:12px;border-radius:8px;background:rgba(52,152,219,0.1);text-align:center;">
+            <div style="font-size:1.4em;font-weight:bold;color:#3498db;">HSL</div>
+            <div style="font-size:0.8em;color:#888;">hsl(200,80%,50%)</div>
+          </div>
+        </div>
+        <button style="width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#3498db,#2980b9);color:white;font-size:1em;font-weight:bold;cursor:pointer;">开始探索</button>
+      </div>
+    </div>
+  </div>
+
+  <pre><code>&lt;style&gt;
+.card {
+  max-width: 420px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+.card-header {
+  background: linear-gradient(135deg, #1a5276, #2980b9);
+  padding: 28px 24px;
+  color: white;
+  text-align: center;
+}
+.card-header .avatar {
+  width: 64px; height: 64px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  line-height: 64px;
+  font-size: 28px;
+}
+.card-body {
+  background: white;
+  padding: 24px;
+}
+.color-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.color-tag {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+.color-tag span {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.color-tag small {
+  display: block;
+  font-size: 0.8em;
+  color: #888;
+  margin-top: 4px;
+}
+.btn-gradient {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+&lt;/style&gt;
+
+&lt;div class="card"&gt;
+  &lt;div class="card-header"&gt;
+    &lt;div class="avatar"&gt;🎨&lt;/div&gt;
+    &lt;h3&gt;CSS 颜色实验室&lt;/h3&gt;
+    &lt;p style="opacity:0.85"&gt;探索 CSS 颜色的无限可能&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    &lt;div class="color-tags"&gt;
+      &lt;div class="color-tag" style="background:rgba(231,76,60,0.1)"&gt;
+        &lt;span style="color:#e74c3c"&gt;HEX&lt;/span&gt;
+        &lt;small&gt;#FF6347&lt;/small&gt;
+      &lt;/div&gt;
+      &lt;div class="color-tag" style="background:rgba(46,204,113,0.1)"&gt;
+        &lt;span style="color:#27ae60"&gt;RGB&lt;/span&gt;
+        &lt;small&gt;rgb(0,255,0)&lt;/small&gt;
+      &lt;/div&gt;
+      &lt;div class="color-tag" style="background:rgba(52,152,219,0.1)"&gt;
+        &lt;span style="color:#3498db"&gt;HSL&lt;/span&gt;
+        &lt;small&gt;hsl(200,80%,50%)&lt;/small&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button class="btn-gradient"&gt;开始探索&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<script src="js/example-playground.js"></script>
+</body>
+</html>

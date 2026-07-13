@@ -1,0 +1,106 @@
+{"kind":"deck","id":"pr/m5y9az","name":"Deck"}
+{"kind":"layout","layoutId":"3c4a5c08-78e6-4faf-a3ef-98ca8f69ec54","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"fb4e9460-6458-4f89-abfb-e14ce4c379cd","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/2h2fkt","slide":1,"title":"JavaScript 教学课件","textShapes":3}
+{"kind":"shape","id":"sh/dw3m1cbq","slide":1,"bbox":[0,0,1280,720]}
+{"kind":"textbox","id":"sh/qtc3qxsz","slide":1,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[84,120,820,90]}
+{"kind":"textbox","id":"sh/rulkz2tk","slide":1,"text":"从语法基础到 DOM 交互与异步编程","textPreview":"从语法基础到 DOM 交互与异步编程","textChars":18,"textLines":1,"bbox":[88,218,760,90]}
+{"kind":"textbox","id":"sh/0jelw7a1","slide":1,"text":"教学示例 + 试验场 + 课堂课件","textPreview":"教学示例 + 试验场 + 课堂课件","textChars":17,"textLines":1,"bbox":[88,560,560,36]}
+{"kind":"notes","id":"nt/2h2fkt","slide":1,"text":""}
+{"kind":"slide","id":"sl/palf1s","slide":2,"title":"JavaScript 教学课件","textShapes":11}
+{"kind":"textbox","id":"sh/1476loj2","slide":2,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/ehw7q9kb","slide":2,"text":"JavaScript 学习路径从“数据”走向“页面行为”","textPreview":"JavaScript 学习路径从“数据”走向“页面行为”","textChars":28,"textLines":1,"bbox":[72,92,860,72]}
+{"kind":"shape","id":"sh/z2poje1w","slide":2,"bbox":[92,196,240,220]}
+{"kind":"textbox","id":"sh/cfepoz25","slide":2,"text":"基础语法","textPreview":"基础语法","textChars":4,"textLines":1,"bbox":[114,214,196,28]}
+{"kind":"textbox","id":"sh/dgn6h4jq","slide":2,"text":"变量、类型、表达式和函数。","textPreview":"变量、类型、表达式和函数。","textChars":13,"textLines":1,"bbox":[114,254,196,148]}
+{"kind":"shape","id":"sh/qdwnm9kf","slide":2,"bbox":[372,196,240,220]}
+{"kind":"textbox","id":"sh/re5ofe10","slide":2,"text":"数据结构","textPreview":"数据结构","textChars":4,"textLines":1,"bbox":[394,214,196,28]}
+{"kind":"textbox","id":"sh/4be5kz29","slide":2,"text":"数组、对象和 JSON 组织数据。","textPreview":"数组、对象和 JSON 组织数据。","textChars":17,"textLines":1,"bbox":[394,254,196,148]}
+{"kind":"shape","id":"sh/pcn6d4ju","slide":2,"bbox":[652,196,240,220]}
+{"kind":"textbox","id":"sh/1o7ylkja","slide":2,"text":"DOM 与事件","textPreview":"DOM 与事件","textChars":7,"textLines":1,"bbox":[674,214,196,28]}
+{"kind":"textbox","id":"sh/03yhcf2p","slide":2,"text":"读取页面、修改页面、响应用户操作。","textPreview":"读取页面、修改页面、响应用户操作。","textChars":17,"textLines":1,"bbox":[674,254,196,148]}
+{"kind":"shape","id":"sh/z2pgja14","slide":2,"bbox":[932,196,240,220]}
+{"kind":"textbox","id":"sh/e1gfa5kj","slide":2,"text":"异步与现代能力","textPreview":"异步与现代能力","textChars":7,"textLines":1,"bbox":[954,214,196,28]}
+{"kind":"textbox","id":"sh/d0nyhk3y","slide":2,"text":"Promise、async/await、存储和模块。","textPreview":"Promise、async/await、存储和模块。","textChars":26,"textLines":1,"bbox":[954,254,196,148]}
+{"kind":"textbox","id":"sh/czex8f2d","slide":2,"text":"• JavaScript 的学习目标不是背 API，而是能把页面变成可交互系统。\n• 每个示例都可以进入试验场修改运行。","textPreview":"• JavaScript 的学习目标不是背 API，而是能把页面变成可交互系统。 | • 每个示例都可以进入试验场修改运行。","textChars":60,"textLines":2,"bbox":[96,470,980,72]}
+{"kind":"notes","id":"nt/palf1s","slide":2,"text":""}
+{"kind":"slide","id":"sl/k9pq0v","slide":3,"title":"JavaScript 教学课件","textShapes":14}
+{"kind":"textbox","id":"sh/9wfuhsb6","slide":3,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/mtobmdsf","slide":3,"text":"基础语法为后续所有交互打底","textPreview":"基础语法为后续所有交互打底","textChars":13,"textLines":1,"bbox":[72,92,860,72]}
+{"kind":"shape","id":"sh/nuxcfit0","slide":3,"bbox":[90,184,330,150]}
+{"kind":"textbox","id":"sh/wzqts7ah","slide":3,"text":"变量","textPreview":"变量","textChars":2,"textLines":1,"bbox":[112,202,286,28]}
+{"kind":"textbox","id":"sh/x0zulsb2","slide":3,"text":"let 与 const 表达不同的数据变化意图。","textPreview":"let 与 const 表达不同的数据变化意图。","textChars":24,"textLines":1,"bbox":[112,242,286,78]}
+{"kind":"shape","id":"sh/axobqxsr","slide":3,"bbox":[460,184,330,150]}
+{"kind":"textbox","id":"sh/vyxcj2tw","slide":3,"text":"类型","textPreview":"类型","textChars":2,"textLines":1,"bbox":[482,202,286,28]}
+{"kind":"textbox","id":"sh/c3mtg3ad","slide":3,"text":"字符串、数字、布尔、对象和 undefined。","textPreview":"字符串、数字、布尔、对象和 undefined。","textChars":24,"textLines":1,"bbox":[482,242,286,78]}
+{"kind":"shape","id":"sh/d4va98by","slide":3,"bbox":[830,184,330,150]}
+{"kind":"textbox","id":"sh/p43mpcr2","slide":3,"text":"条件","textPreview":"条件","textChars":2,"textLines":1,"bbox":[852,202,286,28]}
+{"kind":"textbox","id":"sh/43u5w7ah","slide":3,"text":"if/switch 决定程序分支。","textPreview":"if/switch 决定程序分支。","textChars":17,"textLines":1,"bbox":[852,242,286,78]}
+{"kind":"shape","id":"sh/3il4n29w","slide":3,"bbox":[90,374,330,150]}
+{"kind":"textbox","id":"sh/2hcnuxsb","slide":3,"text":"循环","textPreview":"循环","textChars":2,"textLines":1,"bbox":[112,392,286,28]}
+{"kind":"textbox","id":"sh/d8nmtcry","slide":3,"text":"重复处理列表或次数。","textPreview":"重复处理列表或次数。","textChars":10,"textLines":1,"bbox":[112,432,286,78]}
+{"kind":"shape","id":"sh/c7u50rat","slide":3,"bbox":[460,374,330,150]}
+{"kind":"textbox","id":"sh/r6l4rm98","slide":3,"text":"函数","textPreview":"函数","textChars":2,"textLines":1,"bbox":[482,392,286,28]}
+{"kind":"textbox","id":"sh/q5cnyhsn","slide":3,"text":"把步骤封装成可复用能力。","textPreview":"把步骤封装成可复用能力。","textChars":12,"textLines":1,"bbox":[482,432,286,78]}
+{"kind":"shape","id":"sh/1cn6xwra","slide":3,"bbox":[830,374,330,150]}
+{"kind":"textbox","id":"sh/0be54rap","slide":3,"text":"错误处理","textPreview":"错误处理","textChars":4,"textLines":1,"bbox":[852,392,286,28]}
+{"kind":"textbox","id":"sh/kr6xgzmd","slide":3,"text":"try/catch 让演示更稳定。","textPreview":"try/catch 让演示更稳定。","textChars":17,"textLines":1,"bbox":[852,432,286,78]}
+{"kind":"notes","id":"nt/k9pq0v","slide":3,"text":""}
+{"kind":"slide","id":"sl/8hoxkl","slide":4,"title":"JavaScript 教学课件","textShapes":6}
+{"kind":"textbox","id":"sh/udovi98f","slide":4,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/hgfuto76","slide":4,"text":"函数把“点击后做什么”封装起来","textPreview":"函数把“点击后做什么”封装起来","textChars":15,"textLines":1,"bbox":[72,92,860,72]}
+{"kind":"shape","id":"sh/gf6dkjql","slide":4,"bbox":[80,178,420,310]}
+{"kind":"textbox","id":"sh/3ihcvepc","slide":4,"text":"课堂重点","textPreview":"课堂重点","textChars":4,"textLines":1,"bbox":[102,196,376,28]}
+{"kind":"textbox","id":"sh/2hovm9or","slide":4,"text":"函数名应表达意图；函数内部读取数据、处理数据，再更新页面。","textPreview":"函数名应表达意图；函数内部读取数据、处理数据，再更新页面。","textChars":29,"textLines":1,"bbox":[102,236,376,238]}
+{"kind":"shape","id":"sh/pkzuxo72","slide":4,"bbox":[540,178,650,360]}
+{"kind":"textbox","id":"sh/4jqdoj6h","slide":4,"text":"function runDemo(){\n  const name = \"JavaScript\";\n  output.textContent = name + \" 已运行\";\n}","textPreview":"function runDemo(){ |   const name = \"JavaScript\"; |   output.textContent = name + \" 已运行\"; | }","textChars":88,"textLines":4,"bbox":[570,212,590,300]}
+{"kind":"textbox","id":"sh/jmdcjups","slide":4,"text":"先让学生读懂输入、处理、输出三步，再扩展到 DOM 和事件。","textPreview":"先让学生读懂输入、处理、输出三步，再扩展到 DOM 和事件。","textChars":30,"textLines":1,"bbox":[86,560,1000,46]}
+{"kind":"notes","id":"nt/8hoxkl","slide":4,"text":""}
+{"kind":"slide","id":"sl/6woam1","slide":5,"title":"JavaScript 教学课件","textShapes":6}
+{"kind":"textbox","id":"sh/lkvm9k76","slide":5,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/yxkny5of","slide":5,"text":"DOM 是 JavaScript 操作页面的桥梁","textPreview":"DOM 是 JavaScript 操作页面的桥梁","textChars":24,"textLines":1,"bbox":[72,92,860,72]}
+{"kind":"shape","id":"sh/zyt47ap0","slide":5,"bbox":[80,178,420,310]}
+{"kind":"textbox","id":"sh/cv25wf6p","slide":5,"text":"关键动作","textPreview":"关键动作","textChars":4,"textLines":1,"bbox":[102,196,376,28]}
+{"kind":"textbox","id":"sh/xwbm507u","slide":5,"text":"querySelector 找元素，textContent 改文字，createElement 创建节点，classList 切换状态。","textPreview":"querySelector 找元素，textContent 改文字，createElement 创建节点，classList 切换状态。","textChars":68,"textLines":1,"bbox":[102,236,376,238]}
+{"kind":"shape","id":"sh/qtknu5oj","slide":5,"bbox":[540,178,650,360]}
+{"kind":"textbox","id":"sh/but43ap4","slide":5,"text":"const el = document.querySelector(\"#title\");\nel.textContent = \"新标题\";\nel.classList.toggle(\"active\");","textPreview":"const el = document.querySelector(\"#title\"); | el.textContent = \"新标题\"; | el.classList.toggle(\"active\");","textChars":99,"textLines":3,"bbox":[570,212,590,300]}
+{"kind":"textbox","id":"sh/wr658z6t","slide":5,"text":"DOM 示例页适合让学生直接修改 id、class 和文本内容。","textPreview":"DOM 示例页适合让学生直接修改 id、class 和文本内容。","textChars":32,"textLines":1,"bbox":[86,560,1000,46]}
+{"kind":"notes","id":"nt/6woam1","slide":5,"text":""}
+{"kind":"slide","id":"sl/v12yap","slide":6,"title":"JavaScript 教学课件","textShapes":14}
+{"kind":"textbox","id":"sh/583ilgry","slide":6,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/i5szql8n","slide":6,"text":"事件让页面从静态展示变成用户交互","textPreview":"事件让页面从静态展示变成用户交互","textChars":16,"textLines":1,"bbox":[72,92,860,72]}
+{"kind":"shape","id":"sh/j610jq98","slide":6,"bbox":[90,184,330,150]}
+{"kind":"textbox","id":"sh/wjahobqh","slide":6,"text":"click","textPreview":"click","textChars":5,"textLines":1,"bbox":[112,202,286,28]}
+{"kind":"textbox","id":"sh/h4jihgr2","slide":6,"text":"按钮、卡片和列表项点击。","textPreview":"按钮、卡片和列表项点击。","textChars":12,"textLines":1,"bbox":[112,242,286,78]}
+{"kind":"shape","id":"sh/uhszm1sb","slide":6,"bbox":[460,184,330,150]}
+{"kind":"textbox","id":"sh/vi10f69w","slide":6,"text":"input","textPreview":"input","textChars":5,"textLines":1,"bbox":[482,202,286,28]}
+{"kind":"textbox","id":"sh/8fqhkbal","slide":6,"text":"实时读取输入框内容。","textPreview":"实时读取输入框内容。","textChars":10,"textLines":1,"bbox":[482,242,286,78]}
+{"kind":"shape","id":"sh/9gzitwrq","slide":6,"bbox":[830,184,330,150]}
+{"kind":"textbox","id":"sh/10fml8nm","slide":6,"text":"submit","textPreview":"submit","textChars":6,"textLines":1,"bbox":[852,202,286,28]}
+{"kind":"textbox","id":"sh/0z6ls361","slide":6,"text":"拦截表单并校验数据。","textPreview":"拦截表单并校验数据。","textChars":10,"textLines":1,"bbox":[852,242,286,78]}
+{"kind":"shape","id":"sh/zyd4jy5g","slide":6,"bbox":[90,374,330,150]}
+{"kind":"textbox","id":"sh/ex43qtob","slide":6,"text":"change","textPreview":"change","textChars":6,"textLines":1,"bbox":[112,392,286,28]}
+{"kind":"textbox","id":"sh/dwvmhonq","slide":6,"text":"选择框和控件值变化。","textPreview":"选择框和控件值变化。","textChars":10,"textLines":1,"bbox":[112,432,286,78]}
+{"kind":"shape","id":"sh/cvmloj65","slide":6,"bbox":[460,374,330,150]}
+{"kind":"textbox","id":"sh/rad4fepk","slide":6,"text":"事件对象","textPreview":"事件对象","textChars":4,"textLines":1,"bbox":[482,392,286,28]}
+{"kind":"textbox","id":"sh/q943mtoz","slide":6,"text":"读取 target、key、value 等上下文。","textPreview":"读取 target、key、value 等上下文。","textChars":25,"textLines":1,"bbox":[482,432,286,78]}
+{"kind":"shape","id":"sh/p8vmdo7e","slide":6,"bbox":[830,374,330,150]}
+{"kind":"textbox","id":"sh/472lkj6t","slide":6,"text":"事件委托","textPreview":"事件委托","textChars":4,"textLines":1,"bbox":[852,392,286,28]}
+{"kind":"textbox","id":"sh/wb650jep","slide":6,"text":"父元素统一处理动态子项。","textPreview":"父元素统一处理动态子项。","textChars":12,"textLines":1,"bbox":[852,432,286,78]}
+{"kind":"notes","id":"nt/v12yap","slide":6,"text":""}
+{"kind":"slide","id":"sl/wacsjw","slide":7,"title":"JavaScript 教学课件","textShapes":6}
+{"kind":"textbox","id":"sh/9cneh03y","slide":7,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/m9cv6547","slide":7,"text":"异步代码处理“稍后才有结果”的任务","textPreview":"异步代码处理“稍后才有结果”的任务","textChars":17,"textLines":1,"bbox":[72,92,860,72]}
+{"kind":"shape","id":"sh/7alwfals","slide":7,"bbox":[80,178,420,310]}
+{"kind":"textbox","id":"sh/wfedcfm9","slide":7,"text":"现代写法","textPreview":"现代写法","textChars":4,"textLines":1,"bbox":[102,196,376,28]}
+{"kind":"textbox","id":"sh/hgne5k3u","slide":7,"text":"Promise 描述未来结果；async/await 让异步流程更像同步步骤。","textPreview":"Promise 描述未来结果；async/await 让异步流程更像同步步骤。","textChars":39,"textLines":1,"bbox":[102,236,376,238]}
+{"kind":"shape","id":"sh/udwva54j","slide":7,"bbox":[540,178,650,360]}
+{"kind":"textbox","id":"sh/ve5w3alo","slide":7,"text":"async function loadData(){\n  const data = await mockFetch();\n  view.textContent = JSON.stringify(data);\n}","textPreview":"async function loadData(){ |   const data = await mockFetch(); |   view.textContent = JSON.stringify(data); | }","textChars":105,"textLines":4,"bbox":[570,212,590,300]}
+{"kind":"textbox","id":"sh/4jexgf2l","slide":7,"text":"试验场里的异步示例用 mockFetch 避免外网依赖，课堂演示更稳定。","textPreview":"试验场里的异步示例用 mockFetch 避免外网依赖，课堂演示更稳定。","textChars":36,"textLines":1,"bbox":[86,560,1000,46]}
+{"kind":"notes","id":"nt/wacsjw","slide":7,"text":""}
+{"kind":"slide","id":"sl/g3db9e","slide":8,"title":"JavaScript 教学课件","textShapes":4}
+{"kind":"textbox","id":"sh/ofepgbyt","slide":8,"text":"JavaScript 教学课件","textPreview":"JavaScript 教学课件","textChars":15,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/3e58n6xo","slide":8,"text":"JavaScript 课后练习应围绕“读、算、改、响”","textPreview":"JavaScript 课后练习应围绕“读、算、改、响”","textChars":27,"textLines":1,"bbox":[72,92,860,72]}
+{"kind":"textbox","id":"sh/2dw7e1g3","slide":8,"text":"• 读取输入框值并显示结果。\n• 用数组方法筛选数据。\n• 点击按钮动态添加列表项。\n• 用事件委托处理列表点击。\n• 用 async/await 加载模拟数据并渲染。","textPreview":"• 读取输入框值并显示结果。 | • 用数组方法筛选数据。 | • 点击按钮动态添加列表项。 | • 用事件委托处理列表点击。 | • 用 async/await 加载模拟数据并渲染。","textChars":84,"textLines":5,"bbox":[120,190,920,180]}
+{"kind":"textbox","id":"sh/1sn6lwfi","slide":8,"text":"建议课堂节奏：先看示例页，再点击每段代码进入试验场修改参数。","textPreview":"建议课堂节奏：先看示例页，再点击每段代码进入试验场修改参数。","textChars":30,"textLines":1,"bbox":[120,570,980,50]}
+{"kind":"notes","id":"nt/g3db9e","slide":8,"text":""}

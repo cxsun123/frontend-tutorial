@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06 - 语义化结构示例</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .semantic-demo { border: 2px dashed #bdc3c7; border-radius: 8px; padding: 16px; margin: 8px 0; }
+    .semantic-demo header { background: #1a5276; color: #fff; padding: 14px; border-radius: 6px; text-align:center; }
+    .semantic-demo nav { background: #2980b9; padding: 10px; border-radius: 6px; text-align:center; margin: 8px 0; }
+    .semantic-demo nav a { color: #fff; margin: 0 10px; text-decoration: none; }
+    .semantic-demo main { background: #ecf0f1; padding: 16px; border-radius: 6px; margin: 8px 0; }
+    .semantic-demo article { background: #fff; padding: 14px; border-radius: 6px; border-left: 4px solid #3498db; }
+    .semantic-demo section { background: #eaf2f8; padding: 12px; border-radius: 6px; margin: 8px 0; border: 1px solid #aed6f1; }
+    .semantic-demo aside { background: #fdf2e9; padding: 12px; border-radius: 6px; border-left: 4px solid #e67e22; margin: 8px 0; }
+    .semantic-demo footer { background: #34495e; color: #fff; padding: 10px; border-radius: 6px; text-align:center; margin-top: 8px; }
+    .semantic-demo address { background: #e8f8f5; padding: 10px; border-radius: 6px; font-style: normal; border-left: 4px solid #1abc9c; }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="index.html" class="home">首页</a>
+    <a href="01-form.html">表单</a>
+    <a href="02-table.html">表格</a>
+    <a href="03-media.html">多媒体</a>
+    <a href="04-text-formatting.html">文本格式化</a>
+    <a href="05-lists-links.html">列表与链接</a>
+    <a href="06-semantic.html">语义化</a>
+    <a href="07-global-attributes.html">全局属性</a>
+    <a href="08-events.html">事件处理</a>
+  </nav>
+
+  <h1>06 - 语义化结构元素</h1>
+  <p>语义化标签让 HTML 结构更清晰，利于 SEO、可访问性和代码可读性。</p>
+
+  <!-- 1. 完整页面结构演示 -->
+  <div class="section">
+    <h2>1. 完整页面结构演示</h2>
+    <div class="note">一个典型的语义化页面包含 <strong>header</strong>、<strong>nav</strong>、<strong>main</strong>、<strong>article</strong>、<strong>section</strong>、<strong>aside</strong>、<strong>footer</strong>。</div>
+
+    <div class="semantic-demo">
+      <header>
+        <h2 style="margin:0; color:#fff; border:none;">网站标题</h2>
+        <p style="color:#aed6f1; margin:4px 0 0;">&lt;header&gt; - 页面或区块的头部</p>
+      </header>
+
+      <nav>
+        <a href="#">首页</a> | <a href="#">关于</a> | <a href="#">联系</a>
+        <br><small>&lt;nav&gt; - 导航区域</small>
+      </nav>
+
+      <main>
+        <p style="margin-bottom:12px; color:#7f8c8d;">&lt;main&gt; - 页面主要内容</p>
+
+        <article>
+          <h3 style="margin-top:0;">文章标题</h3>
+          <p>&lt;article&gt; - 独立完整的内容块（文章、帖子、卡片等）</p>
+
+          <section>
+            <h4 style="margin-top:0;">章节 1</h4>
+            <p>&lt;section&gt; - 文档中的逻辑分区</p>
+          </section>
+
+          <section>
+            <h4 style="margin-top:0;">章节 2</h4>
+            <p>每个 section 通常有自己的标题。</p>
+          </section>
+        </article>
+
+        <aside>
+          <p><strong>&lt;aside&gt;</strong> - 侧边栏内容（与主内容间接相关）</p>
+        </aside>
+      </main>
+
+      <address>
+        <strong>&lt;address&gt;</strong> - 联系信息：上海市浦东新区 | contact@example.com
+      </address>
+
+      <footer>
+        <p style="margin:0;">&lt;footer&gt; - 页面底部（版权、链接等）</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- 2. 代码对照 -->
+  <div class="section">
+    <h2>2. 语义化代码结构</h2>
+
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;页面标题&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;网站标题&lt;/h1&gt;
+    &lt;nav&gt;
+      &lt;a href="/"&gt;首页&lt;/a&gt;
+      &lt;a href="/about"&gt;关于&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;article&gt;
+      &lt;h2&gt;文章标题&lt;/h2&gt;
+      &lt;section&gt;
+        &lt;h3&gt;章节标题&lt;/h3&gt;
+        &lt;p&gt;章节内容&lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/article&gt;
+
+    &lt;aside&gt;
+      &lt;h3&gt;侧边栏&lt;/h3&gt;
+      &lt;p&gt;相关链接或信息&lt;/p&gt;
+    &lt;/aside&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2024 版权所有&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <!-- 3. 各标签详解 -->
+  <div class="section">
+    <h2>3. 各语义化标签详解</h2>
+
+    <table>
+      <tr>
+        <th>标签</th>
+        <th>语义</th>
+        <th>典型用途</th>
+      </tr>
+      <tr>
+        <td><code>&lt;header&gt;</code></td>
+        <td>头部/介绍区</td>
+        <td>页面顶部、文章头部、区块头部</td>
+      </tr>
+      <tr>
+        <td><code>&lt;nav&gt;</code></td>
+        <td>导航</td>
+        <td>主导航菜单、面包屑、页内导航</td>
+      </tr>
+      <tr>
+        <td><code>&lt;main&gt;</code></td>
+        <td>主要内容</td>
+        <td>页面唯一的主要内容区域</td>
+      </tr>
+      <tr>
+        <td><code>&lt;article&gt;</code></td>
+        <td>独立内容</td>
+        <td>博客文章、新闻报道、用户评论</td>
+      </tr>
+      <tr>
+        <td><code>&lt;section&gt;</code></td>
+        <td>逻辑分区</td>
+        <td>章节、选项卡面板、功能区</td>
+      </tr>
+      <tr>
+        <td><code>&lt;aside&gt;</code></td>
+        <td>辅助内容</td>
+        <td>侧边栏、广告、引用框</td>
+      </tr>
+      <tr>
+        <td><code>&lt;footer&gt;</code></td>
+        <td>底部</td>
+        <td>版权信息、联系方式、底部链接</td>
+      </tr>
+      <tr>
+        <td><code>&lt;address&gt;</code></td>
+        <td>联系信息</td>
+        <td>作者信息、组织联系方式</td>
+      </tr>
+      <tr>
+        <td><code>&lt;hgroup&gt;</code></td>
+        <td>标题组</td>
+        <td>标题 + 副标题组合</td>
+      </tr>
+      <tr>
+        <td><code>&lt;details&gt;</code></td>
+        <td>可折叠内容</td>
+        <td>FAQ 手风琴、可展开区块</td>
+      </tr>
+      <tr>
+        <td><code>&lt;summary&gt;</code></td>
+        <td>摘要/标题</td>
+        <td>&lt;details&gt; 的可点击标题</td>
+      </tr>
+      <tr>
+        <td><code>&lt;dialog&gt;</code></td>
+        <td>对话框</td>
+        <td>模态弹窗、确认框</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 4. details/summary -->
+  <div class="section">
+    <h2>4. &lt;details&gt; 和 &lt;summary&gt; 可折叠内容</h2>
+
+    <div class="demo-box">
+      <details>
+        <summary>点击展开：什么是 HTML？</summary>
+        <p style="padding:12px;">HTML（HyperText Markup Language）即超文本标记语言，是构建网页的标准语言。它使用标签来定义网页的结构和内容。</p>
+      </details>
+
+      <details open>
+        <summary>默认展开：什么是语义化？</summary>
+        <p style="padding:12px;">语义化是指使用恰当的 HTML 标签来表达内容的含义。例如用 <code>&lt;nav&gt;</code> 表示导航，用 <code>&lt;article&gt;</code> 表示文章，而不是全部使用 <code>&lt;div&gt;</code>。</p>
+      </details>
+    </div>
+    <pre><code>&lt;details&gt;
+  &lt;summary&gt;点击展开标题&lt;/summary&gt;
+  &lt;p&gt;这里是隐藏的内容&lt;/p&gt;
+&lt;/details&gt;
+
+&lt;details open&gt;  &lt;!-- open 属性默认展开 --&gt;
+  &lt;summary&gt;默认展开&lt;/summary&gt;
+  &lt;p&gt;可见的内容&lt;/p&gt;
+&lt;/details&gt;</code></pre>
+  </div>
+
+  <!-- 5. dialog -->
+  <div class="section">
+    <h2>5. &lt;dialog&gt; 对话框</h2>
+
+    <div class="demo-box">
+      <button onclick="document.getElementById('myDialog').showModal()">打开对话框</button>
+      <dialog id="myDialog" style="border:none; border-radius:10px; padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.2);">
+        <h3 style="margin-top:0;">提示信息</h3>
+        <p>这是一个原生的 HTML 对话框。</p>
+        <button onclick="this.closest('dialog').close()">关闭</button>
+      </dialog>
+    </div>
+    <pre><code>&lt;dialog id="myDialog"&gt;
+  &lt;h3&gt;提示&lt;/h3&gt;
+  &lt;p&gt;对话框内容&lt;/p&gt;
+  &lt;button onclick="this.closest('dialog').close()"&gt;关闭&lt;/button&gt;
+&lt;/dialog&gt;
+
+&lt;button onclick="myDialog.showModal()"&gt;打开&lt;/button&gt;</code></pre>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

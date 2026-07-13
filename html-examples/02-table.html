@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02 - 表格元素示例</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="index.html" class="home">首页</a>
+    <a href="01-form.html">表单</a>
+    <a href="02-table.html">表格</a>
+    <a href="03-media.html">多媒体</a>
+    <a href="04-text-formatting.html">文本格式化</a>
+    <a href="05-lists-links.html">列表与链接</a>
+    <a href="06-semantic.html">语义化</a>
+    <a href="07-global-attributes.html">全局属性</a>
+    <a href="08-events.html">事件处理</a>
+  </nav>
+
+  <h1>02 - 表格元素</h1>
+  <p>表格用于展示结构化的二维数据。HTML 表格由 <code>&lt;table&gt;</code> 及其子元素组成。</p>
+
+  <!-- 1. 基础表格 -->
+  <div class="section">
+    <h2>1. 基础表格结构</h2>
+    <div class="note"><strong>&lt;table&gt;</strong> 是表格容器，<strong>&lt;tr&gt;</strong> 定义行，<strong>&lt;th&gt;</strong> 定义表头单元格，<strong>&lt;td&gt;</strong> 定义数据单元格。</div>
+
+    <div class="demo-box">
+      <table>
+        <tr>
+          <th>姓名</th>
+          <th>年龄</th>
+          <th>城市</th>
+        </tr>
+        <tr>
+          <td>张三</td>
+          <td>25</td>
+          <td>上海</td>
+        </tr>
+        <tr>
+          <td>李四</td>
+          <td>30</td>
+          <td>北京</td>
+        </tr>
+        <tr>
+          <td>王五</td>
+          <td>28</td>
+          <td>深圳</td>
+        </tr>
+      </table>
+    </div>
+    <pre><code>&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;姓名&lt;/th&gt;
+    &lt;th&gt;年龄&lt;/th&gt;
+    &lt;th&gt;城市&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;张三&lt;/td&gt;
+    &lt;td&gt;25&lt;/td&gt;
+    &lt;td&gt;上海&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+  </div>
+
+  <!-- 2. thead / tbody / tfoot / caption -->
+  <div class="section">
+    <h2>2. 表格语义化结构</h2>
+    <div class="note"><strong>&lt;caption&gt;</strong> 表格标题，<strong>&lt;thead&gt;</strong> 表头区，<strong>&lt;tbody&gt;</strong> 表体区，<strong>&lt;tfoot&gt;</strong> 表尾区。</div>
+
+    <div class="demo-box">
+      <table>
+        <caption>2024年季度销售报表</caption>
+        <thead>
+          <tr>
+            <th>季度</th>
+            <th>产品A</th>
+            <th>产品B</th>
+            <th>合计</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Q1</td>
+            <td>120</td>
+            <td>80</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>Q2</td>
+            <td>150</td>
+            <td>95</td>
+            <td>245</td>
+          </tr>
+          <tr>
+            <td>Q3</td>
+            <td>180</td>
+            <td>110</td>
+            <td>290</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>年度总计</strong></td>
+            <td><strong>450</strong></td>
+            <td><strong>285</strong></td>
+            <td><strong>735</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <pre><code>&lt;table&gt;
+  &lt;caption&gt;季度销售报表&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;季度&lt;/th&gt;&lt;th&gt;产品A&lt;/th&gt;&lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;Q1&lt;/td&gt;&lt;td&gt;120&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;&lt;td&gt;总计&lt;/td&gt;&lt;td&gt;450&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;</code></pre>
+  </div>
+
+  <!-- 3. colspan / rowspan -->
+  <div class="section">
+    <h2>3. colspan 和 rowspan 合并</h2>
+    <div class="note"><strong>colspan</strong> 横向合并列，<strong>rowspan</strong> 纵向合并行。</div>
+
+    <div class="demo-box">
+      <table>
+        <tr>
+          <th>姓名</th>
+          <th colspan="2">联系方式</th>
+        </tr>
+        <tr>
+          <td>张三</td>
+          <td>138-0000-0001</td>
+          <td>zhangsan@email.com</td>
+        </tr>
+        <tr>
+          <th rowspan="2">部门</th>
+          <td>开发部</td>
+          <td>10人</td>
+        </tr>
+        <tr>
+          <td>设计部</td>
+          <td>5人</td>
+        </tr>
+      </table>
+    </div>
+    <pre><code>&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th colspan="2"&gt;联系方式&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;电话&lt;/td&gt;
+    &lt;td&gt;138-0000-0000&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;邮箱&lt;/td&gt;
+    &lt;td&gt;user@example.com&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th rowspan="2"&gt;部门&lt;/th&gt;
+    &lt;td&gt;开发部&lt;/td&gt;
+    &lt;td&gt;10人&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;设计部&lt;/td&gt;
+    &lt;td&gt;5人&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+  </div>
+
+  <!-- 4. colgroup / col -->
+  <div class="section">
+    <h2>4. &lt;colgroup&gt; 和 &lt;col&gt; 列分组</h2>
+    <div class="note"><strong>&lt;colgroup&gt;</strong> 和 <strong>&lt;col&gt;</strong> 可以为整列设置样式，无需逐个设置。</div>
+
+    <div class="demo-box">
+      <table>
+        <colgroup>
+          <col style="background:#eaf2f8; width:30%">
+          <col span="2" style="background:#fdf2e9;">
+        </colgroup>
+        <thead>
+          <tr><th>姓名</th><th>语文</th><th>数学</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>张三</td><td>92</td><td>88</td></tr>
+          <tr><td>李四</td><td>85</td><td>95</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre><code>&lt;table&gt;
+  &lt;colgroup&gt;
+    &lt;col style="background:#eaf2f8; width:30%"&gt;
+    &lt;col span="2" style="background:#fdf2e9"&gt;
+  &lt;/colgroup&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;姓名&lt;/th&gt;
+      &lt;th&gt;语文&lt;/th&gt;
+      &lt;th&gt;数学&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;张三&lt;/td&gt;
+      &lt;td&gt;92&lt;/td&gt;
+      &lt;td&gt;88&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;李四&lt;/td&gt;
+      &lt;td&gt;85&lt;/td&gt;
+      &lt;td&gt;95&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+  </div>
+
+  <!-- 5. 复杂表格 -->
+  <div class="section">
+    <h2>5. 复杂表格示例 - 员工信息表</h2>
+
+    <div class="demo-box">
+      <table>
+        <caption>员工信息登记表</caption>
+        <thead>
+          <tr>
+            <th>工号</th>
+            <th>姓名</th>
+            <th>部门</th>
+            <th>入职日期</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>001</td>
+            <td>张三</td>
+            <td>技术部</td>
+            <td>2022-03-15</td>
+            <td>在职</td>
+          </tr>
+          <tr>
+            <td>002</td>
+            <td>李四</td>
+            <td>市场部</td>
+            <td>2021-07-20</td>
+            <td>在职</td>
+          </tr>
+          <tr>
+            <td>003</td>
+            <td>王五</td>
+            <td>人事部</td>
+            <td>2023-01-10</td>
+            <td>试用期</td>
+          </tr>
+          <tr>
+            <td>004</td>
+            <td>赵六</td>
+            <td rowspan="2">技术部</td>
+            <td>2020-11-05</td>
+            <td>在职</td>
+          </tr>
+          <tr>
+            <td>005</td>
+            <td>孙七</td>
+            <td>2024-02-28</td>
+            <td>试用期</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

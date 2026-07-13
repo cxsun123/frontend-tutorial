@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 - 事件处理器属性示例</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    #eventLog {
+      background: #2c3e50;
+      color: #2ecc71;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-family: "SF Mono", monospace;
+      font-size: 0.9em;
+      max-height: 200px;
+      overflow-y: auto;
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+    .color-box {
+      width: 200px;
+      height: 100px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      transition: background 0.3s;
+      cursor: pointer;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="index.html" class="home">首页</a>
+    <a href="01-form.html">表单</a>
+    <a href="02-table.html">表格</a>
+    <a href="03-media.html">多媒体</a>
+    <a href="04-text-formatting.html">文本格式化</a>
+    <a href="05-lists-links.html">列表与链接</a>
+    <a href="06-semantic.html">语义化</a>
+    <a href="07-global-attributes.html">全局属性</a>
+    <a href="08-events.html">事件处理</a>
+  </nav>
+
+  <h1>08 - 事件处理器属性</h1>
+  <div class="note"><strong>注意：</strong>内联事件处理器（如 <code>onclick</code>）便于教学演示，但实际项目中推荐使用 JavaScript 的 <code>addEventListener</code>。</div>
+
+  <div id="eventLog">事件日志：</div>
+
+  <!-- 1. onclick 点击 -->
+  <div class="section">
+    <h2>1. onclick - 点击事件</h2>
+
+    <div class="demo-box">
+      <button onclick="logEvent('按钮被点击了！')">点击我</button>
+      <button onclick="this.textContent='已点击！'" style="background:#27ae60;">点击后改变文字</button>
+      <p onclick="logEvent('段落被点击！')" style="cursor:pointer; background:#fdf2e9; padding:8px; border-radius:4px;">
+        点击这段文字试试（cursor:pointer 提示可点击）
+      </p>
+    </div>
+    <pre><code>&lt;button onclick="handleClick()"&gt;点击我&lt;/button&gt;
+
+&lt;p onclick="alert('段落被点击')" style="cursor:pointer"&gt;
+  可点击的段落
+&lt;/p&gt;
+
+&lt;script&gt;
+function handleClick() {
+  alert('按钮被点击了');
+}
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <!-- 2. onmouseover / onmouseout -->
+  <div class="section">
+    <h2>2. onmouseover / onmouseout - 鼠标悬停</h2>
+
+    <div class="demo-box">
+      <div class="color-box" style="background:#3498db;"
+           onmouseover="this.style.background='#e74c3c'; this.textContent='鼠标悬停中...'; logEvent('onmouseover 触发');"
+           onmouseout="this.style.background='#3498db'; this.textContent='鼠标移开恢复'; logEvent('onmouseout 触发');">
+        鼠标移入测试
+      </div>
+    </div>
+    <pre><code>&lt;div
+  style="width:220px; padding:24px; color:white; background:#3498db; border-radius:8px;"
+  onmouseover="this.style.background='#e74c3c'; this.textContent='鼠标悬停中'"
+  onmouseout="this.style.background='#3498db'; this.textContent='鼠标移入/移出测试'"
+&gt;
+  鼠标移入/移出测试
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- 3. oninput 实时输入 -->
+  <div class="section">
+    <h2>3. oninput - 实时输入</h2>
+    <div class="note"><strong>oninput</strong> 在输入值每次改变时触发（实时响应），<strong>onchange</strong> 在失焦或回车时触发。</div>
+
+    <div class="demo-box">
+      <div class="form-group">
+        <label>实时输入（oninput）：</label>
+        <input type="text" id="liveInput" oninput="document.getElementById('liveOutput').textContent=this.value || '(空)'" placeholder="输入文字...">
+        <p>输入内容：<strong id="liveOutput">(空)</strong></p>
+      </div>
+      <div class="form-group">
+        <label>失去焦点时触发（onchange）：</label>
+        <input type="text" onchange="logEvent('onchange: 值变为 ' + this.value)" placeholder="输入后点击别处">
+      </div>
+    </div>
+    <pre><code>&lt;input oninput="updateText(this.value)"&gt;
+&lt;p id="output"&gt;&lt;/p&gt;
+
+&lt;script&gt;
+function updateText(val) {
+  document.getElementById('output').textContent = val;
+}
+&lt;/script&gt;
+
+&lt;!-- onchange 在失焦时触发 --&gt;
+&lt;input onchange="alert(this.value)"&gt;</code></pre>
+  </div>
+
+  <!-- 4. onkeydown / onkeyup -->
+  <div class="section">
+    <h2>4. onkeydown / onkeyup - 键盘事件</h2>
+
+    <div class="demo-box">
+      <div class="form-group">
+        <label>按键检测：</label>
+        <input type="text" id="keyInput"
+          onkeydown="logEvent('keydown: ' + event.key + ' (keyCode: ' + event.keyCode + ')')"
+          onkeyup="logEvent('keyup: ' + event.key)"
+          placeholder="在这里按键测试"
+          style="width:300px;">
+      </div>
+    </div>
+    <pre><code>&lt;input
+  onkeydown="logKey(event.key, event.keyCode)"
+  onkeyup="logKeyUp(event.key)"
+  placeholder="按键测试"
+&gt;
+&lt;p id="keyOutput"&gt;等待用户按下键盘&lt;/p&gt;
+
+&lt;script&gt;
+function logKey(key, keyCode) {
+  document.getElementById('keyOutput').textContent =
+    'keydown: ' + key + ' (keyCode: ' + keyCode + ')';
+}
+
+function logKeyUp(key) {
+  document.getElementById('keyOutput').textContent =
+    'keyup: ' + key;
+}
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <!-- 5. onfocus / onblur -->
+  <div class="section">
+    <h2>5. onfocus / onblur - 焦点事件</h2>
+
+    <div class="demo-box">
+      <input type="text" id="focusDemo"
+        onfocus="this.style.borderColor='#27ae60'; this.style.boxShadow='0 0 0 3px rgba(39,174,96,0.2)'; logEvent('获得焦点 onfocus')"
+        onblur="this.style.borderColor='#bdc3c7'; this.style.boxShadow='none'; logEvent('失去焦点 onblur')"
+        placeholder="点击我获得焦点，点别处失去焦点"
+        style="border:2px solid #bdc3c7; padding:8px 12px; border-radius:6px; width:350px; transition:all 0.3s;">
+    </div>
+    <pre><code>&lt;input
+  style="border:2px solid #bdc3c7; padding:8px 12px; border-radius:6px;"
+  onfocus="this.style.borderColor='green'"
+  onblur="this.style.borderColor='gray'"
+  placeholder="焦点测试"
+&gt;</code></pre>
+  </div>
+
+  <!-- 6. onsubmit 表单提交 -->
+  <div class="section">
+    <h2>6. onsubmit - 表单提交</h2>
+
+    <div class="demo-box">
+      <form onsubmit="event.preventDefault(); logEvent('表单提交被拦截！(event.preventDefault())')">
+        <div class="form-group">
+          <label>表单内容：</label>
+          <input type="text" name="data" placeholder="输入数据">
+        </div>
+        <button type="submit">提交（会被拦截）</button>
+      </form>
+    </div>
+    <pre><code>&lt;form onsubmit="handleSubmit(event)"&gt;
+  &lt;input name="data"&gt;
+  &lt;button type="submit"&gt;提交&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;script&gt;
+function handleSubmit(event) {
+  event.preventDefault(); // 阻止默认提交行为
+  alert('表单提交已被 JavaScript 拦截');
+}
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <!-- 7. onchange 选择框 -->
+  <div class="section">
+    <h2>7. onchange - 下拉选择变化</h2>
+
+    <div class="demo-box">
+      <select onchange="logEvent('选择变化: ' + this.value)">
+        <option value="">-- 请选择 --</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="js">JavaScript</option>
+      </select>
+      <span id="selectOutput" style="margin-left:12px;"></span>
+    </div>
+    <pre><code>&lt;select onchange="handleSelect(this.value)"&gt;
+  &lt;option value=""&gt;-- 请选择 --&lt;/option&gt;
+  &lt;option value="html"&gt;HTML&lt;/option&gt;
+  &lt;option value="css"&gt;CSS&lt;/option&gt;
+  &lt;option value="js"&gt;JavaScript&lt;/option&gt;
+&lt;/select&gt;
+&lt;span id="selectOutput" style="margin-left:12px;"&gt;&lt;/span&gt;
+
+&lt;script&gt;
+function handleSelect(value) {
+  document.getElementById('selectOutput').textContent =
+    value ? '你选择了：' + value : '尚未选择';
+}
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <!-- 8. onload -->
+  <div class="section">
+    <h2>8. onload - 页面/资源加载完成</h2>
+
+    <div class="demo-box">
+      <p><strong>onload</strong> 在页面完全加载后触发：</p>
+      <img src="https://via.placeholder.com/200x100/3498db/ffffff?text=onload+Test"
+           alt="测试"
+           onload="logEvent('图片加载完成 (onload)')"
+           onerror="logEvent('图片加载失败 (onerror)')"
+           style="border-radius:6px;">
+
+      <div style="margin-top:8px; color:#7f8c8d; font-size:0.9em;">
+        <small>页面本身也触发了 onload 事件（见下方日志）</small>
+      </div>
+    </div>
+    <pre><code>&lt;p id="loadStatus"&gt;等待图片加载完成&lt;/p&gt;
+
+&lt;img src="photo.jpg"
+  width="200"
+  alt="测试图片"
+  onload="log('图片加载完成')"
+  onerror="log('图片加载失败')"
+&gt;
+
+&lt;script&gt;
+function log(message) {
+  document.getElementById('loadStatus').textContent = message;
+}
+
+window.onload = function init() {
+  console.log('页面加载完成');
+};
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <!-- 9. 事件参考表 -->
+  <div class="section">
+    <h2>9. 常用事件处理器参考</h2>
+
+    <table>
+      <tr><th>属性</th><th>触发时机</th><th>常用元素</th></tr>
+      <tr><td><code>onclick</code></td><td>点击元素时</td><td>所有元素</td></tr>
+      <tr><td><code>ondblclick</code></td><td>双击元素时</td><td>所有元素</td></tr>
+      <tr><td><code>onmouseover</code></td><td>鼠标移入</td><td>所有元素</td></tr>
+      <tr><td><code>onmouseout</code></td><td>鼠标移出</td><td>所有元素</td></tr>
+      <tr><td><code>oninput</code></td><td>输入值实时变化</td><td>input, textarea</td></tr>
+      <tr><td><code>onchange</code></td><td>值改变且失焦</td><td>input, select, textarea</td></tr>
+      <tr><td><code>onfocus</code></td><td>获得焦点</td><td>input, textarea, select</td></tr>
+      <tr><td><code>onblur</code></td><td>失去焦点</td><td>input, textarea, select</td></tr>
+      <tr><td><code>onkeydown</code></td><td>键盘按下</td><td>input, textarea, document</td></tr>
+      <tr><td><code>onkeyup</code></td><td>键盘释放</td><td>input, textarea, document</td></tr>
+      <tr><td><code>onsubmit</code></td><td>表单提交</td><td>form</td></tr>
+      <tr><td><code>onload</code></td><td>资源加载完成</td><td>img, body, script</td></tr>
+      <tr><td><code>onerror</code></td><td>加载出错</td><td>img, script, iframe</td></tr>
+      <tr><td><code>onscroll</code></td><td>滚动时</td><td>div, window</td></tr>
+      <tr><td><code>onresize</code></td><td>窗口/元素大小变化</td><td>window</td></tr>
+    </table>
+  </div>
+
+  <script>
+    var logCount = 0;
+    function logEvent(msg) {
+      logCount++;
+      var log = document.getElementById('eventLog');
+      var time = new Date().toLocaleTimeString();
+      log.innerHTML += '<br>[' + time + '] #' + logCount + ' ' + msg;
+      log.scrollTop = log.scrollHeight;
+    }
+    logEvent('页面加载完成 (onload)');
+  </script>
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

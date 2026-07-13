@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04 - 文本格式化示例</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="index.html" class="home">首页</a>
+    <a href="01-form.html">表单</a>
+    <a href="02-table.html">表格</a>
+    <a href="03-media.html">多媒体</a>
+    <a href="04-text-formatting.html">文本格式化</a>
+    <a href="05-lists-links.html">列表与链接</a>
+    <a href="06-semantic.html">语义化</a>
+    <a href="07-global-attributes.html">全局属性</a>
+    <a href="08-events.html">事件处理</a>
+  </nav>
+
+  <h1>04 - 文本格式化元素</h1>
+  <p>HTML 提供了丰富的文本语义元素，用于表达文本的含义和结构。</p>
+
+  <!-- 1. 标题 -->
+  <div class="section">
+    <h2>1. 标题 h1 ~ h6</h2>
+    <div class="note">标题从 <strong>&lt;h1&gt;</strong> 到 <strong>&lt;h6&gt;</strong>，级别依次降低。<code>&lt;h1&gt;</code> 最重要，通常每页只有一个。</div>
+
+    <div class="demo-box">
+      <h1 style="font-size:1.6em;">h1 - 一级标题</h1>
+      <h2 style="font-size:1.35em;">h2 - 二级标题</h2>
+      <h3 style="font-size:1.15em;">h3 - 三级标题</h3>
+      <h4 style="font-size:1.05em;">h4 - 四级标题</h4>
+      <h5 style="font-size:0.95em;">h5 - 五级标题</h5>
+      <h6 style="font-size:0.85em; color:#7f8c8d;">h6 - 六级标题</h6>
+    </div>
+    <pre><code>&lt;h1&gt;一级标题&lt;/h1&gt;
+&lt;h2&gt;二级标题&lt;/h2&gt;
+&lt;h3&gt;三级标题&lt;/h3&gt;
+&lt;h4&gt;四级标题&lt;/h4&gt;
+&lt;h5&gt;五级标题&lt;/h5&gt;
+&lt;h6&gt;六级标题&lt;/h6&gt;</code></pre>
+  </div>
+
+  <!-- 2. 段落和换行 -->
+  <div class="section">
+    <h2>2. 段落、换行与水平线</h2>
+
+    <div class="demo-box">
+      <p>这是第一个段落。段落之间会自动产生间距。<code>&lt;p&gt;</code> 标签定义一个段落。</p>
+      <p>这是第二个段落。浏览器会在每个 <code>&lt;p&gt;</code> 元素前后添加空行。</p>
+
+      <p>第一行文本<br>第二行文本<br>第三行文本</p>
+
+      <hr>
+
+      <p>上面是一条水平分割线 <code>&lt;hr&gt;</code>，用于分隔内容。</p>
+    </div>
+    <pre><code>&lt;p&gt;段落文本&lt;/p&gt;
+
+&lt;p&gt;第一行&lt;br&gt;第二行&lt;/p&gt;
+
+&lt;hr&gt;  &lt;!-- 水平分割线 --&gt;</code></pre>
+  </div>
+
+  <!-- 3. 粗体和斜体 -->
+  <div class="section">
+    <h2>3. 粗体、斜体与强调</h2>
+    <div class="note"><strong>&lt;strong&gt;</strong> 表示重要性（语义上强调），<strong>&lt;b&gt;</strong> 仅视觉加粗。<strong>&lt;em&gt;</strong> 表示重音强调，<strong>&lt;i&gt;</strong> 仅视觉倾斜。</div>
+
+    <div class="demo-box">
+      <p><strong>strong：这段文字很重要</strong>（语义强调，浏览器显示为粗体）</p>
+      <p><b>b：这段文字被加粗</b>（仅视觉效果，无语义）</p>
+      <p><em>em：这段文字需要强调</em>（语义强调，浏览器显示为斜体）</p>
+      <p><i>i：这段文字是斜体</i>（仅视觉效果，常用于外来词、术语等）</p>
+    </div>
+    <pre><code>&lt;strong&gt;重要内容&lt;/strong&gt;  &lt;!-- 语义粗体 --&gt;
+&lt;b&gt;加粗文字&lt;/b&gt;            &lt;!-- 视觉粗体 --&gt;
+
+&lt;em&gt;强调文字&lt;/em&gt;          &lt;!-- 语义斜体 --&gt;
+&lt;i&gt;斜体文字&lt;/i&gt;            &lt;!-- 视觉斜体 --&gt;</code></pre>
+  </div>
+
+  <!-- 4. 标记和代码 -->
+  <div class="section">
+    <h2>4. 标记、代码与预格式化</h2>
+
+    <div class="demo-box">
+      <p><mark>mark 标签</mark> 用于高亮标记文本。</p>
+      <p><code>code 标签</code> 用于显示行内代码。</p>
+      <p><pre style="display:inline-block; background:#2c3e50; color:#ecf0f1; padding:8px 12px; border-radius:4px;">pre 标签
+保留文本的
+换行和空格</pre></p>
+      <p><samp>samp 标签</samp> 表示程序输出。</p>
+      <p><kbd>Ctrl</kbd> + <kbd>S</kbd> <kbd>kbd 标签</kbd> 表示键盘输入。</p>
+      <p><var>var 标签</var> 表示数学/编程变量。</p>
+    </div>
+    <pre><code>&lt;mark&gt;高亮文字&lt;/mark&gt;     &lt;!-- 高亮标记 --&gt;
+&lt;code&gt;console.log()&lt;/code&gt; &lt;!-- 行内代码 --&gt;
+&lt;samp&gt;Error 404&lt;/samp&gt;    &lt;!-- 程序输出 --&gt;
+&lt;kbd&gt;Ctrl+C&lt;/kbd&gt;         &lt;!-- 键盘按键 --&gt;
+&lt;var&gt;x&lt;/var&gt;              &lt;!-- 变量 --&gt;
+
+&lt;pre&gt;
+预格式化文本
+  保留空格和换行
+&lt;/pre&gt;</code></pre>
+  </div>
+
+  <!-- 5. 引用 -->
+  <div class="section">
+    <h2>5. 引用</h2>
+    <div class="note"><strong>&lt;q&gt;</strong> 行内引用（自动加引号），<strong>&lt;blockquote&gt;</strong> 块级引用，<strong>&lt;cite&gt;</strong> 引用作品标题。</div>
+
+    <div class="demo-box">
+      <p>鲁迅说过：<q>世上本没有路，走的人多了便成了路。</q></p>
+      <blockquote cite="https://example.com">
+        <p>学而不思则罔，思而不学则殆。——这是块级引用，通常有缩进效果。</p>
+      </blockquote>
+      <p>引用作品：<cite>《红楼梦》</cite> 是中国古典四大名著之一。</p>
+    </div>
+    <pre><code>&lt;q&gt;行内引用&lt;/q&gt;
+
+&lt;blockquote cite="source"&gt;
+  块级引用内容
+&lt;/blockquote&gt;
+
+&lt;cite&gt;《红楼梦》&lt;/cite&gt;</code></pre>
+  </div>
+
+  <!-- 6. 下标/上标/删除线等 -->
+  <div class="section">
+    <h2>6. 上标、下标与其他语义标签</h2>
+
+    <div class="demo-box">
+      <p>H<sub>2</sub>O — <code>&lt;sub&gt;</code> 下标</p>
+      <p>E=mc<sup>2</sup> — <code>&lt;sup&gt;</code> 上标</p>
+      <p><del>删除线文字</del> — <code>&lt;del&gt;</code> 删除</p>
+      <p><ins>下划线新增文字</ins> — <code>&lt;ins&gt;</code> 插入</p>
+      <p><s>不再准确的信息</s> — <code>&lt;s&gt;</code> 失效删除</p>
+      <p><small>small 小号文字，常用于版权等辅助信息</small></p>
+      <p><abbr title="HyperText Markup Language">HTML</abbr> — <code>&lt;abbr&gt;</code> 缩写（鼠标悬停显示全称）</p>
+      <p><time datetime="2024-01-01">2024年元旦</time> — <code>&lt;time&gt;</code> 机器可读时间</p>
+    </div>
+    <pre><code>H&lt;sub&gt;2&lt;/sub&gt;O           &lt;!-- 下标 --&gt;
+E=mc&lt;sup&gt;2&lt;/sup&gt;         &lt;!-- 上标 --&gt;
+&lt;del&gt;删除文字&lt;/del&gt;       &lt;!-- 删除线 --&gt;
+&lt;ins&gt;插入文字&lt;/ins&gt;       &lt;!-- 下划线 --&gt;
+&lt;s&gt;失效文字&lt;/s&gt;           &lt;!-- 失效删除 --&gt;
+&lt;small&gt;小号文字&lt;/small&gt;    &lt;!-- 辅助信息 --&gt;
+&lt;abbr title="全称"&gt;缩写&lt;/abbr&gt; &lt;!-- 缩写 --&gt;
+&lt;time datetime="2024-01-01"&gt;日期&lt;/time&gt;</code></pre>
+  </div>
+
+  <!-- 7. span / div / br -->
+  <div class="section">
+    <h2>7. 容器元素：span 和 div</h2>
+    <div class="note"><strong>&lt;span&gt;</strong> 行内容器，不换行。<strong>&lt;div&gt;</strong> 块级容器，独占一行。两者无语义，常配合 CSS 使用。</div>
+
+    <div class="demo-box">
+      <p>这是 <span style="color:#e74c3c; font-weight:bold;">红色加粗的行内文字</span>，前后不会换行。</p>
+      <div style="background:#eaf2f8; padding:12px; border-radius:6px; margin-top:8px;">
+        这是一个 div 块级容器，独占一行，常用于布局分组。
+      </div>
+    </div>
+    <pre><code>&lt;span style="color:red"&gt;行内文本&lt;/span&gt;
+
+&lt;div style="background:#eee"&gt;
+  块级容器，独占一行
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

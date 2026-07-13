@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML 元素及属性 - 教学示例</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero {
+      text-align: center;
+      padding: 40px 20px 30px;
+      background: linear-gradient(135deg, #1a5276, #2980b9);
+      color: #fff;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    .hero h1 {
+      color: #fff;
+      border: none;
+      font-size: 2.2em;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+    .tag-group { margin-top: 12px; }
+    .tag-group span {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      margin: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>HTML 元素及属性 - 教学示例</h1>
+    <p>基于 MDN Web Docs 分类，涵盖常用 HTML 标签和属性</p>
+    <div class="tag-group">
+      <span>表单</span>
+      <span>表格</span>
+      <span>多媒体</span>
+      <span>文本格式化</span>
+      <span>列表与链接</span>
+      <span>语义化</span>
+      <span>全局属性</span>
+      <span>事件处理</span>
+    </div>
+    <div style="margin-top:18px;">
+      <button onclick="openPlayground()" style="background:#27ae60;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:1em;cursor:pointer;">打开试验场 &rarr;</button>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>01 - 表单元素</h3>
+      <p>input 各类型、label、select、textarea、button、fieldset、datalist、meter、progress、output 等表单相关元素。</p>
+      <a href="01-form.html">查看示例 &rarr;</a>
+    </div>
+
+    <div class="card">
+      <h3>02 - 表格元素</h3>
+      <p>table、thead、tbody、tfoot、tr、th、td、caption、colgroup、col 等表格结构及 colspan/rowspan 合并。</p>
+      <a href="02-table.html">查看示例 &rarr;</a>
+    </div>
+
+    <div class="card">
+      <h3>03 - 图片与多媒体</h3>
+      <p>img、audio、video、picture、source、track、map、area 等多媒体元素。</p>
+      <a href="03-media.html">查看示例 &rarr;</a>
+    </div>
+
+    <div class="card">
+      <h3>04 - 文本格式化</h3>
+      <p>标题 h1-h6、段落、粗体/斜体、强调/加重、code、pre、blockquote、mark、sub/sup 等文本语义元素。</p>
+      <a href="04-text-formatting.html">查看示例 &rarr;</a>
+    </div>
+
+    <div class="card">
+      <h3>05 - 列表与链接</h3>
+      <p>ul/ol/li、dl/dt/dd、导航列表、a 超链接及 href/target/download 属性。</p>
+      <a href="05-lists-links.html">查看示例 &rarr;</a>
+    </div>
+
+    <div class="card">
+      <h3>06 - 语义化结构</h3>
+      <p>header、nav、main、article、section、aside、footer 等语义化分区元素。</p>
+      <a href="06-semantic.html">查看示例 &rarr;</a>
+    </div>
+
+    <div class="card">
+      <h3>07 - 全局属性</h3>
+      <p>id、class、style、title、hidden、data-*、tabindex、lang、dir、draggable 等全局属性。</p>
+      <a href="07-global-attributes.html">查看示例 &rarr;</a>
+    </div>
+
+    <div class="card">
+      <h3>08 - 事件处理器</h3>
+      <p>onclick、oninput、onmouseover、onchange、onsubmit、onkeydown 等内联事件处理属性。</p>
+      <a href="08-events.html">查看示例 &rarr;</a>
+    </div>
+  </div>
+
+  <div class="section" style="text-align:center; margin-top:20px;">
+    <p style="color:#7f8c8d;">参考文档：<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Elements" target="_blank">MDN HTML 元素参考</a> |
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Attributes" target="_blank">MDN HTML 属性参考</a></p>
+  </div>
+  <script>
+  function openPlayground() {
+    var defaultCode = [
+      '<!DOCTYPE html>',
+      '<html lang="zh-CN">',
+      '<head>',
+      '  <meta charset="UTF-8">',
+      '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+      '  <title>我的页面</title>',
+      '  <style>',
+      '    body {',
+      '      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;',
+      '      max-width: 800px;',
+      '      margin: 0 auto;',
+      '      padding: 40px 20px;',
+      '      color: #333;',
+      '      line-height: 1.7;',
+      '    }',
+      '    h1 { color: #3498db; }',
+      '    a { color: #3498db; text-decoration: none; }',
+      '    code { background: #f0f3f5; padding: 2px 6px; border-radius: 3px; }',
+      '    table { border-collapse: collapse; width: 100%; }',
+      '    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }',
+      '    th { background: #3498db; color: #fff; }',
+      '  </style>',
+      '</head>',
+      '<body>',
+      '',
+      '  <h1>Hello, HTML!</h1>',
+      '  <p>在左侧编辑代码，点击 <strong>"运行代码"</strong> 查看效果。</p>',
+      '',
+      '</body>',
+      '</html>'
+    ].join('\n');
+    try { localStorage.setItem('playground_code', defaultCode); } catch(e) {}
+    window.open('playground.html', '_blank');
+  }
+  </script>
+</body>
+</html>

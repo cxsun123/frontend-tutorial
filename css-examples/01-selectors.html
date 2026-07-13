@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 - CSS 选择器与层叠</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .selector-map {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .selector-map span {
+      background: #eef6fc;
+      border: 1px solid #cfe3f3;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #1f5f8b;
+      font-weight: 700;
+    }
+    .selector-demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .selector-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border-radius: 7px;
+      background: #edf2f7;
+      border: 1px solid #d6e0e9;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <a class="home" href="index.html">CSS2 / CSS3 首页</a>
+    <a href="01-selectors.html">选择器</a>
+    <a href="02-box-model.html">盒模型</a>
+    <a href="03-text-color.html">文本颜色</a>
+    <a href="04-layout.html">布局定位</a>
+    <a href="05-flex-grid.html">Flex</a>
+    <a href="06-responsive.html">响应式</a>
+    <a href="07-effects.html">过渡动画</a>
+    <a href="08-css3.html">CSS3增强</a>
+  </nav>
+
+  <h1>01 - CSS 选择器与层叠</h1>
+  <p>CSS 选择器用于选取 HTML 元素并应用样式。本章按教学常用分类讲解：简单选择器、组合器选择器、属性选择器、伪类选择器、伪元素选择器，以及分组和特异性。</p>
+
+  <div class="section">
+    <h2>1. 选择器分类总览</h2>
+    <div class="note">常见分类包括：简单选择器、组合器选择器、属性选择器、伪类选择器、伪元素选择器。学习时先问两个问题：我要选谁？选择条件是什么？</div>
+    <div class="demo-box">
+      <div class="selector-map">
+        <span>简单：p .class #id *</span>
+        <span>组合器：空格 &gt; + ~</span>
+        <span>属性：[attr] [attr=value]</span>
+        <span>伪类：:hover :checked :nth-child()</span>
+        <span>伪元素：::before ::first-line</span>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* 简单选择器 */
+p { color: #34495e; }
+.important { color: #e67e22; }
+#intro { background: #eaf2f8; }
+
+/* 组合器选择器 */
+.article p { line-height: 1.8; }
+.article &gt; h3 { color: #2980b9; }
+
+/* 属性、伪类、伪元素 */
+a[target="_blank"] { font-weight: bold; }
+button:hover { background: #2ecc71; }
+p::first-letter { font-size: 2em; }
+&lt;/style&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2. 简单选择器：元素、类、ID、通用</h2>
+    <div class="note">元素选择器选一类标签；类选择器适合复用；ID 选择器用于页面中唯一元素；通用选择器 <code>*</code> 会命中所有元素，通常要谨慎使用。</div>
+    <div class="demo-box">
+      <div class="simple-scope">
+        <p>元素选择器：所有段落</p>
+        <p class="notice">类选择器：可复用提示</p>
+        <p id="unique-tip">ID 选择器：唯一提示</p>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.simple-scope * {
+  box-sizing: border-box;
+}
+
+.simple-scope p {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #f4f9ff;
+}
+
+.simple-scope .notice {
+  color: #e67e22;
+  font-weight: bold;
+}
+
+#unique-tip {
+  border-left: 4px solid #3498db;
+}
+&lt;/style&gt;
+
+&lt;div class="simple-scope"&gt;
+  &lt;p&gt;元素选择器：所有段落&lt;/p&gt;
+  &lt;p class="notice"&gt;类选择器：可复用提示&lt;/p&gt;
+  &lt;p id="unique-tip"&gt;ID 选择器：唯一提示&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>3. 多类、分组与选择器链</h2>
+    <div class="note">多个类连写表示“同时具备这些类”；逗号分组表示“这些选择器共享同一组样式”。</div>
+    <div class="demo-box">
+      <div class="selector-demo-row chain-demo">
+        <span class="selector-chip tag">普通标签</span>
+        <span class="selector-chip tag hot">同时有 tag 和 hot</span>
+        <button>按钮</button>
+        <a href="#">链接</a>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.tag {
+  background: #edf2f7;
+}
+
+.tag.hot {
+  background: #fdebd0;
+  color: #d35400;
+  border-color: #f5b041;
+}
+
+.chain-demo button,
+.chain-demo a {
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+&lt;/style&gt;
+
+&lt;div class="chain-demo"&gt;
+  &lt;span class="tag"&gt;普通标签&lt;/span&gt;
+  &lt;span class="tag hot"&gt;同时有 tag 和 hot&lt;/span&gt;
+  &lt;button&gt;按钮&lt;/button&gt;
+  &lt;a href="#"&gt;链接&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4. 组合器选择器：后代、子代、相邻兄弟、通用兄弟</h2>
+    <div class="note">组合器描述元素之间的结构关系：空格选后代，<code>&gt;</code> 选直接子元素，<code>+</code> 选紧邻的下一个兄弟，<code>~</code> 选后续所有兄弟。</div>
+    <div class="demo-box">
+      <div class="combinator-demo">
+        <h3>章节标题</h3>
+        <p>标题后的第一段</p>
+        <p>标题后的第二段</p>
+        <div>
+          <p>嵌套段落</p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* 后代：容器内部所有 p */
+.combinator-demo p {
+  color: #34495e;
+}
+
+/* 子代：只选直接子元素 p，不选嵌套 p */
+.combinator-demo &gt; p {
+  background: #eaf2f8;
+  padding: 8px;
+}
+
+/* 相邻兄弟：h3 后面紧挨着的第一个 p */
+.combinator-demo h3 + p {
+  border-left: 4px solid #3498db;
+}
+
+/* 通用兄弟：h3 后面所有同级 p */
+.combinator-demo h3 ~ p {
+  border-radius: 6px;
+}
+&lt;/style&gt;
+
+&lt;div class="combinator-demo"&gt;
+  &lt;h3&gt;章节标题&lt;/h3&gt;
+  &lt;p&gt;标题后的第一段&lt;/p&gt;
+  &lt;p&gt;标题后的第二段&lt;/p&gt;
+  &lt;div&gt;&lt;p&gt;嵌套段落&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>5. 属性选择器：按属性和值匹配</h2>
+    <div class="note">属性选择器适合表单、链接、data-* 状态等场景。常见写法包括存在、等于、包含单词、包含片段、开头匹配、结尾匹配。</div>
+    <div class="demo-box">
+      <div class="attr-demo selector-demo-row">
+        <a href="https://example.com" target="_blank">外部链接</a>
+        <a href="#local">锚点链接</a>
+        <button data-state="active primary">激活按钮</button>
+        <input type="email" placeholder="email@example.com">
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* 存在 target 属性 */
+.attr-demo [target] {
+  font-weight: bold;
+}
+
+/* href 以 https 开头 */
+.attr-demo a[href^="https"] {
+  color: #27ae60;
+}
+
+/* href 以 # 开头 */
+.attr-demo a[href^="#"] {
+  color: #8e44ad;
+}
+
+/* data-state 的空格分隔列表中包含 active */
+.attr-demo [data-state~="active"] {
+  background: #2ecc71;
+}
+
+/* type 等于 email */
+.attr-demo input[type="email"] {
+  border: 2px solid #3498db;
+}
+&lt;/style&gt;
+
+&lt;div class="attr-demo"&gt;
+  &lt;a href="https://example.com" target="_blank"&gt;外部链接&lt;/a&gt;
+  &lt;a href="#local"&gt;锚点链接&lt;/a&gt;
+  &lt;button data-state="active primary"&gt;激活按钮&lt;/button&gt;
+  &lt;input type="email" placeholder="email@example.com"&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6. 状态伪类：链接、悬停、焦点、表单状态</h2>
+    <div class="note">伪类以冒号开头，用于描述状态或结构。状态伪类常用于交互反馈，例如 <code>:hover</code>、<code>:focus</code>、<code>:checked</code>、<code>:disabled</code>。</div>
+    <div class="demo-box">
+      <div class="state-demo">
+        <a href="#visited-demo">链接状态</a>
+        <button>悬停按钮</button>
+        <input placeholder="点击获得焦点">
+        <label><input type="checkbox"> 勾选我</label>
+        <button disabled>禁用按钮</button>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.state-demo a:hover {
+  color: #e74c3c;
+}
+
+.state-demo button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #2ecc71;
+}
+
+.state-demo input:focus {
+  outline: 3px solid rgba(52, 152, 219, .25);
+  border-color: #3498db;
+}
+
+.state-demo input:checked {
+  accent-color: #27ae60;
+}
+
+.state-demo button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+&lt;/style&gt;
+
+&lt;div class="state-demo"&gt;
+  &lt;a href="#visited-demo"&gt;链接状态&lt;/a&gt;
+  &lt;button&gt;悬停按钮&lt;/button&gt;
+  &lt;input placeholder="点击获得焦点"&gt;
+  &lt;label&gt;&lt;input type="checkbox"&gt; 勾选我&lt;/label&gt;
+  &lt;button disabled&gt;禁用按钮&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7. 结构伪类：first、last、nth、not、has</h2>
+    <div class="note">结构伪类根据元素在父级中的位置或关系匹配元素。<code>:has()</code> 可根据子元素反向选择父级，适合现代浏览器。</div>
+    <div class="demo-box">
+      <ul class="structure-demo">
+        <li>第一项</li>
+        <li>第二项</li>
+        <li class="featured">第三项 featured</li>
+        <li>第四项</li>
+        <li>最后一项</li>
+      </ul>
+    </div>
+    <pre><code>&lt;style&gt;
+.structure-demo li:first-child {
+  font-weight: bold;
+}
+
+.structure-demo li:last-child {
+  color: #8e44ad;
+}
+
+.structure-demo li:nth-child(even) {
+  background: #f4f9ff;
+}
+
+.structure-demo li:not(.featured) {
+  border-left: 3px solid #d5dbdb;
+}
+
+.structure-demo:has(.featured) {
+  border: 1px dashed #f39c12;
+  padding: 10px;
+}
+&lt;/style&gt;
+
+&lt;ul class="structure-demo"&gt;
+  &lt;li&gt;第一项&lt;/li&gt;
+  &lt;li&gt;第二项&lt;/li&gt;
+  &lt;li class="featured"&gt;第三项 featured&lt;/li&gt;
+  &lt;li&gt;第四项&lt;/li&gt;
+  &lt;li&gt;最后一项&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>8. 伪元素：before、after、first-letter、selection、marker</h2>
+    <div class="note">伪元素以双冒号开头，用于选择元素的一部分或创建装饰性内容。常用于标记、引号、首字母、选中文本和列表符号。</div>
+    <div class="demo-box">
+      <article class="pseudo-demo">
+        <h3>伪元素标题</h3>
+        <p>选择这段文字，观察 selection 样式。首字母会被放大。</p>
+        <ul>
+          <li>marker 可修改列表符号</li>
+          <li>before / after 可生成装饰内容</li>
+        </ul>
+      </article>
+    </div>
+    <pre><code>&lt;style&gt;
+.pseudo-demo h3::before {
+  content: "§ ";
+  color: #3498db;
+}
+
+.pseudo-demo h3::after {
+  content: " / selector";
+  color: #95a5a6;
+  font-size: .8em;
+}
+
+.pseudo-demo p::first-letter {
+  font-size: 2.4em;
+  color: #e67e22;
+  float: left;
+  line-height: 1;
+  margin-right: 4px;
+}
+
+.pseudo-demo ::selection {
+  background: #ffeaa7;
+}
+
+.pseudo-demo li::marker {
+  color: #27ae60;
+}
+&lt;/style&gt;
+
+&lt;article class="pseudo-demo"&gt;
+  &lt;h3&gt;伪元素标题&lt;/h3&gt;
+  &lt;p&gt;选择这段文字，观察 selection 样式。首字母会被放大。&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;marker 可修改列表符号&lt;/li&gt;
+    &lt;li&gt;before / after 可生成装饰内容&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/article&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>9. 特异性与层叠：谁最终生效</h2>
+    <div class="note">当多个规则命中同一元素时，浏览器按来源、重要性、特异性和出现顺序决定最终样式。大致上：ID 高于 class/属性/伪类，高于元素/伪元素。</div>
+    <div class="demo-box">
+      <p id="priority" class="message warning">观察最终颜色和边框</p>
+    </div>
+    <pre><code>&lt;style&gt;
+p {
+  color: #34495e;
+}
+
+.message {
+  color: #27ae60;
+}
+
+.message.warning {
+  border-left: 4px solid #f39c12;
+}
+
+#priority {
+  color: #e74c3c;
+}
+&lt;/style&gt;
+
+&lt;p id="priority" class="message warning"&gt;观察最终颜色和边框&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>10. 课堂练习：选择器改写</h2>
+    <div class="note">打开试验场后尝试修改选择器：把后代改成子代，把 <code>:nth-child(even)</code> 改成 <code>:nth-child(odd)</code>，把属性选择器改成结尾匹配。</div>
+    <div class="demo-box">
+      <div class="practice-list">
+        <a href="guide.pdf">PDF 下载</a>
+        <a href="photo.png">图片下载</a>
+        <a href="https://example.com">外部链接</a>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.practice-list a[href$=".pdf"] {
+  color: #e74c3c;
+}
+
+.practice-list a[href$=".png"] {
+  color: #27ae60;
+}
+
+.practice-list a[href^="https"]::after {
+  content: " ↗";
+}
+&lt;/style&gt;
+
+&lt;div class="practice-list"&gt;
+  &lt;a href="guide.pdf"&gt;PDF 下载&lt;/a&gt;
+  &lt;a href="photo.png"&gt;图片下载&lt;/a&gt;
+  &lt;a href="https://example.com"&gt;外部链接&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>11. 属性选择器进阶：=、~=、*=、^=、$=</h2>
+    <div class="note">fffuel 的属性选择器示例很适合课堂演示：同样是按属性选择，匹配方式不同，命中的元素也不同。</div>
+    <div class="demo-box">
+      <div class="attr-advanced">
+        <button data-role="save primary">保存</button>
+        <button data-role="delete danger">删除</button>
+        <a href="https://example.com/doc.pdf">外部 PDF</a>
+        <a href="/assets/photo.png">本地图片</a>
+        <input placeholder="请输入邮箱" type="email">
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.attr-advanced {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* 拥有 data-role 属性 */
+.attr-advanced [data-role] {
+  border: 2px solid #d5dbdb;
+}
+
+/* data-role 的空格分隔值中包含 danger */
+.attr-advanced [data-role~="danger"] {
+  background: #e74c3c;
+}
+
+/* href 中包含 example */
+.attr-advanced a[href*="example"] {
+  color: #8e44ad;
+  font-weight: bold;
+}
+
+/* href 以 / 开头 */
+.attr-advanced a[href^="/"] {
+  color: #27ae60;
+}
+
+/* href 以 .pdf 或 .png 结尾 */
+.attr-advanced a[href$=".pdf"]::after,
+.attr-advanced a[href$=".png"]::after {
+  content: " 文件";
+  font-size: .85em;
+  color: #7f8c8d;
+}
+
+.attr-advanced input[type="email"] {
+  border-color: #3498db;
+}
+&lt;/style&gt;
+
+&lt;div class="attr-advanced"&gt;
+  &lt;button data-role="save primary"&gt;保存&lt;/button&gt;
+  &lt;button data-role="delete danger"&gt;删除&lt;/button&gt;
+  &lt;a href="https://example.com/doc.pdf"&gt;外部 PDF&lt;/a&gt;
+  &lt;a href="/assets/photo.png"&gt;本地图片&lt;/a&gt;
+  &lt;input placeholder="请输入邮箱" type="email"&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>12. 兄弟选择器与 * + * 间距模式</h2>
+    <div class="note"><code>+</code> 只选紧邻的下一个兄弟，<code>~</code> 选后续所有同级兄弟。<code>* + *</code> 常用于给容器内除第一个元素外的所有元素加间距。</div>
+    <div class="demo-box">
+      <div class="sibling-demo">
+        <div class="item first">item 1</div>
+        <div class="item">item 2</div>
+        <div class="item">item 3</div>
+        <p>段落兄弟</p>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.sibling-demo {
+  max-width: 420px;
+}
+
+.sibling-demo * + * {
+  margin-top: 10px;
+}
+
+.sibling-demo .first + .item {
+  background: #fdebd0;
+  border-color: #f39c12;
+}
+
+.sibling-demo .first ~ .item {
+  color: #1a5276;
+  font-weight: bold;
+}
+
+.sibling-demo .item {
+  padding: 10px 12px;
+  border: 1px solid #d5dbdb;
+  border-radius: 6px;
+  background: #f4f9ff;
+}
+&lt;/style&gt;
+
+&lt;div class="sibling-demo"&gt;
+  &lt;div class="item first"&gt;item 1&lt;/div&gt;
+  &lt;div class="item"&gt;item 2&lt;/div&gt;
+  &lt;div class="item"&gt;item 3&lt;/div&gt;
+  &lt;p&gt;段落兄弟&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>13. 表单伪类：checked、disabled、valid、invalid、required</h2>
+    <div class="note">表单状态伪类适合做即时反馈，不需要 JavaScript 就能表达“可用、禁用、合法、非法、必填”等状态。</div>
+    <div class="demo-box">
+      <form class="form-state-demo">
+        <label><input type="checkbox" checked> 接收通知</label>
+        <input type="email" required placeholder="必填邮箱">
+        <input type="text" disabled value="禁用字段">
+        <button type="submit">提交</button>
+      </form>
+    </div>
+    <pre><code>&lt;style&gt;
+.form-state-demo {
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+}
+
+.form-state-demo input:checked + span,
+.form-state-demo label:has(input:checked) {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.form-state-demo input:required {
+  border-left: 4px solid #3498db;
+}
+
+.form-state-demo input:valid {
+  background: #e8f8f5;
+}
+
+.form-state-demo input:invalid {
+  background: #fdecea;
+}
+
+.form-state-demo input:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+&lt;/style&gt;
+
+&lt;form class="form-state-demo"&gt;
+  &lt;label&gt;&lt;input type="checkbox" checked&gt; 接收通知&lt;/label&gt;
+  &lt;input type="email" required placeholder="必填邮箱"&gt;
+  &lt;input type="text" disabled value="禁用字段"&gt;
+  &lt;button type="submit"&gt;提交&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>14. 结构选择器：nth-child 与 nth-of-type</h2>
+    <div class="note"><code>:nth-child()</code> 看元素在所有兄弟中的位置；<code>:nth-of-type()</code> 只看同类型元素的位置。两者看似相近，命中结果可能不同。</div>
+    <div class="demo-box">
+      <div class="nth-demo">
+        <p>第 1 个 p</p>
+        <div>插入的 div</div>
+        <p>第 2 个 p</p>
+        <p>第 3 个 p</p>
+        <span>插入的 span</span>
+        <p>第 4 个 p</p>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.nth-demo &gt; * {
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin: 6px 0;
+  background: #f4f9ff;
+}
+
+/* 所有兄弟中的偶数项 */
+.nth-demo &gt; :nth-child(even) {
+  border-left: 4px solid #3498db;
+}
+
+/* p 类型中的奇数项 */
+.nth-demo p:nth-of-type(odd) {
+  color: #e67e22;
+  font-weight: bold;
+}
+
+.nth-demo p:last-of-type {
+  background: #e8f8f5;
+}
+&lt;/style&gt;
+
+&lt;div class="nth-demo"&gt;
+  &lt;p&gt;第 1 个 p&lt;/p&gt;
+  &lt;div&gt;插入的 div&lt;/div&gt;
+  &lt;p&gt;第 2 个 p&lt;/p&gt;
+  &lt;p&gt;第 3 个 p&lt;/p&gt;
+  &lt;span&gt;插入的 span&lt;/span&gt;
+  &lt;p&gt;第 4 个 p&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>15. target、not、has：现代页面状态选择</h2>
+    <div class="note"><code>:target</code> 匹配 URL hash 指向的元素；<code>:not()</code> 排除元素；<code>:has()</code> 根据内部内容选择父元素，表达力很强。</div>
+    <div class="demo-box">
+      <div class="modern-selector-demo">
+        <p><a href="#panel-a">跳转到 A</a> <a href="#panel-b">跳转到 B</a></p>
+        <section id="panel-a" class="panel">A 面板</section>
+        <section id="panel-b" class="panel warning">B 面板含 warning</section>
+        <article class="card"><h4>普通卡片</h4><p>没有按钮</p></article>
+        <article class="card"><h4>可操作卡片</h4><button>操作</button></article>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.modern-selector-demo .panel {
+  padding: 12px;
+  border-radius: 8px;
+  background: #f4f9ff;
+  margin: 8px 0;
+}
+
+.modern-selector-demo .panel:target {
+  outline: 3px solid #f1c40f;
+}
+
+.modern-selector-demo .panel:not(.warning) {
+  color: #1a5276;
+}
+
+.modern-selector-demo .card {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
+}
+
+.modern-selector-demo .card:has(button) {
+  border-color: #27ae60;
+  background: #e8f8f5;
+}
+&lt;/style&gt;
+
+&lt;div class="modern-selector-demo"&gt;
+  &lt;p&gt;&lt;a href="#panel-a"&gt;跳转到 A&lt;/a&gt; &lt;a href="#panel-b"&gt;跳转到 B&lt;/a&gt;&lt;/p&gt;
+  &lt;section id="panel-a" class="panel"&gt;A 面板&lt;/section&gt;
+  &lt;section id="panel-b" class="panel warning"&gt;B 面板含 warning&lt;/section&gt;
+  &lt;article class="card"&gt;&lt;h4&gt;普通卡片&lt;/h4&gt;&lt;p&gt;没有按钮&lt;/p&gt;&lt;/article&gt;
+  &lt;article class="card"&gt;&lt;h4&gt;可操作卡片&lt;/h4&gt;&lt;button&gt;操作&lt;/button&gt;&lt;/article&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

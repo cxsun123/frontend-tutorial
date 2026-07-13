@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03 - 图片与多媒体示例</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="index.html" class="home">首页</a>
+    <a href="01-form.html">表单</a>
+    <a href="02-table.html">表格</a>
+    <a href="03-media.html">多媒体</a>
+    <a href="04-text-formatting.html">文本格式化</a>
+    <a href="05-lists-links.html">列表与链接</a>
+    <a href="06-semantic.html">语义化</a>
+    <a href="07-global-attributes.html">全局属性</a>
+    <a href="08-events.html">事件处理</a>
+  </nav>
+
+  <h1>03 - 图片与多媒体元素</h1>
+  <p>HTML 支持图像、音频、视频等多种多媒体内容的嵌入。</p>
+
+  <!-- 1. img 图片 -->
+  <div class="section">
+    <h2>1. &lt;img&gt; 图片</h2>
+    <div class="note"><strong>src</strong> 指定图片路径，<strong>alt</strong> 提供替代文本（图片无法显示时展示），<strong>width/height</strong> 控制尺寸。</div>
+
+    <div class="demo-box">
+      <p>基本图片：</p>
+      <img src="https://via.placeholder.com/300x180/3498db/ffffff?text=HTML+Example" alt="示例图片" width="300" height="180">
+
+      <p style="margin-top:12px;">带标题的图片：</p>
+      <figure style="display:inline-block; text-align:center;">
+        <img src="https://via.placeholder.com/250x150/2ecc71/ffffff?text=Figure" alt="示例图" width="250" height="150">
+        <figcaption style="color:#7f8c8d; font-size:0.9em;">图1：这是一张带标题的图片</figcaption>
+      </figure>
+    </div>
+    <pre><code>&lt;img src="photo.jpg" alt="图片描述" width="300" height="180"&gt;
+
+&lt;!-- figure + figcaption 为图片添加标题 --&gt;
+&lt;figure&gt;
+  &lt;img src="photo.jpg" alt="描述"&gt;
+  &lt;figcaption&gt;图片标题说明&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+  </div>
+
+  <!-- 2. picture 响应式图片 -->
+  <div class="section">
+    <h2>2. &lt;picture&gt; 响应式图片</h2>
+    <div class="note"><strong>&lt;picture&gt;</strong> 可根据屏幕尺寸/格式提供不同版本的图片，<strong>&lt;source&gt;</strong> 定义不同条件的图片源。</div>
+
+    <div class="demo-box">
+      <picture>
+        <source media="(min-width: 600px)" srcset="https://via.placeholder.com/400x200/e74c3c/ffffff?text=Desktop+View">
+        <source media="(min-width: 400px)" srcset="https://via.placeholder.com/300x150/f39c12/ffffff?text=Tablet+View">
+        <img src="https://via.placeholder.com/200x100/27ae60/ffffff?text=Mobile" alt="响应式图片">
+      </picture>
+    </div>
+    <pre><code>&lt;picture&gt;
+  &lt;source media="(min-width:600px)" srcset="cover.png"&gt;
+  &lt;source media="(min-width:400px)" srcset="photo.jpg"&gt;
+  &lt;img src="photo.jpg" alt="响应式图片" width="300"&gt;
+&lt;/picture&gt;</code></pre>
+  </div>
+
+  <!-- 3. audio 音频 -->
+  <div class="section">
+    <h2>3. &lt;audio&gt; 音频</h2>
+    <div class="note"><strong>controls</strong> 显示播放控件，<strong>autoplay</strong> 自动播放，<strong>loop</strong> 循环播放，<strong>muted</strong> 静音。</div>
+
+    <div class="demo-box">
+      <audio controls muted>
+        <source src="music.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+      </audio>
+    </div>
+    <pre><code>&lt;audio controls muted loop&gt;
+  &lt;source src="music.mp3" type="audio/mpeg"&gt;
+  您的浏览器不支持音频播放。
+&lt;/audio&gt;
+
+&lt;!-- 属性说明 --&gt;
+&lt;!-- controls  显示播放控件 --&gt;
+&lt;!-- autoplay  自动播放 --&gt;
+&lt;!-- loop      循环播放 --&gt;
+&lt;!-- muted     默认静音 --&gt;</code></pre>
+  </div>
+
+  <!-- 4. video 视频 -->
+  <div class="section">
+    <h2>4. &lt;video&gt; 视频</h2>
+    <div class="note"><strong>controls</strong> 显示播放控件，<strong>poster</strong> 设置封面图，<strong>preload</strong> 预加载策略。</div>
+
+    <div class="demo-box">
+      <video controls muted width="400" poster="https://via.placeholder.com/400x225/8e44ad/ffffff?text=Video+Poster">
+        <source src="video.mp4" type="video/mp4">
+        您的浏览器不支持视频播放。
+      </video>
+    </div>
+    <pre><code>&lt;video controls muted width="400" poster="cover.png" preload="metadata"&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+  您的浏览器不支持视频播放。
+&lt;/video&gt;
+
+&lt;!-- 属性说明 --&gt;
+&lt;!-- controls  播放控件 --&gt;
+&lt;!-- poster    视频封面图 --&gt;
+&lt;!-- preload  预加载: auto|metadata|none --&gt;
+&lt;!-- width     视频宽度 --&gt;</code></pre>
+  </div>
+
+  <!-- 5. iframe 嵌入 -->
+  <div class="section">
+    <h2>5. &lt;iframe&gt; 内嵌页面</h2>
+    <div class="note"><strong>&lt;iframe&gt;</strong> 可将其他网页嵌入当前页面，<strong>src</strong> 指定嵌入地址，<strong>width/height</strong> 设置尺寸。</div>
+
+    <div class="demo-box">
+      <iframe src="about:blank" width="100%" height="150" style="border:1px solid #bdc3c7; border-radius:6px;" title="iframe 示例">
+        <p>您的浏览器不支持 iframe。</p>
+      </iframe>
+    </div>
+    <pre><code>&lt;iframe
+  src="data:text/html,%3Ch2%3Eiframe%20%E7%A4%BA%E4%BE%8B%3C%2Fh2%3E%3Cp%3E%E8%BF%99%E6%98%AF%E5%86%85%E5%B5%8C%E9%A1%B5%E9%9D%A2%E5%86%85%E5%AE%B9%E3%80%82%3C%2Fp%3E"
+  width="100%"
+  height="300"
+  title="嵌入页面"
+  loading="lazy"
+&gt;&lt;/iframe&gt;
+
+&lt;!-- 属性说明 --&gt;
+&lt;!-- src     嵌入的URL --&gt;
+&lt;!-- width   宽度 --&gt;
+&lt;!-- height  高度 --&gt;
+&lt;!-- title   可访问性标题 --&gt;
+&lt;!-- loading 懒加载 lazy/eager --&gt;</code></pre>
+  </div>
+
+  <!-- 6. embed / object -->
+  <div class="section">
+    <h2>6. &lt;embed&gt; 和 &lt;object&gt; 外部内容</h2>
+
+    <div class="demo-box">
+      <p><strong>&lt;embed&gt;</strong> 用于嵌入外部内容（如 PDF、Flash 等）：</p>
+      <embed src="about:blank" type="text/html" width="100%" height="100" style="border:1px solid #bdc3c7; border-radius:6px;">
+
+      <p style="margin-top:12px;"><strong>&lt;object&gt;</strong> 功能更强，可包含回退内容：</p>
+      <object data="about:blank" type="text/html" width="100%" height="100" style="border:1px solid #bdc3c7; border-radius:6px;">
+        <p>您的浏览器不支持此内容。</p>
+      </object>
+    </div>
+    <pre><code>&lt;embed
+  src="data:text/html,%3Ch2%3EEmbed%20%E7%A4%BA%E4%BE%8B%3C%2Fh2%3E%3Cp%3E%E8%BF%99%E6%98%AF%E5%B5%8C%E5%85%A5%E5%86%85%E5%AE%B9%E3%80%82%3C%2Fp%3E"
+  type="text/html"
+  width="100%"
+  height="180"
+&gt;
+
+&lt;object
+  data="data:text/html,%3Ch2%3EObject%20%E7%A4%BA%E4%BE%8B%3C%2Fh2%3E%3Cp%3E%E8%BF%99%E6%98%AF%E5%A4%96%E9%83%A8%E5%86%85%E5%AE%B9%E3%80%82%3C%2Fp%3E"
+  type="text/html"
+  width="100%"
+  height="180"
+&gt;
+  &lt;p&gt;不支持时显示此回退内容&lt;/p&gt;
+&lt;/object&gt;</code></pre>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>08 - CSS3增强</title><link rel="stylesheet" href="css/style.css"></head><body><nav class="nav-bar"><a class="home" href="index.html">CSS2 / CSS3 首页</a><a href="01-selectors.html">选择器</a><a href="02-box-model.html">盒模型</a><a href="03-text-color.html">文本颜色</a><a href="04-layout.html">布局定位</a><a href="05-flex-grid.html">Flex </a><a href="06-responsive.html">响应式</a><a href="07-effects.html">过渡动画</a><a href="08-css3.html">CSS3增强</a></nav><h1>08 - CSS3增强</h1><p>变量、阴影、滤镜和现代伪类。</p><div class="section"><h2>1. 核心概念</h2><div class="note">本节示例展示本章最常见用法。</div><div class="demo-box"><div class="sample-7">CSS 示例 8</div></div><pre><code>&lt;style&gt;
+.sample-7 { padding: 24px; border-radius: 10px; background: #eaf2f8; color: #1a5276; font-weight: bold; }
+&lt;/style&gt;
+
+&lt;div class="sample-7"&gt;CSS 示例 8&lt;/div&gt;</code></pre></div><div class="section"><h2>2. 组合应用</h2><div class="note">把属性组合起来形成真实页面效果。</div><div class="demo-box"><div class="panel-7"><h3>标题</h3><p>这是一段用于观察样式变化的文本。</p></div></div><pre><code>&lt;style&gt;
+.panel-7 { max-width: 520px; padding: 22px; border: 1px solid #d5dbdb; border-radius: 12px; background: white; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+.panel-7 h3 { color: #2980b9; margin-bottom: 8px; }
+.panel-7 p { color: #5d6d7e; }
+&lt;/style&gt;
+
+&lt;div class="panel-7"&gt;&lt;h3&gt;标题&lt;/h3&gt;&lt;p&gt;这是一段用于观察样式变化的文本。&lt;/p&gt;&lt;/div&gt;</code></pre></div><div class="section"><h2>3. 练习片段</h2><div class="note">打开试验场后可以直接修改数值观察结果。</div><div class="demo-box"><button class="try-7">悬停观察</button></div><pre><code>&lt;style&gt;
+.try-7 { background: #3498db; color: white; transition: transform .2s, background .2s; }
+.try-7:hover { background: #2ecc71; transform: translateY(-3px); }
+&lt;/style&gt;
+
+&lt;button class="try-7"&gt;悬停观察&lt;/button&gt;</code></pre></div><script src="js/example-playground.js"></script></body></html>

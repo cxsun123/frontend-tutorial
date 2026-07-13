@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML 试验场</title>
+  <style>
+    /* Reset any inherited styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { padding: 0; background: #f5f5f5; overflow: hidden; height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    textarea { background: transparent !important; background-color: rgba(0,0,0,0) !important; -webkit-appearance: none !important; appearance: none !important; }
+
+    .pg-header {
+      background: #f5f5f5;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid #e0e0e0;
+      flex-shrink: 0;
+    }
+    .pg-header .title { color: #3498db; font-size: 1.15em; font-weight: bold; }
+    .pg-header a { color: #666; text-decoration: none; font-size: 0.9em; }
+    .pg-header a:hover { color: #3498db; }
+
+    .pg-toolbar {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+      align-items: center;
+    }
+    .pg-btn {
+      padding: 6px 16px;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.88em;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .pg-btn-run { background: #27ae60; color: #fff; }
+    .pg-btn-run:hover { background: #2ecc71; }
+    .pg-btn-copy { background: #34495e; color: #ecf0f1; }
+    .pg-btn-copy:hover { background: #4a6a8a; }
+    .pg-btn-format { background: #8e44ad; color: #fff; }
+    .pg-btn-format:hover { background: #9b59b6; }
+    .pg-btn-reset { background: #95a5a6; color: #fff; }
+    .pg-btn-reset:hover { background: #bdc3c7; }
+    .pg-sync-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 29px;
+      padding: 0 10px;
+      margin-right: 6px;
+      border: 1px solid #3a3a3d;
+      border-radius: 6px;
+      background: #202124;
+      color: #c8c8c8;
+      font-size: 0.82em;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+    }
+    .pg-sync-toggle:hover {
+      border-color: #4f6f88;
+      color: #fff;
+      background: #252a2e;
+    }
+    .pg-sync-toggle input {
+      width: 14px;
+      height: 14px;
+      accent-color: #2f9fd7;
+      cursor: pointer;
+    }
+    .pg-sync-toggle:has(input:checked) {
+      border-color: rgba(47, 159, 215, 0.75);
+      background: rgba(47, 159, 215, 0.13);
+      color: #eaf7ff;
+    }
+
+    .pg-container {
+      display: flex;
+      height: calc(100vh - 45px);
+    }
+
+    /* Left: Editor */
+    .pg-editor {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      border-right: 2px solid #333;
+      background: #1e1e1e;
+    }
+    .pg-editor-header {
+      background: #252526;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #333;
+      flex-shrink: 0;
+    }
+    .pg-editor-header span { color: #858585; font-size: 0.85em; }
+    .pg-editor-title {
+      color: #dfe1e5;
+      font-size: 0.85em;
+      flex-shrink: 0;
+    }
+    .pg-view-tabs {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px;
+      margin-left: 4px;
+      background: #1b1b1c;
+      border: 1px solid #333;
+      border-radius: 6px;
+    }
+    .pg-view-tab {
+      padding: 4px 12px;
+      border: none;
+      border-radius: 4px;
+      background: transparent;
+      color: #dfe1e5;
+      font-family: inherit;
+      font-size: 0.78em;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .pg-view-tab:hover { color: #d4d4d4; background: #2a2d2e; }
+    .pg-view-tab.active {
+      background: #37373d;
+      color: #fff;
+      box-shadow: inset 0 0 0 1px #4a4a4f;
+    }
+
+    .pg-editor-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #1e1e1e;
+    }
+
+    /* Shared font metrics — both elements MUST match exactly */
+    .pg-code-display, .pg-code-input {
+      position: absolute !important;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      font-family: ui-monospace, "SF Mono", "SF Mono Text", Menlo, Consolas, "Liberation Mono", monospace !important;
+      font-size: 14px !important;
+      font-weight: normal !important;
+      font-style: normal !important;
+      line-height: 22px !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: auto !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      text-size-adjust: none !important;
+      -webkit-text-size-adjust: none !important;
+      padding: 12px 16px 12px 56px !important;
+      margin: 0 !important;
+      border: none !important;
+      outline: none !important;
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      overflow: auto !important;
+      box-sizing: border-box !important;
+      -moz-box-sizing: border-box !important;
+      -webkit-box-sizing: border-box !important;
+      tab-size: 4 !important;
+      -moz-tab-size: 4 !important;
+    }
+
+    .pg-code-display {
+      background: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      z-index: 1;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .pg-code-input {
+      background: transparent !important;
+      background-color: rgba(0,0,0,0) !important;
+      color: transparent !important;
+      -webkit-text-fill-color: transparent !important;
+      caret-color: #aeafad;
+      z-index: 2;
+      resize: none !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+    }
+    .pg-code-input::-webkit-scrollbar { background: transparent; }
+    .pg-code-input::selection { background: #264f78 !important; color: #fff !important; -webkit-text-fill-color: #fff !important; }
+    .pg-code-input::-moz-selection { background: #264f78 !important; color: #fff !important; }
+
+    .pg-tree-view {
+      position: absolute;
+      inset: 0;
+      display: none;
+      overflow: auto;
+      padding: 10px 14px;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      font-family: ui-monospace, "SF Mono", "SF Mono Text", Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      line-height: 20px;
+      tab-size: 4;
+    }
+    .pg-editor-wrap.tree-mode .pg-code-display,
+    .pg-editor-wrap.tree-mode .pg-code-input,
+    .pg-editor-wrap.tree-mode .pg-line-numbers {
+      display: none;
+    }
+    .pg-editor-wrap.tree-mode .pg-tree-view { display: block; }
+    .tree-node {
+      position: relative;
+      white-space: nowrap;
+    }
+    .tree-row {
+      min-height: 20px;
+      border-radius: 3px;
+      padding-left: calc(var(--depth, 0) * 20px);
+    }
+    .tree-row:hover { background: #2a2d2e; }
+    .tree-children {
+      position: relative;
+    }
+    .tree-children::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(var(--depth, 0) * 20px + 17px);
+      width: 1px;
+      background: rgba(145, 145, 145, 0.42);
+      pointer-events: none;
+    }
+    .tree-children:hover::before {
+      background: rgba(180, 180, 180, 0.72);
+    }
+    .tree-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 20px;
+      margin-right: 1px;
+      color: #dfe1e5;
+      cursor: pointer;
+      vertical-align: top;
+      user-select: none;
+      transition: color 0.12s ease, transform 0.12s ease;
+    }
+    .tree-toggle::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 6px solid currentColor;
+    }
+    .tree-row:hover .tree-toggle { color: #ffffff; }
+    .tree-toggle.empty { cursor: default; color: transparent; }
+    .tree-toggle.empty::before { content: none; }
+    .tree-node.collapsed > .tree-children { display: none; }
+    .tree-node.collapsed > .tree-row .tree-toggle { transform: rotate(-90deg); }
+    .tree-node.collapsed > .tree-row .tree-collapsed-close { display: inline; }
+    .tree-collapsed-close { display: none; }
+    .tree-bracket { color: #808080; }
+    .tree-tag { color: #569cd6; }
+    .tree-attr { color: #9cdcfe; }
+    .tree-eq { color: #d4d4d4; }
+    .tree-str { color: #ce9178; }
+    .tree-text { color: #d4d4d4; }
+    .tree-comment { color: #6a9955; font-style: italic; }
+    .tree-doctype { color: #c586c0; }
+    .tree-muted { color: #858585; }
+    .tree-error {
+      color: #f48771;
+      padding: 10px 12px;
+      border: 1px solid #5a1d1d;
+      border-radius: 6px;
+      background: rgba(244, 135, 113, 0.08);
+    }
+
+    /* Syntax highlighting — dark theme, high contrast */
+    #codeDisplay { color: #e0e0e0 !important; }
+    #codeDisplay .tag { color: #569cd6 !important; }
+    #codeDisplay .attr { color: #9cdcfe !important; }
+    #codeDisplay .str { color: #ce9178 !important; }
+    #codeDisplay .cmt { color: #6a9955 !important; font-style: italic; }
+    #codeDisplay .kw { color: #c586c0 !important; }
+    #codeDisplay .num { color: #b5cea8 !important; }
+    #codeDisplay .punc { color: #e0e0e0 !important; }
+    #codeDisplay .css-sel { color: #d7ba7d !important; }
+    #codeDisplay .css-prop { color: #9cdcfe !important; }
+    #codeDisplay .css-val { color: #ce9178 !important; }
+    #codeDisplay .css-num { color: #b5cea8 !important; }
+    #codeDisplay .css-at { color: #c586c0 !important; }
+    #codeDisplay .css-kw { color: #569cd6 !important; }
+
+    /* Right: Preview */
+    .pg-preview {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+    .pg-preview-header {
+      background: #1a1a2e;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #333;
+      flex-shrink: 0;
+    }
+    .pg-preview-header span { color: #95a5a6; font-size: 0.85em; }
+
+    .pg-preview iframe {
+      flex: 1;
+      border: none;
+      background: #fff;
+      width: 100%;
+    }
+
+    /* Resize handle */
+    .pg-resize {
+      width: 5px;
+      cursor: col-resize;
+      background: #0f3460;
+      flex-shrink: 0;
+    }
+    .pg-resize:hover { background: #3498db; }
+
+    /* Status bar */
+    .pg-status {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: #007acc;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 0.78em;
+      color: #fff;
+      z-index: 100;
+    }
+    .pg-status .right { margin-left: auto; }
+
+    /* Toast notification */
+    .pg-toast {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      background: #27ae60;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    .pg-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Line numbers */
+    .pg-line-numbers {
+      position: absolute;
+      top: 0; left: 0;
+      width: 48px;
+      padding: 16px 8px 16px 0;
+      text-align: right;
+      color: #555;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    /* Empty state */
+    .pg-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #999;
+      font-size: 1.1em;
+      text-align: center;
+      padding: 40px;
+    }
+    .pg-empty p { margin: 6px 0; color: #666; }
+  </style>
+</head>
+<body>
+
+<div class="pg-header">
+  <span class="title">HTML 试验场</span>
+  <a href="index.html">← 返回首页</a>
+</div>
+
+<div class="pg-container">
+  <!-- Left: Code Editor -->
+  <div class="pg-editor" id="pgEditor">
+    <div class="pg-editor-header">
+      <span class="pg-editor-title">📝 HTML 源代码</span>
+      <div class="pg-view-tabs" role="tablist" aria-label="源码视图">
+        <button class="pg-view-tab active" id="textTab" role="tab" aria-selected="true" aria-controls="textView" onclick="switchEditorView('text')">text</button>
+        <button class="pg-view-tab" id="treeTab" role="tab" aria-selected="false" aria-controls="treeView" onclick="switchEditorView('tree')">tree</button>
+      </div>
+      <span id="lineInfo">行 1, 列 1</span>
+      <div class="pg-toolbar">
+        <label class="pg-sync-toggle" title="开启后，源码和预览选区会互相关联">
+          <input type="checkbox" id="linkSelectionToggle" checked>
+          <span>关联选中</span>
+        </label>
+        <button class="pg-btn pg-btn-run" onclick="runCode()" title="运行代码 (Ctrl+Enter)">▶ 运行</button>
+        <button class="pg-btn pg-btn-copy" onclick="copyCode()" title="复制源代码">📋 复制</button>
+        <button class="pg-btn pg-btn-format" onclick="formatCode()" title="格式化代码 (4空格缩进)">✦ 格式化</button>
+        <button class="pg-btn pg-btn-reset" onclick="resetCode()" title="重置为原始代码">↺ 重置</button>
+      </div>
+    </div>
+    <div class="pg-editor-wrap" id="textView">
+      <div class="pg-line-numbers" id="lineNumbers">1</div>
+      <pre class="pg-code-display" id="codeDisplay"></pre>
+      <textarea class="pg-code-input" id="codeEditor"
+        spellcheck="false"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"></textarea>
+      <div class="pg-tree-view" id="treeView" role="tree" aria-label="HTML 树形源码"></div>
+    </div>
+  </div>
+
+  <!-- Resize handle -->
+  <div class="pg-resize" id="pgResize"></div>
+
+  <!-- Right: Preview -->
+  <div class="pg-preview">
+    <div class="pg-preview-header">
+      <span>🖥 运行结果</span>
+      <span id="previewSize"></span>
+    </div>
+    <iframe id="previewFrame" sandbox="allow-scripts allow-modals allow-same-origin allow-popups"></iframe>
+  </div>
+</div>
+
+<div class="pg-status">
+  <span id="statusText">就绪</span>
+  <span class="right">Ctrl+Enter 运行 | Tab 插入 | Ctrl+C 复制</span>
+</div>
+
+<div class="pg-toast" id="toast"></div>
+
+<script>
+(function() {
+  var editor = document.getElementById('codeEditor');
+  var display = document.getElementById('codeDisplay');
+  var lineNumbers = document.getElementById('lineNumbers');
+  var editorWrap = document.querySelector('.pg-editor-wrap');
+  var treeView = document.getElementById('treeView');
+  var textTab = document.getElementById('textTab');
+  var treeTab = document.getElementById('treeTab');
+  var linkSelectionToggle = document.getElementById('linkSelectionToggle');
+  var preview = document.getElementById('previewFrame');
+  var lineInfo = document.getElementById('lineInfo');
+  var statusText = document.getElementById('statusText');
+  var originalCode = '';
+  var activeView = 'text';
+  var sourceElementRanges = [];
+  var activeSourceElementId = null;
+  var suppressEditorSelectionSync = false;
+  var selectionSyncTimer = 0;
+  var previewScriptNonce = 'pg_' + Math.random().toString(36).slice(2);
+  var isSelectionSyncEnabled = !!(linkSelectionToggle && linkSelectionToggle.checked);
+
+  var defaultCode = [
+    '<!DOCTYPE html>',
+    '<html lang="zh-CN">',
+    '<head>',
+    '  <meta charset="UTF-8">',
+    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+    '  <title>我的页面</title>',
+    '  <style>',
+    '    body {',
+    '      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;',
+    '      max-width: 800px;',
+    '      margin: 0 auto;',
+    '      padding: 40px 20px;',
+    '      color: #333;',
+    '      line-height: 1.7;',
+    '    }',
+    '    h1 { color: #3498db; }',
+    '    h2 { color: #2c3e50; }',
+    '    a { color: #3498db; text-decoration: none; }',
+    '    a:hover { text-decoration: underline; }',
+    '    table { border-collapse: collapse; width: 100%; }',
+    '    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }',
+    '    th { background: #3498db; color: #fff; }',
+    '  </style>',
+    '</head>',
+    '<body>',
+    '  <h1>Hello, HTML!</h1>',
+    '  <p>在左侧编辑代码，点击 <strong>"运行代码"</strong> 查看效果。</p>',
+    '</body>',
+    '</html>'
+  ].join('\n');
+
+  function loadCode() {
+    var params = new URLSearchParams(window.location.search);
+    var html = params.get('code') || params.get('html');
+    if (html) { try { html = decodeURIComponent(html); } catch(e) {} }
+    if (!html) { try { html = localStorage.getItem('playground_code'); } catch(e) {} }
+    if (!html) { html = defaultCode; }
+    originalCode = html;
+    editor.value = html;
+    updateDisplay();
+    runCode();
+    statusText.textContent = '已加载代码 (' + html.length + ' 字符)';
+  }
+
+  // ── Highlighting (single-pass, no self-referencing) ──
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function highlight(code) {
+    var out = '';
+    var i = 0, len = code.length;
+    function esc(ch) {
+      return ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
+    }
+    while (i < len) {
+      if (code.substring(i, i + 4) === '<!--') {
+        var end = code.indexOf('-->', i + 4);
+        if (end === -1) end = len - 3;
+        var cmt = code.substring(i, end + 3);
+        out += '<span class="cmt">' + escapeHtml(cmt) + '</span>';
+        i = end + 3; continue;
+      }
+      if (code[i] === '<' && code[i+1] !== '/' && /[a-zA-Z!]/.test(code[i+1] || '')) {
+        var tagEnd = findTagEnd(code, i);
+        if (tagEnd === -1) {
+          out += '&lt;';
+          i++;
+          continue;
+        }
+        var tagStr = code.substring(i, tagEnd);
+        var tn = (tagStr.match(/^<([\w-]+)/) || [])[1] || '';
+        out += highlightTag(tagStr);
+        i = tagEnd;
+        if (tn.toLowerCase() === 'style') {
+          var ci = code.indexOf('</style', i);
+          if (ci === -1) ci = code.indexOf('</Style', i);
+          if (ci === -1) ci = len;
+          out += highlightCSS(code.substring(i, ci));
+          i = ci;
+        }
+        continue;
+      }
+      if (code[i] === '<' && code[i+1] === '/') {
+        var te2 = findTagEnd(code, i);
+        if (te2 === -1) {
+          out += '&lt;';
+          i++;
+          continue;
+        }
+        out += highlightTag(code.substring(i, te2));
+        i = te2; continue;
+      }
+      out += esc(code[i]); i++;
+    }
+    return out;
+  }
+
+  function findTagEnd(code, start) {
+    var i = start + 1, inQ = false, qc = '';
+    while (i < code.length) {
+      var ch = code[i];
+      if (inQ) { if (ch === '\\') { i += 2; continue; } if (ch === qc) inQ = false; }
+      else {
+        if (ch === '\n' || ch === '\r') return -1;
+        if (ch === '"' || ch === "'") { inQ = true; qc = ch; }
+        else if (ch === '>') return i + 1;
+      }
+      i++;
+    }
+    return -1;
+  }
+
+  function highlightTag(tag) {
+    var isClose = tag[1] === '/';
+    var isSC = tag[tag.length - 2] === '/';
+    var inner = tag.substring(isClose ? 2 : 1, isSC ? tag.length - 2 : tag.length - 1);
+    var r = isClose ? '&lt;/' : '&lt;';
+    var m = inner.match(/^([\w-]+)([\s\S]*)$/);
+    if (!m) return escapeHtml(tag);
+    r += '<span class="tag">' + m[1] + '</span>';
+    var rest = m[2];
+    rest = rest.replace(/(\s+)([\w-]+)\s*=\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, function(a,sp,n,v){
+      return sp+'<span class="attr">'+n+'</span>=<span class="str">'+escapeHtml(v)+'</span>';
+    });
+    rest = rest.replace(/\s+([\w-]+)(?=\s|$)/g, function(a,n){ return ' <span class="attr">'+n+'</span>'; });
+    r += rest + (isSC ? '/&gt;' : '&gt;');
+    return r;
+  }
+
+  function highlightCSS(css) {
+    var out = '', i = 0, len = css.length;
+    function esc(ch) { return ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch; }
+    while (i < len) {
+      if (css.substring(i,i+2)==='/*'){var e=css.indexOf('*/',i+2);if(e===-1)e=len-2;out+='<span class="cmt">'+escapeHtml(css.substring(i,e+2))+'</span>';i=e+2;continue;}
+      if (css[i]==='"'||css[i]==="'"){var q=css[i],j=i+1;while(j<len&&css[j]!==q){if(css[j]==='\\')j++;j++;}out+='<span class="str">'+escapeHtml(css.substring(i,j+1))+'</span>';i=j+1;continue;}
+      if (css[i]==='@'){var am=css.substring(i).match(/^@[\w-]+/);if(am){out+='<span class="css-at">'+am[0]+'</span>';i+=am[0].length;continue;}}
+      if (css[i]==='{'){out+='{';i++;continue;}
+      if (css[i]==='}'){out+='}';i++;continue;}
+      if (css[i]===':'){out+=':';i++;continue;}
+      if (css[i]===';'){out+=';';i++;continue;}
+      if (/[0-9]/.test(css[i])||(css[i]==='-'&&/[0-9]/.test(css[i+1]||''))){var nm=css.substring(i).match(/^-?[0-9]*\.?[0-9]+(%|px|em|rem|vh|vw|vmin|vmax|ch|ex|cm|mm|in|pt|pc|s|ms|deg|rad|turn|grad|fr)?/);if(nm){out+='<span class="css-num">'+nm[0]+'</span>';i+=nm[0].length;continue;}}
+      if (/[a-zA-Z_-]/.test(css[i])){var id=css.substring(i).match(/^[a-zA-Z_-][\w-]*/);if(id){var af=css.substring(i+id[0].length).match(/^\s*/)[0];var nx=css[i+id[0].length+af.length]||'';var ob=0;for(var k=0;k<i;k++){if(css[k]==='{')ob++;if(css[k]==='}')ob--;}if(ob>0){out+=nx===':'?'<span class="css-prop">'+id[0]+'</span>':'<span class="css-val">'+id[0]+'</span>';}else{out+='<span class="css-sel">'+id[0]+'</span>';}i+=id[0].length;continue;}}
+      if (css[i]==='#'){var hx=css.substring(i).match(/^#[0-9a-fA-F]{3,8}/);if(hx){out+='<span class="css-num">'+hx[0]+'</span>';i+=hx[0].length;continue;}}
+      out+=esc(css[i]);i++;
+    }
+    return out;
+  }
+
+  function updateDisplay() {
+    var code = editor.value;
+    var highlighted = highlight(code);
+    // Trailing space: forces pre to render the final empty line
+    if (code.charAt(code.length - 1) === '\n' || code === '') {
+      highlighted += ' ';
+    }
+    display.innerHTML = highlighted;
+    updateLineNumbers(code);
+    if (activeView === 'tree') updateTree();
+  }
+
+  function escapeJsString(text) {
+    return String(text)
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/\r/g, '\\r')
+      .replace(/\n/g, '\\n')
+      .replace(/<\/script/gi, '<\\/script');
+  }
+
+  function buildPreviewDocument(code) {
+    var instrumented = instrumentHtmlForPreview(code);
+    sourceElementRanges = instrumented.ranges;
+    return injectPreviewSelectionBridge(instrumented.html);
+  }
+
+  function instrumentHtmlForPreview(code) {
+    var voidTags = toSet('area,base,br,col,embed,hr,img,input,link,meta,param,source,track,wbr');
+    var rawTags = toSet('script,style,textarea,title');
+    var ranges = [];
+    var stack = [];
+    var out = [];
+    var last = 0;
+    var i = 0;
+    var id = 1;
+
+    function appendUntil(pos) {
+      if (pos > last) out.push(code.slice(last, pos));
+      last = pos;
+    }
+
+    while (i < code.length) {
+      if (code.substring(i, i + 4) === '<!--') {
+        var commentEnd = code.indexOf('-->', i + 4);
+        i = commentEnd === -1 ? code.length : commentEnd + 3;
+        continue;
+      }
+
+      if (code[i] !== '<' || !/[!\/a-zA-Z]/.test(code[i + 1] || '')) {
+        i++;
+        continue;
+      }
+
+      var tagEnd = findFormatTagEnd(code, i);
+      if (tagEnd === -1) {
+        i++;
+        continue;
+      }
+
+      var tag = code.slice(i, tagEnd);
+      if (/^<!/i.test(tag) && !/^<!doctype/i.test(tag)) {
+        i = tagEnd;
+        continue;
+      }
+
+      var closeMatch = tag.match(/^<\/\s*([\w-]+)/);
+      if (closeMatch) {
+        var closeName = closeMatch[1].toLowerCase();
+        for (var s = stack.length - 1; s >= 0; s--) {
+          if (stack[s].tagName === closeName) {
+            stack[s].end = tagEnd;
+            stack.length = s;
+            break;
+          }
+        }
+        i = tagEnd;
+        continue;
+      }
+
+      var openMatch = tag.match(/^<\s*([\w-]+)/);
+      if (!openMatch) {
+        i = tagEnd;
+        continue;
+      }
+
+      var name = openMatch[1].toLowerCase();
+      var selfClosing = /\/\s*>$/.test(tag);
+      var range = {
+        id: String(id++),
+        tagName: name,
+        start: i,
+        openEnd: tagEnd,
+        end: tagEnd
+      };
+      ranges.push(range);
+
+      var insertAt = tagEnd - 1;
+      var slashClose = tag.match(/\/\s*>$/);
+      if (slashClose) insertAt = i + slashClose.index;
+      appendUntil(insertAt);
+      out.push(' data-pg-source-id="' + range.id + '"');
+      last = insertAt;
+
+      if (!selfClosing && !voidTags[name]) {
+        stack.push(range);
+        if (rawTags[name]) {
+          var rawCloseRe = new RegExp('</\\s*' + name + '\\s*>', 'i');
+          var rawRest = code.slice(tagEnd);
+          var rawCloseAt = rawRest.search(rawCloseRe);
+          if (rawCloseAt !== -1) {
+            var rawCloseText = rawRest.match(rawCloseRe)[0];
+            range.end = tagEnd + rawCloseAt + rawCloseText.length;
+            stack.pop();
+            i = range.end;
+            continue;
+          }
+        }
+      }
+
+      i = tagEnd;
+    }
+
+    while (stack.length) stack.pop().end = code.length;
+    appendUntil(code.length);
+    return { html: out.join(''), ranges: ranges };
+  }
+
+  function injectPreviewSelectionBridge(html) {
+    var bridge = [
+      '<style id="pg-preview-selection-style">',
+      '@keyframes pgSourceGlow{0%{box-shadow:0 0 0 2px rgba(47,159,215,.22),0 0 0 8px rgba(47,159,215,.12)}100%{box-shadow:0 0 0 2px rgba(47,159,215,.34),0 10px 26px rgba(15,23,42,.16)}}',
+      '[data-pg-source-id].pg-source-selected{outline:2px solid rgba(47,159,215,.95)!important;outline-offset:4px!important;background-color:rgba(47,159,215,.08)!important;border-radius:6px!important;transition:outline-color .16s ease,box-shadow .16s ease,background-color .16s ease!important;animation:pgSourceGlow .7s ease-out 1 alternate!important;}',
+      '</style>',
+      '<script>',
+      '(function(){',
+      'var token=\'' + escapeJsString(previewScriptNonce) + '\';',
+      'var active=null;',
+      'var enabled=' + (isSelectionSyncEnabled ? 'true' : 'false') + ';',
+      'function closestSource(node){',
+      'if(!node)return null;',
+      'if(node.nodeType===3)node=node.parentElement;',
+      'if(node&&node.closest)return node.closest("[data-pg-source-id]");',
+      'return null;',
+      '}',
+      'function mark(id,scroll){',
+      'if(active)active.classList.remove("pg-source-selected");',
+      'active=id?document.querySelector("[data-pg-source-id=\\"" + id + "\\"]"):null;',
+      'if(active){active.classList.add("pg-source-selected");if(scroll)active.scrollIntoView({block:"nearest",inline:"nearest"});}',
+      '}',
+      'function notify(){',
+      'if(!enabled)return;',
+      'var sel=window.getSelection&&window.getSelection();',
+      'if(!sel||sel.rangeCount===0||sel.isCollapsed)return;',
+      'var range=sel.getRangeAt(0);',
+      'var el=closestSource(range.commonAncestorContainer)||closestSource(sel.anchorNode)||closestSource(sel.focusNode);',
+      'if(el){mark(el.getAttribute("data-pg-source-id"),false);parent.postMessage({type:"pg-preview-selection",token:token,id:el.getAttribute("data-pg-source-id")},"*");}',
+      '}',
+      'document.addEventListener("selectionchange",function(){setTimeout(notify,0);});',
+      'document.addEventListener("mouseup",notify);',
+      'document.addEventListener("keyup",notify);',
+      'window.addEventListener("message",function(e){',
+      'var d=e.data||{};if(d.token!==token)return;',
+      'if(d.type==="pg-set-selection-sync"){enabled=!!d.enabled;if(!enabled)mark(null,false);return;}',
+      'if(d.type!=="pg-highlight-preview-source"||!enabled)return;',
+      'mark(d.id,true);',
+      '});',
+      '})();',
+      '<\/script>'
+    ].join('');
+
+    if (/<\/body\s*>/i.test(html)) return html.replace(/<\/body\s*>/i, bridge + '</body>');
+    return html + bridge;
+  }
+
+  function findSourceElementAtSelection(start, end) {
+    if (!sourceElementRanges.length) return null;
+    if (start > end) {
+      var tmp = start;
+      start = end;
+      end = tmp;
+    }
+    var point = start;
+    var hasSelection = end > start;
+    var best = null;
+    for (var i = 0; i < sourceElementRanges.length; i++) {
+      var item = sourceElementRanges[i];
+      var contains = hasSelection
+        ? item.start <= start && item.end >= end
+        : item.start <= point && item.end >= point;
+      if (!contains) continue;
+      if (!best || (item.end - item.start) < (best.end - best.start)) best = item;
+    }
+    return best;
+  }
+
+  function syncPreviewFromEditor() {
+    if (!isSelectionSyncEnabled || suppressEditorSelectionSync) return;
+    clearTimeout(selectionSyncTimer);
+    selectionSyncTimer = setTimeout(function() {
+      if (!isSelectionSyncEnabled) return;
+      var range = findSourceElementAtSelection(editor.selectionStart, editor.selectionEnd);
+      if (!range || range.id === activeSourceElementId) return;
+      activeSourceElementId = range.id;
+      if (preview.contentWindow) {
+        preview.contentWindow.postMessage({
+          type: 'pg-highlight-preview-source',
+          token: previewScriptNonce,
+          id: range.id
+        }, '*');
+      }
+    }, 80);
+  }
+
+  function selectEditorSourceElement(id) {
+    if (!isSelectionSyncEnabled) return;
+    var range = null;
+    for (var i = 0; i < sourceElementRanges.length; i++) {
+      if (sourceElementRanges[i].id === id) {
+        range = sourceElementRanges[i];
+        break;
+      }
+    }
+    if (!range) return;
+    activeSourceElementId = id;
+    if (activeView !== 'text') window.switchEditorView('text');
+    suppressEditorSelectionSync = true;
+    editor.focus();
+    editor.setSelectionRange(range.start, range.end);
+    revealEditorRange(range.start);
+    updateCursorInfo();
+    statusText.textContent = '已同步选中 <' + range.tagName + '> 元素';
+    setTimeout(function() { suppressEditorSelectionSync = false; }, 120);
+  }
+
+  function revealEditorRange(pos) {
+    var textBefore = editor.value.slice(0, pos);
+    var line = textBefore.split('\n').length - 1;
+    var lineHeight = 22;
+    var targetTop = Math.max(0, line * lineHeight - editor.clientHeight / 3);
+    editor.scrollTop = targetTop;
+    display.scrollTop = editor.scrollTop;
+    lineNumbers.style.transform = 'translateY(-' + editor.scrollTop + 'px)';
+  }
+
+  function setSelectionSyncEnabled(enabled) {
+    isSelectionSyncEnabled = !!enabled;
+    activeSourceElementId = null;
+    clearTimeout(selectionSyncTimer);
+    if (preview.contentWindow) {
+      preview.contentWindow.postMessage({
+        type: 'pg-set-selection-sync',
+        token: previewScriptNonce,
+        enabled: isSelectionSyncEnabled
+      }, '*');
+    }
+    if (isSelectionSyncEnabled) {
+      statusText.textContent = '关联选中已开启';
+      syncPreviewFromEditor();
+    } else {
+      statusText.textContent = '关联选中已关闭';
+    }
+  }
+
+  function updateTree() {
+    try {
+      treeView.innerHTML = renderHtmlTree(editor.value);
+    } catch (err) {
+      treeView.innerHTML = '<div class="tree-error">无法解析 HTML: ' + escapeHtml(err.message) + '</div>';
+    }
+  }
+
+  function renderHtmlTree(code) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(code, 'text/html');
+    var out = '';
+    if (doc.doctype) {
+      out += '<div class="tree-node"><div class="tree-row" style="--depth:0"><span class="tree-toggle empty"></span><span class="tree-bracket">&lt;!</span><span class="tree-doctype">DOCTYPE</span> <span class="tree-text">' + escapeHtml(doc.doctype.name || 'html') + '</span><span class="tree-bracket">&gt;</span></div></div>';
+    }
+    out += renderTreeNode(doc.documentElement, 0);
+    return out || '<div class="tree-muted">没有可显示的 HTML 节点</div>';
+  }
+
+  function renderTreeNode(node, depth) {
+    if (!node) return '';
+    if (node.nodeType === Node.ELEMENT_NODE) return renderElementNode(node, depth);
+    if (node.nodeType === Node.TEXT_NODE) return renderTextNode(node, depth);
+    if (node.nodeType === Node.COMMENT_NODE) return renderCommentNode(node, depth);
+    return '';
+  }
+
+  function renderElementNode(node, depth) {
+    var children = Array.prototype.filter.call(node.childNodes, function(child) {
+      return child.nodeType !== Node.TEXT_NODE || child.nodeValue.trim() !== '';
+    });
+    var hasChildren = children.length > 0;
+    var tagName = node.tagName.toLowerCase();
+    var isInitiallyCollapsed = tagName === 'head';
+    var attrs = Array.prototype.map.call(node.attributes, function(attr) {
+      return ' <span class="tree-attr">' + escapeHtml(attr.name) + '</span><span class="tree-eq">=</span><span class="tree-str">"' + escapeHtml(attr.value) + '"</span>';
+    }).join('');
+    var toggleClass = hasChildren ? 'tree-toggle' : 'tree-toggle empty';
+    var html = '<div class="tree-node' + (isInitiallyCollapsed ? ' collapsed' : '') + '">';
+    html += '<div class="tree-row" style="--depth:' + depth + '"><span class="' + toggleClass + '"></span><span class="tree-bracket">&lt;</span><span class="tree-tag">' + escapeHtml(tagName) + '</span>' + attrs + '<span class="tree-bracket">&gt;</span>';
+    if (hasChildren) {
+      html += '<span class="tree-collapsed-close"><span class="tree-muted">...</span><span class="tree-bracket">&lt;/</span><span class="tree-tag">' + escapeHtml(tagName) + '</span><span class="tree-bracket">&gt;</span></span>';
+    }
+    html += '</div>';
+    if (hasChildren) {
+      html += '<div class="tree-children" style="--depth:' + depth + '">';
+      for (var i = 0; i < children.length; i++) html += renderTreeNode(children[i], depth + 1);
+      html += '<div class="tree-row tree-muted" style="--depth:' + depth + '"><span class="tree-toggle empty"></span><span class="tree-bracket">&lt;/</span><span class="tree-tag">' + escapeHtml(tagName) + '</span><span class="tree-bracket">&gt;</span></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function renderTextNode(node, depth) {
+    var text = node.nodeValue.replace(/\s+/g, ' ').trim();
+    if (!text) return '';
+    return '<div class="tree-node"><div class="tree-row" style="--depth:' + depth + '"><span class="tree-toggle empty"></span><span class="tree-text">"' + escapeHtml(text) + '"</span></div></div>';
+  }
+
+  function renderCommentNode(node, depth) {
+    return '<div class="tree-node"><div class="tree-row" style="--depth:' + depth + '"><span class="tree-toggle empty"></span><span class="tree-comment">&lt;!-- ' + escapeHtml(node.nodeValue.trim()) + ' --&gt;</span></div></div>';
+  }
+
+  window.switchEditorView = function(view) {
+    activeView = view === 'tree' ? 'tree' : 'text';
+    editorWrap.classList.toggle('tree-mode', activeView === 'tree');
+    textTab.classList.toggle('active', activeView === 'text');
+    treeTab.classList.toggle('active', activeView === 'tree');
+    textTab.setAttribute('aria-selected', activeView === 'text' ? 'true' : 'false');
+    treeTab.setAttribute('aria-selected', activeView === 'tree' ? 'true' : 'false');
+    lineInfo.style.visibility = activeView === 'text' ? 'visible' : 'hidden';
+    if (activeView === 'tree') updateTree();
+    else editor.focus();
+  };
+
+  function updateLineNumbers(code) {
+    var lines = code.split('\n').length;
+    var nums = [];
+    for (var i = 1; i <= lines; i++) nums.push(i);
+    lineNumbers.innerHTML = nums.join('\n');
+  }
+
+  editor.addEventListener('scroll', function() {
+    display.scrollTop = editor.scrollTop;
+    display.scrollLeft = editor.scrollLeft;
+    lineNumbers.style.transform = 'translateY(-' + editor.scrollTop + 'px)';
+  });
+
+  editor.addEventListener('input', function() {
+    updateDisplay();
+    autoSave();
+    sourceElementRanges = [];
+    activeSourceElementId = null;
+  });
+
+  editor.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); runCode(); return; }
+    if (e.shiftKey && e.altKey && e.key==='F') { e.preventDefault(); formatCode(); return; }
+    if (e.key==='Tab') {
+      e.preventDefault();
+      var s=this.selectionStart, en=this.selectionEnd;
+      this.value=this.value.substring(0,s)+'    '+this.value.substring(en);
+      this.selectionStart=this.selectionEnd=s+4;
+      updateDisplay();
+    }
+    if (e.key==='>') {
+      var p=this.selectionStart, bef=this.value.substring(0,p);
+      var mt=bef.match(/<([a-zA-Z][a-zA-Z0-9]*)\s*$/);
+      if (mt && !e.shiftKey) {
+        setTimeout(function(){
+          var pp=editor.selectionStart;
+          editor.value=editor.value.substring(0,pp)+'</'+mt[1]+'>'+editor.value.substring(pp);
+          editor.selectionStart=editor.selectionEnd=pp;
+          updateDisplay();
+        },0);
+      }
+    }
+    setTimeout(updateCursorInfo,0);
+  });
+
+  editor.addEventListener('click', updateCursorInfo);
+  editor.addEventListener('click', syncPreviewFromEditor);
+  editor.addEventListener('keyup', syncPreviewFromEditor);
+  editor.addEventListener('select', syncPreviewFromEditor);
+  document.addEventListener('selectionchange', function() {
+    if (document.activeElement === editor) syncPreviewFromEditor();
+  });
+  if (linkSelectionToggle) {
+    linkSelectionToggle.addEventListener('change', function() {
+      setSelectionSyncEnabled(this.checked);
+    });
+  }
+
+  treeView.addEventListener('click', function(e) {
+    var toggle = e.target.closest('.tree-toggle');
+    if (!toggle || toggle.classList.contains('empty')) return;
+    var node = toggle.closest('.tree-node');
+    if (node) node.classList.toggle('collapsed');
+  });
+
+  function updateCursorInfo() {
+    var p=editor.selectionStart, t=editor.value.substring(0,p);
+    var ls=t.split('\n');
+    lineInfo.textContent='行 '+ls.length+', 列 '+(ls[ls.length-1].length+1);
+  }
+
+  window.runCode = function() {
+    var code=editor.value;
+    statusText.textContent='运行中...';
+    try {
+      activeSourceElementId = null;
+      previewScriptNonce = 'pg_' + Math.random().toString(36).slice(2);
+      preview.srcdoc = buildPreviewDocument(code);
+      statusText.textContent='运行完成 ('+new Date().toLocaleTimeString()+')';
+      showToast('代码已运行');
+      setTimeout(syncPreviewFromEditor, 120);
+    } catch(err) {
+      statusText.textContent='运行出错: '+err.message;
+      showToast('运行出错: '+err.message,true);
+    }
+    autoSave();
+  };
+
+  window.copyCode = function() {
+    var code=editor.value;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(function(){showToast('代码已复制到剪贴板');}).catch(function(){fallbackCopy(code);});
+    } else { fallbackCopy(code); }
+  };
+
+  function fallbackCopy(text){
+    var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');showToast('代码已复制到剪贴板');}catch(e){showToast('复制失败',true);}
+    document.body.removeChild(ta);
+  }
+
+  window.resetCode = function() {
+    editor.value=originalCode; updateDisplay(); runCode();
+    statusText.textContent='已重置为原始代码'; showToast('已重置');
+  };
+
+  window.formatCode = function() {
+    var result = formatHtml(editor.value);
+    editor.value=result; updateDisplay(); autoSave();
+    statusText.textContent='已格式化代码 ('+result.length+' 字符)'; showToast('格式化完成');
+  };
+
+  function formatHtml(code) {
+    var tab = '    ';
+    var maxInline = 110;
+    var voidTags = toSet('area,base,br,col,embed,hr,img,input,link,meta,source,track,wbr');
+    var rawTags = toSet('script,style,pre,textarea');
+    var inlineTags = toSet('a,abbr,b,bdi,bdo,br,button,cite,code,data,dfn,em,i,img,input,kbd,label,mark,q,s,samp,small,span,strong,sub,sup,time,u,var');
+    var compactBlockTags = toSet('title,h1,h2,h3,h4,h5,h6,p,li,td,th,option,button,label');
+    var tokens = tokenizeHtml(code, rawTags);
+    var lines = [], indent = 0;
+
+    for (var i = 0; i < tokens.length; i++) {
+      var tok = tokens[i];
+      if (tok.type === 'text') {
+        var text = normalizeInlineText(tok.value);
+        if (text) lines.push(tab.repeat(indent) + text);
+        continue;
+      }
+      if (tok.type === 'comment' || tok.type === 'doctype') {
+        lines.push(tab.repeat(indent) + tok.value.trim());
+        continue;
+      }
+      if (tok.type === 'raw') {
+        appendRawLines(lines, tok.value, indent, tab);
+        continue;
+      }
+      if (tok.type === 'close') {
+        indent = Math.max(0, indent - 1);
+        lines.push(tab.repeat(indent) + tok.value);
+        continue;
+      }
+      if (tok.type === 'open') {
+        var compact = collectCompactInline(tokens, i, inlineTags, compactBlockTags, rawTags, maxInline);
+        if (compact) {
+          lines.push(tab.repeat(indent) + compact.text);
+          i = compact.end;
+          continue;
+        }
+        lines.push(tab.repeat(indent) + tok.value);
+        if (!tok.selfClosing && !voidTags[tok.name]) indent++;
+      }
+    }
+
+    return lines.join('\n').replace(/\n+$/,'') + '\n';
+  }
+
+  function toSet(csv) {
+    var set = {};
+    csv.split(',').forEach(function(item) { set[item] = true; });
+    return set;
+  }
+
+  function tokenizeHtml(code, rawTags) {
+    var tokens = [], i = 0, textStart = 0;
+    function pushText(end) {
+      if (end > textStart) tokens.push({ type: 'text', value: code.slice(textStart, end) });
+    }
+    while (i < code.length) {
+      if (code.substring(i, i + 4) === '<!--') {
+        pushText(i);
+        var commentEnd = code.indexOf('-->', i + 4);
+        if (commentEnd === -1) commentEnd = code.length - 3;
+        tokens.push({ type: 'comment', value: code.slice(i, commentEnd + 3) });
+        i = commentEnd + 3; textStart = i; continue;
+      }
+      if (/^<!doctype/i.test(code.slice(i, i + 9))) {
+        pushText(i);
+        var docEnd = code.indexOf('>', i + 2);
+        if (docEnd === -1) docEnd = code.length - 1;
+        tokens.push({ type: 'doctype', value: code.slice(i, docEnd + 1) });
+        i = docEnd + 1; textStart = i; continue;
+      }
+      if (code[i] === '<' && /[\/a-zA-Z]/.test(code[i + 1] || '')) {
+        var tagEnd = findFormatTagEnd(code, i);
+        if (tagEnd === -1) { i++; continue; }
+        pushText(i);
+        var tag = code.slice(i, tagEnd);
+        var closeMatch = tag.match(/^<\/\s*([\w-]+)/);
+        if (closeMatch) {
+          tokens.push({ type: 'close', value: tag, name: closeMatch[1].toLowerCase() });
+          i = tagEnd; textStart = i; continue;
+        }
+        var openMatch = tag.match(/^<\s*([\w-]+)/);
+        var name = openMatch ? openMatch[1].toLowerCase() : '';
+        var selfClosing = /\/\s*>$/.test(tag);
+        tokens.push({ type: 'open', value: tag, name: name, selfClosing: selfClosing });
+        i = tagEnd; textStart = i;
+        if (name && rawTags[name] && !selfClosing) {
+          var closeRe = new RegExp('</\\s*' + name + '\\s*>', 'i');
+          var rest = code.slice(i);
+          var closeRaw = rest.search(closeRe);
+          if (closeRaw !== -1) {
+            var rawValue = rest.slice(0, closeRaw);
+            var closeValue = rest.match(closeRe)[0];
+            if (rawValue) tokens.push({ type: 'raw', value: rawValue, name: name });
+            tokens.push({ type: 'close', value: closeValue, name: name });
+            i += closeRaw + closeValue.length;
+            textStart = i;
+          }
+        }
+        continue;
+      }
+      i++;
+    }
+    pushText(code.length);
+    return tokens;
+  }
+
+  function findFormatTagEnd(code, start) {
+    var i = start + 1, inQ = false, qc = '';
+    while (i < code.length) {
+      var ch = code[i];
+      if (inQ) { if (ch === '\\') { i += 2; continue; } if (ch === qc) inQ = false; }
+      else if (ch === '"' || ch === "'") { inQ = true; qc = ch; }
+      else if (ch === '>') return i + 1;
+      i++;
+    }
+    return -1;
+  }
+
+  function collectCompactInline(tokens, start, inlineTags, compactBlockTags, rawTags, maxInline) {
+    var first = tokens[start];
+    if (!first || first.type !== 'open' || first.selfClosing || rawTags[first.name]) return null;
+    if (!inlineTags[first.name] && !compactBlockTags[first.name]) return null;
+    var depth = 0, pieces = [];
+    for (var i = start; i < tokens.length; i++) {
+      var tok = tokens[i];
+      if (tok.type === 'raw' || tok.type === 'comment' || tok.type === 'doctype') return null;
+      if (tok.type === 'open') {
+        if (i !== start && !inlineTags[tok.name]) return null;
+        depth++;
+        pieces.push(tok.value);
+        if (tok.selfClosing) depth--;
+      } else if (tok.type === 'close') {
+        pieces.push(tok.value);
+        depth--;
+        if (depth === 0) {
+          var text = compactInlinePieces(pieces);
+          if (text.length <= maxInline) return { text: text, end: i };
+          return null;
+        }
+      } else if (tok.type === 'text') {
+        var normalized = normalizeCompactText(tok.value);
+        if (normalized) pieces.push(normalized);
+      }
+      if (pieces.join('').length > maxInline) return null;
+    }
+    return null;
+  }
+
+  function compactInlinePieces(pieces) {
+    return pieces.join('').replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+  }
+
+  function normalizeInlineText(text) {
+    return text.replace(/\s+/g, ' ').trim();
+  }
+
+  function normalizeCompactText(text) {
+    return text.replace(/\s+/g, ' ');
+  }
+
+  function appendRawLines(lines, raw, indent, tab) {
+    var rawLines = raw.replace(/\r\n/g, '\n').split('\n');
+    while (rawLines.length && rawLines[0].trim() === '') rawLines.shift();
+    while (rawLines.length && rawLines[rawLines.length - 1].trim() === '') rawLines.pop();
+    if (!rawLines.length) return;
+
+    var minIndent = null;
+    for (var i = 0; i < rawLines.length; i++) {
+      var line = rawLines[i];
+      if (!line.trim()) continue;
+      var match = line.match(/^[ \t]*/);
+      var size = match ? match[0].length : 0;
+      if (minIndent === null || size < minIndent) minIndent = size;
+    }
+    if (minIndent === null) minIndent = 0;
+
+    for (var j = 0; j < rawLines.length; j++) {
+      var current = rawLines[j].replace(/\s+$/g, '');
+      if (!current.trim()) {
+        lines.push('');
+        continue;
+      }
+      lines.push(tab.repeat(indent) + current.slice(minIndent));
+    }
+  }
+
+  function showToast(msg,isError){
+    var t=document.getElementById('toast');t.textContent=msg;
+    t.style.background=isError?'#e74c3c':'#27ae60';t.classList.add('show');
+    clearTimeout(t._timer);t._timer=setTimeout(function(){t.classList.remove('show');},2000);
+  }
+
+  function autoSave(){try{localStorage.setItem('playground_code',editor.value);}catch(e){}}
+
+  (function(){
+    var resize=document.getElementById('pgResize'),container=document.querySelector('.pg-container'),
+        editorPanel=document.getElementById('pgEditor'),dragging=false;
+    resize.addEventListener('mousedown',function(e){dragging=true;document.body.style.cursor='col-resize';document.body.style.userSelect='none';e.preventDefault();});
+    document.addEventListener('mousemove',function(e){if(!dragging)return;var r=container.getBoundingClientRect();var x=e.clientX-r.left;var pct=Math.max(20,Math.min(80,(x/r.width)*100));editorPanel.style.width=pct+'%';document.querySelector('.pg-preview').style.width=(100-pct)+'%';});
+    document.addEventListener('mouseup',function(){if(dragging){dragging=false;document.body.style.cursor='';document.body.style.userSelect='';}});
+  })();
+
+  window.loadToPlayground = function(code) {
+    editor.value=code;originalCode=code;updateDisplay();runCode();autoSave();
+    statusText.textContent='已加载外部代码 ('+code.length+' 字符)';
+  };
+
+  window.addEventListener('message',function(e){if(e.data&&e.data.type==='load-code')window.loadToPlayground(e.data.code);});
+  window.addEventListener('message', function(e) {
+    var data = e.data || {};
+    if (isSelectionSyncEnabled && data.type === 'pg-preview-selection' && data.token === previewScriptNonce) {
+      selectEditorSourceElement(data.id);
+    }
+  });
+
+  loadCode();
+  updateCursorInfo();
+})();
+</script>
+
+</body>
+</html>

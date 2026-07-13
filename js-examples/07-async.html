@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>07 - 异步编程</title><link rel="stylesheet" href="css/style.css"></head><body><nav class="nav-bar"><a class="home" href="index.html">JavaScript 首页</a><a href="01-basics.html">基础语法</a><a href="02-control-flow.html">流程控制</a><a href="03-functions.html">函数作用域</a><a href="04-arrays-objects.html">数组对象</a><a href="05-dom.html">DOM操作</a><a href="06-events.html">事件表单</a><a href="07-async.html">异步编程</a><a href="08-modern.html">现代JS</a></nav><h1>07 - 异步编程</h1><p>定时器、Promise 与 async/await。</p><div class="section"><h2>1. async / await</h2><div class="note">async/await 让异步流程更接近同步写法。</div><div class="demo-box"><button onclick="loadData()">加载模拟数据</button><pre id="asyncOut"></pre></div><pre><code>&lt;button onclick="loadData()"&gt;加载模拟数据&lt;/button&gt;
+&lt;pre id="asyncOut"&gt;&lt;/pre&gt;
+&lt;script&gt;
+function mockFetch(){
+  return new Promise(function(resolve){
+    setTimeout(function(){ resolve({ id: 1, title: '异步数据' }); }, 600);
+  });
+}
+async function loadData(){
+  const data = await mockFetch();
+  document.getElementById('asyncOut').textContent = JSON.stringify(data, null, 2);
+}
+&lt;/script&gt;</code></pre></div><div class="section"><h2>2. 数组处理</h2><div class="note">map 和 filter 常用于处理列表。</div><div class="demo-box"><button onclick="runDemo6_1()">处理数组</button><pre id="out6_1"></pre></div><pre><code>&lt;button onclick="runDemo6_1()"&gt;处理数组&lt;/button&gt;
+&lt;pre id="out6_1"&gt;&lt;/pre&gt;
+&lt;script&gt;
+function runDemo6_1(){
+  const scores = [82,95,67,90];
+  const passed = scores.filter(function(score){ return score &gt;= 80; });
+  document.getElementById('out6_1').textContent = '优秀成绩：' + passed.join(', ');
+}
+&lt;/script&gt;</code></pre></div><div class="section"><h2>3. 交互反馈</h2><div class="note">事件触发函数，函数修改页面。</div><div class="demo-box"><button onclick="runDemo6_2()">点击反馈</button><div id="out6_2" class="output"></div></div><pre><code>&lt;button onclick="runDemo6_2()"&gt;点击反馈&lt;/button&gt;
+&lt;div id="out6_2" class="output"&gt;&lt;/div&gt;
+&lt;script&gt;
+function runDemo6_2(){
+  document.getElementById('out6_2').textContent = '事件已触发：' + new Date().toLocaleTimeString();
+}
+&lt;/script&gt;</code></pre></div><script src="js/example-playground.js"></script></body></html>

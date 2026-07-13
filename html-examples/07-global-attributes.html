@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07 - 全局属性示例</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .attr-demo { transition: all 0.3s; }
+    .highlight-box { background: #fff3cd; border: 1px solid #ffc107; padding: 8px 12px; border-radius: 6px; margin: 6px 0; }
+    [data-status="active"] { color: #27ae60; font-weight: bold; }
+    [data-status="inactive"] { color: #e74c3c; }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="index.html" class="home">首页</a>
+    <a href="01-form.html">表单</a>
+    <a href="02-table.html">表格</a>
+    <a href="03-media.html">多媒体</a>
+    <a href="04-text-formatting.html">文本格式化</a>
+    <a href="05-lists-links.html">列表与链接</a>
+    <a href="06-semantic.html">语义化</a>
+    <a href="07-global-attributes.html">全局属性</a>
+    <a href="08-events.html">事件处理</a>
+  </nav>
+
+  <h1>07 - 全局属性</h1>
+  <p>全局属性可以应用于任何 HTML 元素，用于标识、样式控制和行为配置。</p>
+
+  <!-- 1. id 和 class -->
+  <div class="section">
+    <h2>1. id 和 class</h2>
+    <div class="note"><strong>id</strong> 在页面中唯一标识一个元素，<strong>class</strong> 可为多个元素设置相同的样式类。</div>
+
+    <div class="demo-box">
+      <p id="unique-para" style="color:#2980b9; font-weight:bold;">这个段落有 id="unique-para"（页面唯一）</p>
+      <p class="highlight-box">这个段落有 class="highlight-box"（可复用）</p>
+      <p class="highlight-box">另一个同 class 的段落</p>
+    </div>
+    <pre><code>&lt;p id="unique-para"&gt;唯一 ID&lt;/p&gt;
+&lt;p class="highlight-box"&gt;可复用的 class&lt;/p&gt;
+
+&lt;!-- CSS 中使用 --&gt;
+&lt;style&gt;
+  #unique-para { color: blue; }
+  .highlight-box { background: yellow; }
+&lt;/style&gt;</code></pre>
+  </div>
+
+  <!-- 2. style 内联样式 -->
+  <div class="section">
+    <h2>2. style 内联样式</h2>
+    <div class="note"><strong>style</strong> 属性直接在元素上定义 CSS 样式。优先级最高，但不推荐大量使用。</div>
+
+    <div class="demo-box">
+      <p style="color: #e74c3c; font-size: 1.1em; background: #fdedec; padding: 8px; border-radius: 4px;">
+        style="color: red; font-size: 1.1em; ..."
+      </p>
+      <p style="border: 2px dashed #3498db; padding: 10px; border-radius: 6px;">
+        style="border: 2px dashed blue; padding: 10px; ..."
+      </p>
+    </div>
+    <pre><code>&lt;p style="color: red; font-size: 1.1em;"&gt;内联样式&lt;/p&gt;
+
+&lt;!-- 常用 style 属性 --&gt;
+&lt;div style="
+  color: #333;
+  background: #f5f5f5;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+"&gt;样式化的 div&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- 3. title 提示文本 -->
+  <div class="section">
+    <h2>3. title 提示文本</h2>
+    <div class="note"><strong>title</strong> 属性为元素提供额外信息，通常显示为鼠标悬停时的提示框。</div>
+
+    <div class="demo-box">
+      <p title="这是一个段落元素">鼠标悬停在此文字上，查看 title 提示（第1行）</p>
+      <p title="HTML 是超文本标记语言">HTML（鼠标悬停查看解释）</p>
+      <span title="span 元素也可以有 title" style="background:#eaf2f8; padding:4px 8px; border-radius:4px;">
+        span 元素（鼠标悬停查看）
+      </span>
+    </div>
+    <pre><code>&lt;p title="这是提示信息"&gt;鼠标悬停查看&lt;/p&gt;
+&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;</code></pre>
+  </div>
+
+  <!-- 4. hidden 隐藏 -->
+  <div class="section">
+    <h2>4. hidden 隐藏元素</h2>
+    <div class="note"><strong>hidden</strong> 属性使元素不显示在页面上，但仍保留在 DOM 中。</div>
+
+    <div class="demo-box">
+      <p>上面这段文字在 HTML 中是隐藏的：</p>
+      <p hidden>你看不到我！（hidden 属性生效）</p>
+      <p>这段文字正常显示。</p>
+      <button onclick="var el=document.getElementById('hiddenDemo'); el.hidden=!el.hidden;">
+        切换显示/隐藏
+      </button>
+      <p id="hiddenDemo" hidden>我被隐藏了，点击按钮让我出现！</p>
+    </div>
+    <pre><code>&lt;p hidden&gt;这个段落不会显示&lt;/p&gt;
+
+&lt;button onclick="toggleHidden()"&gt;切换显示/隐藏&lt;/button&gt;
+&lt;p id="hiddenDemo" hidden&gt;我被隐藏了，点击按钮让我出现！&lt;/p&gt;
+
+&lt;script&gt;
+function toggleHidden() {
+  const element = document.getElementById('hiddenDemo');
+  element.hidden = !element.hidden;
+}
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <!-- 5. data-* 自定义数据属性 -->
+  <div class="section">
+    <h2>5. data-* 自定义数据属性</h2>
+    <div class="note"><strong>data-*</strong> 允许在元素上存储自定义数据，通过 <code>dataset</code> API 访问。</div>
+
+    <div class="demo-box">
+      <div id="dataDemo" data-user-id="1001" data-role="admin" data-status="active">
+        这个元素有自定义数据属性
+      </div>
+      <p data-item-name="笔记本电脑" data-price="5999">商品信息</p>
+      <button onclick="showData()">读取 data 属性</button>
+      <div id="dataOutput" style="margin-top:8px;"></div>
+    </div>
+    <pre><code>&lt;div id="user" data-user-id="1001" data-role="admin"&gt;
+  用户信息
+&lt;/div&gt;
+
+&lt;script&gt;
+  const el = document.getElementById('user');
+  console.log(el.dataset.userId);   // "1001"
+  console.log(el.dataset.role);     // "admin"
+&lt;/script&gt;</code></pre>
+    <script>
+      function showData() {
+        var el = document.getElementById('dataDemo');
+        var output = document.getElementById('dataOutput');
+        output.innerHTML = '<div class="highlight-box">' +
+          'userId: ' + el.dataset.userId + '<br>' +
+          'role: ' + el.dataset.role + '<br>' +
+          'status: ' + el.dataset.status +
+          '</div>';
+      }
+    </script>
+  </div>
+
+  <!-- 6. tabindex -->
+  <div class="section">
+    <h2>6. tabindex 键盘导航</h2>
+    <div class="note"><strong>tabindex</strong> 控制 Tab 键焦点顺序。值为 -1 时不参与 Tab 导航，0 按 DOM 顺序，正数按值排序。</div>
+
+    <div class="demo-box">
+      <p>用 Tab 键测试焦点顺序：</p>
+      <input type="text" placeholder="tabindex=0（默认）" style="margin:4px; padding:6px;">
+      <input type="text" placeholder="tabindex=0（默认）" style="margin:4px; padding:6px;">
+      <button tabindex="2" style="margin:4px;">tabindex=2（第二个获得焦点）</button>
+      <button tabindex="1" style="margin:4px;">tabindex=1（第一个获得焦点）</button>
+      <p tabindex="-1" style="display:inline-block; background:#eaf2f8; padding:6px 12px; border-radius:4px;">
+        tabindex=-1（按 Tab 跳过此项）
+      </p>
+    </div>
+    <pre><code>&lt;input tabindex="0"&gt;      &lt;!-- 默认顺序 --&gt;
+&lt;button tabindex="1"&gt;第一个&lt;/button&gt;
+&lt;button tabindex="2"&gt;第二个&lt;/button&gt;
+&lt;p tabindex="-1"&gt;不参与Tab&lt;/p&gt;</code></pre>
+  </div>
+
+  <!-- 7. lang / dir / draggable -->
+  <div class="section">
+    <h2>7. lang / dir / draggable</h2>
+
+    <div class="demo-box">
+      <p><strong>lang</strong> - 指定元素内容的语言：</p>
+      <p lang="zh-CN">这是中文段落。</p>
+      <p lang="en">This is an English paragraph.</p>
+      <p lang="ja">これは日本語の段落です。</p>
+
+      <p><strong>dir</strong> - 文字方向：</p>
+      <p dir="ltr">默认从左到右：Hello World</p>
+      <p dir="rtl">从右到左：مرحبا بالعالم</p>
+      <p dir="auto">自动检测：Hello مرحبا</p>
+
+      <p><strong>draggable</strong> - 可拖拽：</p>
+      <div draggable="true" style="display:inline-block; background:#e8f6f3; padding:12px 20px; border-radius:6px; border:2px dashed #1abc9c; cursor:move;">
+        拖拽我！ draggable="true"
+      </div>
+    </div>
+    <pre><code>&lt;p lang="en"&gt;English text&lt;/p&gt;
+&lt;p lang="ja"&gt;日本語テキスト&lt;/p&gt;
+
+&lt;p dir="ltr"&gt;从左到右&lt;/p&gt;
+&lt;p dir="rtl"&gt;من اليمين لليسار&lt;/p&gt;
+
+&lt;div draggable="true"&gt;可拖拽&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- 8. spellcheck / autocapitalize / contenteditable -->
+  <div class="section">
+    <h2>8. 其他常用全局属性</h2>
+
+    <div class="demo-box">
+      <p><strong>contenteditable</strong> - 使元素可编辑：</p>
+      <div contenteditable="true" style="border:2px solid #3498db; padding:10px; border-radius:6px; min-height:40px;">
+        点击此处可以编辑这段文字！试试看。
+      </div>
+
+      <p style="margin-top:12px;"><strong>spellcheck</strong> - 拼写检查：</p>
+      <input type="text" spellcheck="true" placeholder="试试输入拼写错误的单词" style="padding:6px 10px; border:1px solid #bdc3c7; border-radius:4px; width:300px;">
+
+      <p style="margin-top:12px;"><strong>autocapitalize</strong> - 自动大写：</p>
+      <input type="text" autocapitalize="words" placeholder="每个单词首字母自动大写" style="padding:6px 10px; border:1px solid #bdc3c7; border-radius:4px; width:300px;">
+    </div>
+    <pre><code>&lt;div contenteditable="true"&gt;可编辑的内容&lt;/div&gt;
+
+&lt;input spellcheck="true" placeholder="拼写检查"&gt;
+&lt;input autocapitalize="words" placeholder="自动大写"&gt;</code></pre>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

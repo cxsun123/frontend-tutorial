@@ -1,0 +1,99 @@
+{"kind":"deck","id":"pr/f7md12","name":"Deck"}
+{"kind":"layout","layoutId":"9cb5b25a-e06f-48a4-81c3-acd1e0fa61d8","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"ada02ede-9edd-402c-9e1e-99cc1d6e9ee6","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/9xlr8u","slide":1,"title":"CSS2 / CSS3 教学课件","textShapes":3}
+{"kind":"textbox","id":"sh/qpkfmh4n","slide":1,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[84,120,820,90]}
+{"kind":"textbox","id":"sh/dsvehc3y","slide":1,"text":"从选择器到布局，再到响应式与动画的渐进式课程","textPreview":"从选择器到布局，再到响应式与动画的渐进式课程","textChars":22,"textLines":1,"bbox":[88,218,780,90]}
+{"kind":"textbox","id":"sh/crmxo7md","slide":1,"text":"教学示例 + 试验场 + 课堂课件","textPreview":"教学示例 + 试验场 + 课堂课件","textChars":17,"textLines":1,"bbox":[88,560,560,36]}
+{"kind":"notes","id":"nt/9xlr8u","slide":1,"text":""}
+{"kind":"slide","id":"sl/23t1ck","slide":2,"title":"CSS2 / CSS3 教学课件","textShapes":11}
+{"kind":"textbox","id":"sh/wrqhkrul","slide":2,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/vqhgbmd0","slide":2,"text":"选择器是 CSS 的第一道判断题","textPreview":"选择器是 CSS 的第一道判断题","textChars":16,"textLines":1,"bbox":[72,94,980,70]}
+{"kind":"shape","id":"sh/ap8zihcf","slide":2,"bbox":[82,178,250,180]}
+{"kind":"textbox","id":"sh/5gjihwv2","slide":2,"text":"简单选择器","textPreview":"简单选择器","textChars":5,"textLines":1,"bbox":[102,196,210,26]}
+{"kind":"textbox","id":"sh/kfahorux","slide":2,"text":"元素、class、id、通用选择器解决“选谁”。","textPreview":"元素、class、id、通用选择器解决“选谁”。","textChars":24,"textLines":1,"bbox":[102,232,210,116]}
+{"kind":"shape","id":"sh/je10f6dc","slide":2,"bbox":[362,178,250,180]}
+{"kind":"textbox","id":"sh/idszm1cr","slide":2,"text":"组合器","textPreview":"组合器","textChars":3,"textLines":1,"bbox":[382,196,210,26]}
+{"kind":"textbox","id":"sh/tk3ilgve","slide":2,"text":"空格、>、+、~ 描述元素关系。","textPreview":"空格、>、+、~ 描述元素关系。","textChars":16,"textLines":1,"bbox":[382,232,210,116]}
+{"kind":"shape","id":"sh/sjuhsbut","slide":2,"bbox":[642,178,250,180]}
+{"kind":"textbox","id":"sh/ix4ny90z","slide":2,"text":"属性选择器","textPreview":"属性选择器","textChars":5,"textLines":1,"bbox":[662,196,210,26]}
+{"kind":"textbox","id":"sh/jydo7e1k","slide":2,"text":"[attr]、^=、$=、*= 适合链接和状态。","textPreview":"[attr]、^=、$=、*= 适合链接和状态。","textChars":24,"textLines":1,"bbox":[662,232,210,116]}
+{"kind":"shape","id":"sh/kzm50ji5","slide":2,"bbox":[922,178,250,180]}
+{"kind":"textbox","id":"sh/50v694jq","slide":2,"text":"伪类 / 伪元素","textPreview":"伪类 / 伪元素","textChars":8,"textLines":1,"bbox":[942,196,210,26]}
+{"kind":"textbox","id":"sh/614n290b","slide":2,"text":":hover、:checked、:nth-child、::before 等表达状态与局部。","textPreview":":hover、:checked、:nth-child、::before 等表达状态与局部。","textChars":45,"textLines":1,"bbox":[942,232,210,116]}
+{"kind":"textbox","id":"sh/72xobe1g","slide":2,"text":"课堂目标：学生能根据 HTML 结构选择最小、清晰、可维护的 selector。","textPreview":"课堂目标：学生能根据 HTML 结构选择最小、清晰、可维护的 selector。","textChars":40,"textLines":1,"bbox":[92,450,980,54]}
+{"kind":"notes","id":"nt/23t1ck","slide":2,"text":""}
+{"kind":"slide","id":"sl/qrs5fw","slide":3,"title":"CSS2 / CSS3 教学课件","textShapes":10}
+{"kind":"textbox","id":"sh/utgv2h8f","slide":3,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/hg7udcr6","slide":3,"text":"fffuel 式可视化练习适合讲清“命中范围”","textPreview":"fffuel 式可视化练习适合讲清“命中范围”","textChars":23,"textLines":1,"bbox":[72,94,980,70]}
+{"kind":"shape","id":"sh/gfyd47ql","slide":3,"bbox":[84,178,320,170]}
+{"kind":"textbox","id":"sh/7qpc7294","slide":3,"text":"兄弟关系","textPreview":"兄弟关系","textChars":4,"textLines":1,"bbox":[104,196,280,26]}
+{"kind":"textbox","id":"sh/6pwvyx8j","slide":3,"text":"A + B 只选紧邻兄弟；A ~ B 选择后续同级兄弟。","textPreview":"A + B 只选紧邻兄弟；A ~ B 选择后续同级兄弟。","textChars":28,"textLines":1,"bbox":[104,232,280,106]}
+{"kind":"shape","id":"sh/ts7u9cra","slide":3,"bbox":[480,178,320,170]}
+{"kind":"textbox","id":"sh/sryd07qp","slide":3,"text":"属性匹配","textPreview":"属性匹配","textChars":4,"textLines":1,"bbox":[500,196,280,26]}
+{"kind":"textbox","id":"sh/jm5c3i9s","slide":3,"text":"href^=\"https\"、href$=\".pdf\"、data-state~=\"active\"。","textPreview":"href^=\"https\"、href$=\".pdf\"、data-state~=\"active\"。","textChars":48,"textLines":1,"bbox":[500,232,280,106]}
+{"kind":"shape","id":"sh/ylwbuxsn","slide":3,"bbox":[876,178,320,170]}
+{"kind":"textbox","id":"sh/wry1sn25","slide":3,"text":"结构位置","textPreview":"结构位置","textChars":4,"textLines":1,"bbox":[896,196,280,26]}
+{"kind":"textbox","id":"sh/xs72lsja","slide":3,"text":":nth-child(even) 与 :nth-of-type(odd) 的差异。","textPreview":":nth-child(even) 与 :nth-of-type(odd) 的差异。","textChars":41,"textLines":1,"bbox":[896,232,280,106]}
+{"kind":"shape","id":"sh/apwjqdkz","slide":3,"bbox":[132,410,900,170]}
+{"kind":"textbox","id":"sh/vqpkji1k","slide":3,"text":".first + .item { ... }\n.first ~ .item { ... }\na[href$=\".pdf\"]::after { content:\" 文件\"; }\nli:nth-child(even) { ... }","textPreview":".first + .item { ... } | .first ~ .item { ... } | a[href$=\".pdf\"]::after { content:\" 文件\"; } | li:nth-child(even) { ... }","textChars":114,"textLines":4,"bbox":[160,438,844,114]}
+{"kind":"textbox","id":"sh/o3e1o32t","slide":3,"text":"示例页 11-15 节已补充这些完整 HTML + CSS 片段，可直接打开试验场。","textPreview":"示例页 11-15 节已补充这些完整 HTML + CSS 片段，可直接打开试验场。","textChars":42,"textLines":1,"bbox":[132,600,940,34]}
+{"kind":"notes","id":"nt/qrs5fw","slide":3,"text":""}
+{"kind":"slide","id":"sl/317a9z","slide":4,"title":"CSS2 / CSS3 教学课件","textShapes":6}
+{"kind":"textbox","id":"sh/bq5wjylk","slide":4,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/creds3m5","slide":4,"text":"特异性与层叠决定最终样式","textPreview":"特异性与层叠决定最终样式","textChars":12,"textLines":1,"bbox":[72,94,980,70]}
+{"kind":"shape","id":"sh/dcnelo3q","slide":4,"bbox":[90,180,330,260]}
+{"kind":"textbox","id":"sh/ydgvut4b","slide":4,"text":"优先级大致顺序","textPreview":"优先级大致顺序","textChars":7,"textLines":1,"bbox":[110,198,290,26]}
+{"kind":"textbox","id":"sh/zepwnylw","slide":4,"text":"ID > class / 属性 / 伪类 > 元素 / 伪元素。实际还要考虑来源、!important 和出现顺序。","textPreview":"ID > class / 属性 / 伪类 > 元素 / 伪元素。实际还要考虑来源、!important 和出现顺序。","textChars":58,"textLines":1,"bbox":[110,234,290,196]}
+{"kind":"shape","id":"sh/0fyxw3mh","slide":4,"bbox":[520,180,610,260]}
+{"kind":"textbox","id":"sh/lg7ep832","slide":4,"text":"p { color: #34495e; }\n.message { color: #27ae60; }\n#priority { color: #e74c3c; }","textPreview":"p { color: #34495e; } | .message { color: #27ae60; } | #priority { color: #e74c3c; }","textChars":80,"textLines":3,"bbox":[548,208,554,204]}
+{"kind":"textbox","id":"sh/mhgfyd47","slide":4,"text":"练习：让学生删除 id 规则、调整规则顺序，观察最终颜色如何变化。","textPreview":"练习：让学生删除 id 规则、调整规则顺序，观察最终颜色如何变化。","textChars":33,"textLines":1,"bbox":[96,520,980,44]}
+{"kind":"notes","id":"nt/317a9z","slide":4,"text":""}
+{"kind":"slide","id":"sl/a17zab","slide":5,"title":"CSS2 / CSS3 教学课件","textShapes":6}
+{"kind":"textbox","id":"sh/elc7idgz","slide":5,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/183qd8fq","slide":5,"text":"盒模型解释了“为什么宽度不等于视觉宽度”","textPreview":"盒模型解释了“为什么宽度不等于视觉宽度”","textChars":20,"textLines":1,"bbox":[72,94,980,70]}
+{"kind":"shape","id":"sh/gnupkny5","slide":5,"bbox":[80,178,420,310]}
+{"kind":"textbox","id":"sh/ri1o7yx8","slide":5,"text":"课堂重点","textPreview":"课堂重点","textChars":4,"textLines":1,"bbox":[100,196,380,26]}
+{"kind":"textbox","id":"sh/6hs7etg3","slide":5,"text":"默认 content-box 下，width 只代表内容区；border-box 更适合现代页面排版。","textPreview":"默认 content-box 下，width 只代表内容区；border-box 更适合现代页面排版。","textChars":51,"textLines":1,"bbox":[100,232,380,246]}
+{"kind":"shape","id":"sh/tk3q98fe","slide":5,"bbox":[540,178,650,360]}
+{"kind":"textbox","id":"sh/sjupg3yt","slide":5,"text":"box-sizing: border-box;\nwidth: 220px;\npadding: 24px;\nborder: 6px solid #27ae60;","textPreview":"box-sizing: border-box; | width: 220px; | padding: 24px; | border: 6px solid #27ae60;","textChars":79,"textLines":4,"bbox":[568,206,594,304]}
+{"kind":"textbox","id":"sh/je1o3yxc","slide":5,"text":"让学生在试验场修改 padding 与 border，观察两种盒模型的差异。","textPreview":"让学生在试验场修改 padding 与 border，观察两种盒模型的差异。","textChars":38,"textLines":1,"bbox":[86,560,1000,46]}
+{"kind":"notes","id":"nt/a17zab","slide":5,"text":""}
+{"kind":"slide","id":"sl/m8z2lb","slide":6,"title":"CSS2 / CSS3 教学课件","textShapes":6}
+{"kind":"textbox","id":"sh/bapg7exo","slide":6,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/wvyhgjy9","slide":6,"text":"Flex 解决一维分布，Grid 解决二维网格","textPreview":"Flex 解决一维分布，Grid 解决二维网格","textChars":23,"textLines":1,"bbox":[72,94,980,70]}
+{"kind":"shape","id":"sh/xw7y9ofu","slide":6,"bbox":[80,178,420,310]}
+{"kind":"textbox","id":"sh/m5wza9g7","slide":6,"text":"布局判断","textPreview":"布局判断","textChars":4,"textLines":1,"bbox":[100,196,380,26]}
+{"kind":"textbox","id":"sh/n65g3exs","slide":6,"text":"导航、按钮组、卡片横排优先考虑 Flex；复杂行列布局优先考虑 Grid。","textPreview":"导航、按钮组、卡片横排优先考虑 Flex；复杂行列布局优先考虑 Grid。","textChars":37,"textLines":1,"bbox":[100,232,380,246]}
+{"kind":"shape","id":"sh/o7ehcjyd","slide":6,"bbox":[540,178,650,360]}
+{"kind":"textbox","id":"sh/98ny5ofy","slide":6,"text":"display: grid;\ngrid-template-columns: repeat(2, 1fr);\ngap: 12px;","textPreview":"display: grid; | grid-template-columns: repeat(2, 1fr); | gap: 12px;","textChars":64,"textLines":3,"bbox":[568,206,594,304]}
+{"kind":"textbox","id":"sh/610zmtgb","slide":6,"text":"示例页提供 Flex 与 Grid 两类可运行代码，适合对比主轴和网格轨道。","textPreview":"示例页提供 Flex 与 Grid 两类可运行代码，适合对比主轴和网格轨道。","textChars":38,"textLines":1,"bbox":[86,560,1000,46]}
+{"kind":"notes","id":"nt/m8z2lb","slide":6,"text":""}
+{"kind":"slide","id":"sl/odr5j8","slide":7,"title":"CSS2 / CSS3 教学课件","textShapes":14}
+{"kind":"textbox","id":"sh/mt0rexkr","slide":7,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/9wba9s3i","slide":7,"text":"CSS3 让页面更现代，但仍要服务可读性","textPreview":"CSS3 让页面更现代，但仍要服务可读性","textChars":20,"textLines":1,"bbox":[72,94,980,70]}
+{"kind":"shape","id":"sh/ov29g72x","slide":7,"bbox":[90,184,330,150]}
+{"kind":"textbox","id":"sh/bytsb2lo","slide":7,"text":"变量","textPreview":"变量","textChars":2,"textLines":1,"bbox":[110,202,290,26]}
+{"kind":"textbox","id":"sh/axkbixk3","slide":7,"text":"统一管理颜色、间距和主题。","textPreview":"统一管理颜色、间距和主题。","textChars":13,"textLines":1,"bbox":[110,238,290,86]}
+{"kind":"shape","id":"sh/xkbadc3e","slide":7,"bbox":[460,184,330,150]}
+{"kind":"textbox","id":"sh/wj2tk72t","slide":7,"text":"圆角阴影","textPreview":"圆角阴影","textChars":4,"textLines":1,"bbox":[480,202,290,26]}
+{"kind":"textbox","id":"sh/r2pszil4","slide":7,"text":"建立层次，但避免过度装饰。","textPreview":"建立层次，但避免过度装饰。","textChars":13,"textLines":1,"bbox":[480,238,290,86]}
+{"kind":"shape","id":"sh/q1gr6dkj","slide":7,"bbox":[830,184,330,150]}
+{"kind":"textbox","id":"sh/4rulsrat","slide":7,"text":"过渡动画","textPreview":"过渡动画","textChars":4,"textLines":1,"bbox":[850,202,290,26]}
+{"kind":"textbox","id":"sh/ps3m1wbe","slide":7,"text":"用状态反馈解释交互。","textPreview":"用状态反馈解释交互。","textChars":10,"textLines":1,"bbox":[850,238,290,86]}
+{"kind":"shape","id":"sh/2pc3qhs3","slide":7,"bbox":[90,374,330,150]}
+{"kind":"textbox","id":"sh/3ql4zmt8","slide":7,"text":"媒体查询","textPreview":"媒体查询","textChars":4,"textLines":1,"bbox":[110,392,290,26]}
+{"kind":"textbox","id":"sh/cvelwba5","slide":7,"text":"按视口调整布局。","textPreview":"按视口调整布局。","textChars":8,"textLines":1,"bbox":[110,428,290,86]}
+{"kind":"shape","id":"sh/dwnm5wrq","slide":7,"bbox":[460,374,330,150]}
+{"kind":"textbox","id":"sh/qtc3u1sz","slide":7,"text":"滤镜变换","textPreview":"滤镜变换","textChars":4,"textLines":1,"bbox":[480,392,290,26]}
+{"kind":"textbox","id":"sh/ru54369k","slide":7,"text":"适合强调，不适合正文信息。","textPreview":"适合强调，不适合正文信息。","textChars":13,"textLines":1,"bbox":[480,428,290,86]}
+{"kind":"shape","id":"sh/szalk7al","slide":7,"bbox":[830,374,330,150]}
+{"kind":"textbox","id":"sh/t0j2tcb6","slide":7,"text":"现代伪类","textPreview":"现代伪类","textChars":4,"textLines":1,"bbox":[850,392,290,26]}
+{"kind":"textbox","id":"sh/94ra14zy","slide":7,"text":"简化选择器并减少重复。","textPreview":"简化选择器并减少重复。","textChars":11,"textLines":1,"bbox":[850,428,290,86]}
+{"kind":"notes","id":"nt/odr5j8","slide":7,"text":""}
+{"kind":"slide","id":"sl/xms3r2","slide":8,"title":"CSS2 / CSS3 教学课件","textShapes":4}
+{"kind":"textbox","id":"sh/dcb2xgvq","slide":8,"text":"CSS2 / CSS3 教学课件","textPreview":"CSS2 / CSS3 教学课件","textChars":16,"textLines":1,"bbox":[72,56,480,30]}
+{"kind":"textbox","id":"sh/q90j2lwz","slide":8,"text":"CSS 课后练习应围绕“改 selector 看命中”","textPreview":"CSS 课后练习应围绕“改 selector 看命中”","textChars":27,"textLines":1,"bbox":[72,94,980,70]}
+{"kind":"textbox","id":"sh/ratkv6xk","slide":8,"text":"• 修改简单选择器，观察哪些元素被命中。\n• 把后代选择器改成子代选择器。\n• 尝试 ^=、$=、*= 三种属性匹配。\n• 把 :nth-child(even) 改成 :nth-of-type(odd)。\n• 使用 :not() 排除元素，用 :has() 选择父级。","textPreview":"• 修改简单选择器，观察哪些元素被命中。 | • 把后代选择器改成子代选择器。 | • 尝试 ^=、$=、*= 三种属性匹配。 | • 把 :nth-child(even) 改成 :nth-of-type(odd)。 | • 使用 :not() 排除元素，用 :has() ...","textChars":134,"textLines":5,"bbox":[120,190,920,220]}
+{"kind":"textbox","id":"sh/0f2l8veh","slide":8,"text":"建议课堂节奏：先看示例页，再点击每段代码进入试验场修改参数。","textPreview":"建议课堂节奏：先看示例页，再点击每段代码进入试验场修改参数。","textChars":30,"textLines":1,"bbox":[120,570,980,50]}
+{"kind":"notes","id":"nt/xms3r2","slide":8,"text":""}

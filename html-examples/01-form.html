@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 - 表单元素示例</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="index.html" class="home">首页</a>
+    <a href="01-form.html">表单</a>
+    <a href="02-table.html">表格</a>
+    <a href="03-media.html">多媒体</a>
+    <a href="04-text-formatting.html">文本格式化</a>
+    <a href="05-lists-links.html">列表与链接</a>
+    <a href="06-semantic.html">语义化</a>
+    <a href="07-global-attributes.html">全局属性</a>
+    <a href="08-events.html">事件处理</a>
+  </nav>
+
+  <h1>01 - 表单元素</h1>
+  <p>表单是用户与网页交互的核心。HTML 提供了丰富的表单元素和 input 类型来收集各种数据。</p>
+
+  <!-- 1. 基础表单结构 -->
+  <div class="section">
+    <h2>1. 基础表单结构</h2>
+    <div class="note"><strong>&lt;form&gt;</strong> 定义表单区域，<strong>action</strong> 指定提交地址，<strong>method</strong> 指定提交方式 (GET/POST)。</div>
+
+    <div class="demo-box">
+      <form action="#" method="get">
+        <div class="form-group">
+          <label for="username">用户名：</label>
+          <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+        </div>
+        <div class="form-group">
+          <label for="password">密码：</label>
+          <input type="password" id="password" name="password" placeholder="请输入密码" required>
+        </div>
+        <button type="submit">登录</button>
+      </form>
+    </div>
+    <pre><code>&lt;form action="/login" method="post"&gt;
+  &lt;label for="username"&gt;用户名：&lt;/label&gt;
+  &lt;input type="text" id="username" name="username" placeholder="请输入用户名" required&gt;
+
+  &lt;label for="password"&gt;密码：&lt;/label&gt;
+  &lt;input type="password" id="password" name="password" required&gt;
+
+  &lt;button type="submit"&gt;登录&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+
+  <!-- 2. input 输入类型 -->
+  <div class="section">
+    <h2>2. input 输入类型</h2>
+
+    <div class="demo-box">
+      <form>
+        <div class="form-group">
+          <label>文本 text：</label>
+          <input type="text" name="text" placeholder="普通文本">
+        </div>
+        <div class="form-group">
+          <label>密码 password：</label>
+          <input type="password" name="pwd" placeholder="密码会隐藏">
+        </div>
+        <div class="form-group">
+          <label>邮箱 email：</label>
+          <input type="email" name="email" placeholder="user@example.com">
+        </div>
+        <div class="form-group">
+          <label>电话 tel：</label>
+          <input type="tel" name="tel" placeholder="138-0000-0000">
+        </div>
+        <div class="form-group">
+          <label>URL url：</label>
+          <input type="url" name="url" placeholder="https://example.com">
+        </div>
+        <div class="form-group">
+          <label>数字 number：</label>
+          <input type="number" name="num" min="0" max="100" step="5">
+        </div>
+        <div class="form-group">
+          <label>范围 range：</label>
+          <input type="range" name="range" min="0" max="100" value="50">
+        </div>
+        <div class="form-group">
+          <label>日期 date：</label>
+          <input type="date" name="date">
+        </div>
+        <div class="form-group">
+          <label>颜色 color：</label>
+          <input type="color" name="color" value="#3498db">
+        </div>
+        <div class="form-group">
+          <label>搜索 search：</label>
+          <input type="search" name="search" placeholder="搜索...">
+        </div>
+        <div class="form-group">
+          <label>文件 file：</label>
+          <input type="file" name="file" accept=".jpg,.png,.pdf">
+        </div>
+        <div class="form-group">
+          <label>隐藏 hidden：</label>
+          <input type="hidden" name="token" value="abc123">
+          <small style="color:#7f8c8d;">hidden 类型不显示，用于传递隐藏数据</small>
+        </div>
+      </form>
+    </div>
+    <pre><code>&lt;input type="text"&gt;     &lt;!-- 普通文本 --&gt;
+&lt;input type="password"&gt; &lt;!-- 密码（隐藏输入） --&gt;
+&lt;input type="email"&gt;    &lt;!-- 邮箱（自动校验格式） --&gt;
+&lt;input type="tel"&gt;      &lt;!-- 电话 --&gt;
+&lt;input type="url"&gt;      &lt;!-- URL --&gt;
+&lt;input type="number"&gt;   &lt;!-- 数字 --&gt;
+&lt;input type="range"&gt;    &lt;!-- 滑块 --&gt;
+&lt;input type="date"&gt;     &lt;!-- 日期选择器 --&gt;
+&lt;input type="color"&gt;    &lt;!-- 颜色选择器 --&gt;
+&lt;input type="search"&gt;   &lt;!-- 搜索 --&gt;
+&lt;input type="file"&gt;     &lt;!-- 文件上传 --&gt;
+&lt;input type="hidden"&gt;   &lt;!-- 隐藏字段 --&gt;</code></pre>
+  </div>
+
+  <!-- 3. 单选和复选 -->
+  <div class="section">
+    <h2>3. 单选按钮 &amp; 复选框</h2>
+
+    <div class="demo-box">
+      <form>
+        <div class="form-group">
+          <label>性别：</label>
+          <label><input type="radio" name="gender" value="male" checked> 男</label>
+          <label><input type="radio" name="gender" value="female"> 女</label>
+        </div>
+        <div class="form-group">
+          <label>爱好：</label>
+          <label><input type="checkbox" name="hobby" value="reading"> 阅读</label>
+          <label><input type="checkbox" name="hobby" value="coding"> 编程</label>
+          <label><input type="checkbox" name="hobby" value="music"> 音乐</label>
+          <label><input type="checkbox" name="hobby" value="travel"> 旅行</label>
+        </div>
+      </form>
+    </div>
+    <pre><code>&lt;!-- 单选按钮：同一 name 属性值互斥 --&gt;
+&lt;label&gt;&lt;input type="radio" name="gender" value="male" checked&gt; 男&lt;/label&gt;
+&lt;label&gt;&lt;input type="radio" name="gender" value="female"&gt; 女&lt;/label&gt;
+
+&lt;!-- 复选框：可多选 --&gt;
+&lt;label&gt;&lt;input type="checkbox" name="hobby" value="reading"&gt; 阅读&lt;/label&gt;
+&lt;label&gt;&lt;input type="checkbox" name="hobby" value="coding"&gt; 编程&lt;/label&gt;</code></pre>
+  </div>
+
+  <!-- 4. label 和 fieldset -->
+  <div class="section">
+    <h2>4. &lt;label&gt; 和 &lt;fieldset&gt; 分组</h2>
+
+    <div class="demo-box">
+      <form>
+        <fieldset>
+          <legend>个人信息</legend>
+          <div class="form-group">
+            <label for="name2">姓名：</label>
+            <input type="text" id="name2" name="name">
+          </div>
+          <div class="form-group">
+            <label for="age">年龄：</label>
+            <input type="number" id="age" name="age" min="1" max="150">
+          </div>
+        </fieldset>
+        <fieldset style="margin-top:12px;">
+          <legend>联系方式</legend>
+          <div class="form-group">
+            <label for="phone">电话：</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <pre><code>&lt;fieldset&gt;
+  &lt;legend&gt;个人信息&lt;/legend&gt;
+  &lt;label for="name"&gt;姓名：&lt;/label&gt;
+  &lt;input type="text" id="name" name="name"&gt;
+&lt;/fieldset&gt;</code></pre>
+  </div>
+
+  <!-- 5. select / optgroup / datalist -->
+  <div class="section">
+    <h2>5. 下拉选择 &amp; 数据列表</h2>
+
+    <div class="demo-box">
+      <form>
+        <div class="form-group">
+          <label for="city">选择城市：</label>
+          <select id="city" name="city">
+            <option value="">-- 请选择 --</option>
+            <optgroup label="华东">
+              <option value="shanghai">上海</option>
+              <option value="hangzhou">杭州</option>
+              <option value="nanjing">南京</option>
+            </optgroup>
+            <optgroup label="华南">
+              <option value="guangzhou">广州</option>
+              <option value="shenzhen">深圳</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="browser">输入浏览器（有推荐）：</label>
+          <input type="text" id="browser" name="browser" list="browsers">
+          <datalist id="browsers">
+            <option value="Chrome">
+            <option value="Firefox">
+            <option value="Safari">
+            <option value="Edge">
+            <option value="Opera">
+          </datalist>
+        </div>
+      </form>
+    </div>
+    <pre><code>&lt;select name="city"&gt;
+  &lt;optgroup label="华东"&gt;
+    &lt;option value="shanghai"&gt;上海&lt;/option&gt;
+    &lt;option value="hangzhou"&gt;杭州&lt;/option&gt;
+  &lt;/optgroup&gt;
+&lt;/select&gt;
+
+&lt;!-- datalist 提供建议值，用户仍可自由输入 --&gt;
+&lt;input list="browsers"&gt;
+&lt;datalist id="browsers"&gt;
+  &lt;option value="Chrome"&gt;
+  &lt;option value="Firefox"&gt;
+&lt;/datalist&gt;</code></pre>
+  </div>
+
+  <!-- 6. textarea / button / output / meter / progress -->
+  <div class="section">
+    <h2>6. 多行文本 &amp; 按钮 &amp; 输出</h2>
+
+    <div class="demo-box">
+      <form>
+        <div class="form-group">
+          <label for="bio">个人简介：</label>
+          <textarea id="bio" name="bio" rows="4" cols="50" placeholder="请输入个人简介..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>按钮类型对比：</label><br>
+          <button type="submit">提交按钮 submit</button>
+          <button type="reset">重置按钮 reset</button>
+          <button type="button">普通按钮 button</button>
+        </div>
+        <div class="form-group">
+          <label>进度条 progress：</label>
+          <progress value="70" max="100">70%</progress>
+          <span> 70%</span>
+        </div>
+        <div class="form-group">
+          <label>度量值 meter：</label>
+          <meter value="0.7" min="0" max="1" low="0.3" high="0.8" optimum="0.9">70%</meter>
+          <span> 70%（绿色区间）</span>
+        </div>
+        <div class="form-group">
+          <label>计算结果 output：</label>
+          <output name="result">42</output>
+        </div>
+      </form>
+    </div>
+    <pre><code>&lt;textarea rows="4" cols="50" placeholder="请输入个人简介"&gt;&lt;/textarea&gt;
+
+&lt;button type="submit"&gt;提交&lt;/button&gt;
+&lt;button type="reset"&gt;重置&lt;/button&gt;
+
+&lt;progress value="70" max="100"&gt;70%&lt;/progress&gt;
+&lt;meter value="0.7" min="0" max="1" low="0.3" high="0.8" optimum="0.9"&gt;&lt;/meter&gt;
+&lt;output name="result"&gt;42&lt;/output&gt;</code></pre>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

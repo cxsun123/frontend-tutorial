@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>02 - 流程控制</title><link rel="stylesheet" href="css/style.css"></head><body><nav class="nav-bar"><a class="home" href="index.html">JavaScript 首页</a><a href="01-basics.html">基础语法</a><a href="02-control-flow.html">流程控制</a><a href="03-functions.html">函数作用域</a><a href="04-arrays-objects.html">数组对象</a><a href="05-dom.html">DOM操作</a><a href="06-events.html">事件表单</a><a href="07-async.html">异步编程</a><a href="08-modern.html">现代JS</a></nav><h1>02 - 流程控制</h1><p>条件、循环和错误处理。</p><div class="section"><h2>1. 变量与输出</h2><div class="note">变量保存数据，DOM 用于显示结果。</div><div class="demo-box"><button onclick="runDemo1_0()">运行</button><div id="out1_0" class="output"></div></div><pre><code>&lt;button onclick="runDemo1_0()"&gt;运行&lt;/button&gt;
+&lt;div id="out1_0" class="output"&gt;&lt;/div&gt;
+&lt;script&gt;
+function runDemo1_0(){
+  let count = 1;
+  count += 2;
+  const name = 'JavaScript';
+  document.getElementById('out1_0').textContent = name + ' count = ' + count;
+}
+&lt;/script&gt;</code></pre></div><div class="section"><h2>2. 数组处理</h2><div class="note">map 和 filter 常用于处理列表。</div><div class="demo-box"><button onclick="runDemo1_1()">处理数组</button><pre id="out1_1"></pre></div><pre><code>&lt;button onclick="runDemo1_1()"&gt;处理数组&lt;/button&gt;
+&lt;pre id="out1_1"&gt;&lt;/pre&gt;
+&lt;script&gt;
+function runDemo1_1(){
+  const scores = [82,95,67,90];
+  const passed = scores.filter(function(score){ return score &gt;= 80; });
+  document.getElementById('out1_1').textContent = '优秀成绩：' + passed.join(', ');
+}
+&lt;/script&gt;</code></pre></div><div class="section"><h2>3. 交互反馈</h2><div class="note">事件触发函数，函数修改页面。</div><div class="demo-box"><button onclick="runDemo1_2()">点击反馈</button><div id="out1_2" class="output"></div></div><pre><code>&lt;button onclick="runDemo1_2()"&gt;点击反馈&lt;/button&gt;
+&lt;div id="out1_2" class="output"&gt;&lt;/div&gt;
+&lt;script&gt;
+function runDemo1_2(){
+  document.getElementById('out1_2').textContent = '事件已触发：' + new Date().toLocaleTimeString();
+}
+&lt;/script&gt;</code></pre></div><script src="js/example-playground.js"></script></body></html>
