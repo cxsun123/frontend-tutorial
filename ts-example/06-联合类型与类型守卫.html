@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06-联合类型与类型守卫</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #3178c6; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #3178c6; }
+    .intro { background: linear-gradient(135deg, #3178c6, #235a97); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #3178c6; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #ebf5fb; color: #3178c6; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #3178c6; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 TypeScript 示例</a>
+  <h1>06-联合类型与类型守卫 <span>.ts</span></h1>
+
+  <div class="section">
+    <h3>联合类型</h3>
+    <p class="desc">string | number 表示多种可能的类型</p>
+    <pre><code class="language-typescript">function formatId(id: string | number): string {
+  if (typeof id === "string") {
+    return id.toUpperCase();
+  }
+  return `ID-${id}`;
+}
+
+console.log(formatId("abc"));  // "ABC"
+console.log(formatId(123));    // "ID-123"</code></pre>
+  </div>
+  <div class="section">
+    <h3>类型守卫 (Type Guard)</h3>
+    <p class="desc">typeof / in / is 在运行时缩窄类型</p>
+    <pre><code class="language-typescript">type Fish = { swim: () =&gt; void; name: string };
+type Bird = { fly: () =&gt; void; name: string };
+
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+
+function move(pet: Fish | Bird): void {
+  if (isFish(pet)) {
+    pet.swim();  // TypeScript 知道这是 Fish
+  } else {
+    pet.fly();   // TypeScript 知道这是 Bird
+  }
+}
+
+const fish: Fish = { name: "Nemo", swim: () =&gt; console.log("Swimming...") };
+const bird: Bird = { name: "Eagle", fly: () =&gt; console.log("Flying...") };
+move(fish);
+move(bird);</code></pre>
+  </div>
+  <div class="section">
+    <h3>字面量类型</h3>
+    <p class="desc">"up" | "down" | "left" | "right"</p>
+    <pre><code class="language-typescript">type MoveDirection = "up" | "down" | "left" | "right";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+
+function moveDirection(dir: MoveDirection): void {
+  console.log(`Moving ${dir}`);
+}
+moveDirection("up");
+// // moveDirection("forward"); // 错误！</code></pre>
+  </div>
+  <div class="section">
+    <h3>typeof 类型守卫</h3>
+    <p class="desc">通过 kind/status 等字段区分不同类型</p>
+    <pre><code class="language-typescript">function padLeft(value: string, padding: string | number): string {
+  if (typeof padding === "number") {
+    return " ".repeat(padding) + value;
+  }
+  return padding + value;
+}
+console.log(padLeft("Hello", 4));      // "    Hello"
+console.log(padLeft("Hello", "&gt;&gt;&gt;"));  // "&gt;&gt;&gt;Hello"</code></pre>
+  </div>
+  <div class="section">
+    <h3>in 类型守卫</h3>
+    <p class="desc"></p>
+    <pre><code class="language-typescript">interface CircleShape { kind: "circle"; radius: number }
+interface SquareShape { kind: "square"; side: number }
+
+type Shape2 = CircleShape | SquareShape;
+
+function area2(shape: Shape2): number {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.side ** 2;
+    default:
+      throw new Error("Unknown shape");
+  }
+}
+
+console.log("Circle area:", area2({ kind: "circle", radius: 5 }).toFixed(2));
+console.log("Square area:", area2({ kind: "square", side: 4 }));</code></pre>
+  </div>
+  <div class="section">
+    <h3>可辨识联合 (Discriminated Union)</h3>
+    <p class="desc"></p>
+    <pre><code class="language-typescript">interface Success {
+  status: "success";
+  data: string;
+}
+
+interface Failure {
+  status: "failure";
+  error: Error;
+}
+
+type Result = Success | Failure;
+
+function handleResult(result: Result): void {
+  if (result.status === "success") {
+    console.log("Success:", result.data);
+  } else {
+    console.log("Error:", result.error.message);
+  }
+}
+
+handleResult({ status: "success", data: "All good!" });
+handleResult({ status: "failure", error: new Error("Something went wrong") });
+
+console.log("\n✅ 06-联合类型与类型守卫.ts 运行完成");</code></pre>
+  </div>
+</body>
+</html>

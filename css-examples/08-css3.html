@@ -1,16 +1,627 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>08 - CSS3增强</title><link rel="stylesheet" href="css/style.css"></head><body><nav class="nav-bar"><a class="home" href="index.html">CSS2 / CSS3 首页</a><a href="01-selectors.html">选择器</a><a href="02-box-model.html">盒模型</a><a href="03-text-color.html">文本颜色</a><a href="04-layout.html">布局定位</a><a href="05-flex-grid.html">Flex </a><a href="06-responsive.html">响应式</a><a href="07-effects.html">过渡动画</a><a href="08-css3.html">CSS3增强</a></nav><h1>08 - CSS3增强</h1><p>变量、阴影、滤镜和现代伪类。</p><div class="section"><h2>1. 核心概念</h2><div class="note">本节示例展示本章最常见用法。</div><div class="demo-box"><div class="sample-7">CSS 示例 8</div></div><pre><code>&lt;style&gt;
-.sample-7 { padding: 24px; border-radius: 10px; background: #eaf2f8; color: #1a5276; font-weight: bold; }
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 - CSS3 增强特性</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── 过渡按钮 ── */
+    .trans-btn {
+      padding: 12px 20px; color: white; border: none; border-radius: 8px;
+      cursor: pointer; font-weight: bold; font-size: 0.9em;
+    }
+    .trans-ease      { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+    .trans-linear    { transition: transform 0.4s linear, box-shadow 0.4s linear; }
+    .trans-ease-in   { transition: transform 0.4s ease-in, box-shadow 0.4s ease-in; }
+    .trans-ease-out  { transition: transform 0.4s ease-out, box-shadow 0.4s ease-out; }
+    .trans-cubic     { transition: transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55), box-shadow 0.4s ease; }
+    .trans-btn:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    /* ── 弹跳球 ── */
+    @keyframes bounce {
+      0%   { top: 0;    background: #e74c3c; border-radius: 12px; }
+      50%  { top: 70px; background: #f39c12; border-radius: 50%; }
+      100% { top: 0;    background: #3498db; border-radius: 12px; }
+    }
+    .anim-ball {
+      width: 50px; height: 50px; border-radius: 12px;
+      position: relative; animation: bounce 1.2s ease-in-out infinite;
+    }
+    /* ── 脉冲 ── */
+    @keyframes pulse {
+      0%   { transform: scale(1);   opacity: 1; }
+      50%  { transform: scale(1.15); opacity: 0.7; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    .anim-pulse {
+      width: 100px; height: 100px; border-radius: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white; font-weight: bold; font-size: 1.2em;
+      display: flex; align-items: center; justify-content: center;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    /* ── 旋转 ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .anim-spinner {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 4px solid #ecf0f1; border-top-color: #3498db;
+      animation: spin 1s linear infinite;
+    }
+    .anim-play-btn {
+      padding: 8px 16px; border: 2px solid #3498db; border-radius: 8px;
+      background: white; color: #3498db; cursor: pointer; font-weight: bold;
+    }
+    /* ── CSS 变量 ── */
+    .var-card {
+      --primary: #3498db; --danger: #e74c3c; --radius: 12px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 400px; border: 2px solid var(--primary);
+      border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px;
+    }
+    .var-title { color: var(--primary); margin-bottom: 8px; }
+    .var-text  { color: #5d6d7e; margin-bottom: 12px; }
+    .var-btn {
+      background: var(--danger); color: white; border: none;
+      padding: 8px 20px; border-radius: var(--radius); cursor: pointer; font-weight: bold;
+    }
+    /* ── 伪类列表 ── */
+    .pseudo-list { list-style: none; padding: 0; max-width: 300px; }
+    .pseudo-list li { padding: 8px 12px; margin: 4px 0; border-radius: 6px; }
+    .pseudo-list li:nth-child(odd)  { background: #d6eaf8; }
+    .pseudo-list li:nth-child(even) { background: #d4efdf; }
+    .pseudo-list li:last-child { font-weight: bold; border-left: 4px solid #e74c3c; }
+    /* ── 伪元素 ── */
+    .pseudo-content::before { content: "👉 "; color: #e74c3c; font-weight: bold; }
+    .pseudo-content::after  { content: " ✅"; color: #27ae60; font-weight: bold; }
+    .pseudo-select::selection { background: #3498db; color: white; }
+    /* ── 综合练习卡片 ── */
+    .practice-card {
+      background: white; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .practice-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
+    .practice-card-img {
+      height: 140px; display: flex; align-items: center; justify-content: center;
+      font-size: 3em; color: white;
+    }
+    .practice-card-body { padding: 16px; }
+    .practice-card-body h3 { color: #2c3e50; margin-bottom: 8px; }
+    .practice-card-body h3::after {
+      content: ""; display: block; width: 40px; height: 3px;
+      background: #3498db; border-radius: 2px; margin-top: 6px;
+    }
+    .practice-card-body p { color: #7f8c8d; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+  <a class="home" href="index.html">CSS2 / CSS3 首页</a>
+  <a href="01-selectors.html">选择器</a>
+  <a href="02-box-model.html">盒模型</a>
+  <a href="03-text-color.html">颜色与背景</a>
+  <a href="04-layout.html">布局定位</a>
+  <a href="05-flex-grid.html">Flex / Grid</a>
+  <a href="06-responsive.html">响应式</a>
+  <a href="07-effects.html">过渡动画</a>
+  <a href="08-css3.html">CSS3增强</a>
+</nav>
+
+<h1>08 - CSS3 增强特性</h1>
+<p>圆角、阴影、滤镜、变量、伪类、伪元素等 CSS3 核心增强功能。</p>
+
+<!-- ==================== 1. border-radius ==================== -->
+<div class="section">
+  <h2>1. border-radius 圆角</h2>
+  <div class="note">
+    <code>border-radius</code> 为元素添加圆角。可以分别设置四个角，也可以用百分比创建椭圆或圆形。
+  </div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;">
+      <div style="width:120px;height:80px;background:#3498db;border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">border-radius:12px</div>
+      <div style="width:120px;height:80px;background:#27ae60;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">50%</div>
+      <div style="width:120px;height:80px;background:#e74c3c;border-radius:20px 0;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">20px 0</div>
+      <div style="width:120px;height:80px;background:#8e44ad;border-radius:40px 10px 40px 10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">不对称</div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+.box1 { border-radius: 12px; }           /* 四角统一 */
+.box2 { border-radius: 50%; }            /* 椭圆/圆 */
+.box3 { border-radius: 20px 0; }         /* 左上 20px, 右上 0 */
+.box4 { border-radius: 40px 10px 40px 10px; } /* 顺时针: 左上 右上 右下 左下 */
 &lt;/style&gt;
 
-&lt;div class="sample-7"&gt;CSS 示例 8&lt;/div&gt;</code></pre></div><div class="section"><h2>2. 组合应用</h2><div class="note">把属性组合起来形成真实页面效果。</div><div class="demo-box"><div class="panel-7"><h3>标题</h3><p>这是一段用于观察样式变化的文本。</p></div></div><pre><code>&lt;style&gt;
-.panel-7 { max-width: 520px; padding: 22px; border: 1px solid #d5dbdb; border-radius: 12px; background: white; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
-.panel-7 h3 { color: #2980b9; margin-bottom: 8px; }
-.panel-7 p { color: #5d6d7e; }
+&lt;div class="box1"&gt;border-radius:12px&lt;/div&gt;
+&lt;div class="box2"&gt;50%&lt;/div&gt;
+&lt;div class="box3"&gt;20px 0&lt;/div&gt;
+&lt;div class="box4"&gt;不对称&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 2. box-shadow ==================== -->
+<div class="section">
+  <h2>2. box-shadow 盒阴影</h2>
+  <div class="note">
+    <code>box-shadow: x y blur spread color</code>。x/y 必需，blur/spread 可选，<code>inset</code> 表示内阴影。
+  </div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;">
+      <div style="width:140px;height:100px;background:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;color:#555;box-shadow:4px 4px 12px rgba(0,0,0,0.15);">外阴影</div>
+      <div style="width:140px;height:100px;background:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;color:#555;box-shadow:0 4px 20px rgba(52,152,219,0.4);">彩色阴影</div>
+      <div style="width:140px;height:100px;background:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;color:#555;box-shadow:inset 0 2px 8px rgba(0,0,0,0.2);">内阴影</div>
+      <div style="width:140px;height:100px;background:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;color:#555;box-shadow:4px 4px 0 #3498db, 8px 8px 0 #e74c3c;">多层阴影</div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+.shadow1 { box-shadow: 4px 4px 12px rgba(0,0,0,0.15); }
+.shadow2 { box-shadow: 0 4px 20px rgba(52,152,219,0.4); }
+.shadow3 { box-shadow: inset 0 2px 8px rgba(0,0,0,0.2); }
+.shadow4 { box-shadow: 4px 4px 0 #3498db, 8px 8px 0 #e74c3c; }
 &lt;/style&gt;
 
-&lt;div class="panel-7"&gt;&lt;h3&gt;标题&lt;/h3&gt;&lt;p&gt;这是一段用于观察样式变化的文本。&lt;/p&gt;&lt;/div&gt;</code></pre></div><div class="section"><h2>3. 练习片段</h2><div class="note">打开试验场后可以直接修改数值观察结果。</div><div class="demo-box"><button class="try-7">悬停观察</button></div><pre><code>&lt;style&gt;
-.try-7 { background: #3498db; color: white; transition: transform .2s, background .2s; }
-.try-7:hover { background: #2ecc71; transform: translateY(-3px); }
+&lt;div class="shadow1"&gt;外阴影&lt;/div&gt;
+&lt;div class="shadow2"&gt;彩色阴影&lt;/div&gt;
+&lt;div class="shadow3"&gt;内阴影&lt;/div&gt;
+&lt;div class="shadow4"&gt;多层阴影&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 3. text-shadow ==================== -->
+<div class="section">
+  <h2>3. text-shadow 文本阴影</h2>
+  <div class="note">
+    <code>text-shadow: x y blur color</code>。可叠加多层阴影实现发光效果。
+  </div>
+
+  <div class="demo-box">
+    <p style="font-size:1.6em;font-weight:bold;text-shadow:2px 2px 4px rgba(0,0,0,0.3);margin-bottom:12px;">text-shadow: 2px 2px 4px</p>
+    <p style="font-size:1.6em;font-weight:bold;text-shadow:0 0 10px #3498db, 0 0 20px #3498db;margin-bottom:12px;">发光效果 glow</p>
+    <p style="font-size:1.6em;font-weight:bold;color:white;background:#1a5276;padding:8px 16px;border-radius:8px;display:inline-block;text-shadow:1px 1px 0 #111, 2px 2px 0 #555, 3px 3px 0 #777;">3D 凸起效果</p>
+  </div>
+  <pre><code>&lt;style&gt;
+.glow {
+  text-shadow: 0 0 10px #3498db, 0 0 20px #3498db;
+}
+.emboss {
+  color: white; background: #1a5276;
+  text-shadow: 1px 1px 0 #111, 2px 2px 0 #555, 3px 3px 0 #777;
+}
 &lt;/style&gt;
 
-&lt;button class="try-7"&gt;悬停观察&lt;/button&gt;</code></pre></div><script src="js/example-playground.js"></script></body></html>
+&lt;p class="glow"&gt;发光效果&lt;/p&gt;
+&lt;p class="emboss"&gt;3D 凸起效果&lt;/p&gt;</code></pre>
+</div>
+
+<!-- ==================== 4. transition ==================== -->
+<div class="section">
+  <h2>4. transition 过渡</h2>
+  <div class="note">
+    <code>transition: property duration timing-function delay</code>。
+    从一个状态平滑过渡到另一个状态。常见于 <code>:hover</code>。
+  </div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;">
+      <div class="trans-btn trans-ease" style="background:#3498db;">ease</div>
+      <div class="trans-btn trans-linear" style="background:#27ae60;">linear</div>
+      <div class="trans-btn trans-ease-in" style="background:#e74c3c;">ease-in</div>
+      <div class="trans-btn trans-ease-out" style="background:#8e44ad;">ease-out</div>
+      <div class="trans-btn trans-cubic" style="background:#f39c12;">cubic-bezier</div>
+    </div>
+    <p style="margin-top:12px;color:#7f8c8d;font-size:0.9em;">↑ 悬停查看不同缓动函数的过渡效果</p>
+  </div>
+  <pre><code>&lt;style&gt;
+.btn {
+  padding: 12px 24px; color: white; border: none;
+  border-radius: 8px; cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+&lt;/style&gt;
+
+&lt;button class="btn"&gt;悬停我&lt;/button&gt;</code></pre>
+</div>
+
+<!-- ==================== 5. animation ==================== -->
+<div class="section">
+  <h2>5. animation 动画</h2>
+  <div class="note">
+    <code>@keyframes</code> 定义关键帧，<code>animation</code> 属性控制播放。
+    属性：<code>animation-name / duration / timing-function / delay / iteration-count / direction / fill-mode</code>
+  </div>
+
+  <h3>5.1 基础动画 — 弹跳球</h3>
+  <div class="demo-box">
+    <div style="height:120px;border:2px dashed #bdc3c7;border-radius:8px;background:#fafbfc;position:relative;overflow:hidden;">
+      <div class="anim-ball"></div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+@keyframes bounce {
+  0%   { top: 0;   background: #e74c3c; }
+  50%  { top: 80px; background: #f39c12; border-radius: 50%; }
+  100% { top: 0;   background: #3498db; }
+}
+.ball {
+  width: 50px; height: 50px; border-radius: 12px;
+  position: relative;
+  animation: bounce 1.2s ease-in-out infinite;
+}
+&lt;/style&gt;
+
+&lt;div class="ball"&gt;&lt;/div&gt;</code></pre>
+
+  <h3>5.2 多属性动画 — 脉冲</h3>
+  <div class="demo-box">
+    <div style="display:flex;justify-content:center;padding:20px;">
+      <div class="anim-pulse">CSS3</div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+@keyframes pulse {
+  0%   { transform: scale(1);   opacity: 1; }
+  50%  { transform: scale(1.15); opacity: 0.7; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+.pulse-box {
+  width: 100px; height: 100px; border-radius: 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white; font-weight: bold; font-size: 1.2em;
+  display: flex; align-items: center; justify-content: center;
+  animation: pulse 2s ease-in-out infinite;
+}
+&lt;/style&gt;
+
+&lt;div class="pulse-box"&gt;CSS3&lt;/div&gt;</code></pre>
+
+  <h3>5.3 animation-play-state 暂停/播放</h3>
+  <div class="demo-box">
+    <div style="display:flex;gap:16px;align-items:center;">
+      <div class="anim-spinner"></div>
+      <div>
+        <button class="anim-play-btn" onclick="this.previousElementSibling.style.animationPlayState = this.previousElementSibling.style.animationPlayState === 'paused' ? 'running' : 'paused'; this.textContent = this.textContent === '暂停' ? '播放' : '暂停';">暂停</button>
+      </div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 4px solid #ecf0f1; border-top-color: #3498db;
+  animation: spin 1s linear infinite;
+}
+.spinner:hover { animation-play-state: paused; }
+&lt;/style&gt;
+
+&lt;div class="spinner"&gt;&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 6. transform 2D ==================== -->
+<div class="section">
+  <h2>6. transform 2D 变换</h2>
+  <div class="note">
+    <code>transform</code> 对元素进行二维变换：<code>translate</code> 移动、<code>rotate</code> 旋转、<code>scale</code> 缩放、<code>skew</code> 倾斜。可组合使用。
+  </div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;">
+      <div style="width:100px;height:60px;background:#3498db;border-radius:8px;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;transform:translate(10px, -10px);">translate</div>
+      <div style="width:100px;height:60px;background:#27ae60;border-radius:8px;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;transform:rotate(15deg);">rotate</div>
+      <div style="width:100px;height:60px;background:#e74c3c;border-radius:8px;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;transform:scale(1.3);">scale</div>
+      <div style="width:100px;height:60px;background:#8e44ad;border-radius:8px;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;transform:skewX(-15deg);">skewX</div>
+      <div style="width:100px;height:60px;background:#f39c12;border-radius:8px;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;transform:rotate(10deg) scale(1.1) translate(5px,5px);">组合</div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+.t1 { transform: translate(10px, -10px); }   /* 移动 */
+.t2 { transform: rotate(15deg); }            /* 旋转 */
+.t3 { transform: scale(1.3); }               /* 放大 1.3 倍 */
+.t4 { transform: skewX(-15deg); }            /* X 轴倾斜 */
+.t5 { transform: rotate(10deg) scale(1.1) translate(5px, 5px); }
+&lt;/style&gt;
+
+&lt;div class="t1"&gt;translate&lt;/div&gt;
+&lt;div class="t2"&gt;rotate&lt;/div&gt;
+&lt;div class="t3"&gt;scale&lt;/div&gt;
+&lt;div class="t4"&gt;skewX&lt;/div&gt;
+&lt;div class="t5"&gt;组合&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 7. filter ==================== -->
+<div class="section">
+  <h2>7. filter 滤镜</h2>
+  <div class="note">
+    <code>filter</code> 对元素应用图形滤镜：<code>blur()</code> 模糊、<code>brightness()</code> 亮度、<code>grayscale()</code> 灰度、<code>contrast()</code> 对比度、<code>saturate()</code> 饱和度。
+  </div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;border-radius:12px;background:linear-gradient(135deg,#3498db,#2ecc71);filter:blur(0);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">原图</div>
+        <small>无滤镜</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;border-radius:12px;background:linear-gradient(135deg,#3498db,#2ecc71);filter:blur(3px);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">模糊</div>
+        <small>blur(3px)</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;border-radius:12px;background:linear-gradient(135deg,#3498db,#2ecc71);filter:brightness(1.5);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">亮</div>
+        <small>brightness(1.5)</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;border-radius:12px;background:linear-gradient(135deg,#3498db,#2ecc71);filter:grayscale(1);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">灰度</div>
+        <small>grayscale(1)</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;border-radius:12px;background:linear-gradient(135deg,#3498db,#2ecc71);filter:contrast(2);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">高对比</div>
+        <small>contrast(2)</small>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;border-radius:12px;background:linear-gradient(135deg,#3498db,#2ecc71);filter:hue-rotate(90deg);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">色相旋转</div>
+        <small>hue-rotate(90deg)</small>
+      </div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+.box { filter: blur(3px); }        /* 模糊 */
+.box { filter: brightness(1.5); }  /* 亮度 150% */
+.box { filter: grayscale(1); }     /* 灰度 100% */
+.box { filter: contrast(2); }      /* 对比度 200% */
+.box { filter: hue-rotate(90deg); }/* 色相旋转 90° */
+/* 组合使用 */
+.box { filter: blur(1px) brightness(1.1) contrast(1.1); }
+&lt;/style&gt;
+
+&lt;div class="box"&gt;&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 8. CSS 变量 ==================== -->
+<div class="section">
+  <h2>8. CSS 变量（自定义属性）</h2>
+  <div class="note">
+    用 <code>--变量名</code> 定义，<code>var(--变量名)</code> 使用。通常在 <code>:root</code> 中定义全局变量，方便主题切换。
+  </div>
+
+  <div class="demo-box">
+    <div class="var-card">
+      <h3 class="var-title">变量示例</h3>
+      <p class="var-text">这段文字使用了 CSS 变量控制颜色和间距。</p>
+      <button class="var-btn">按钮</button>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+:root {
+  --primary: #3498db;
+  --danger: #e74c3c;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.card {
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+.card h3 { color: var(--primary); }
+.card .btn { background: var(--danger); border-radius: var(--radius); }
+&lt;/style&gt;
+
+&lt;div class="card"&gt;
+  &lt;h3&gt;使用变量的卡片&lt;/h3&gt;
+  &lt;button class="btn"&gt;按钮&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<!-- ==================== 9. box-sizing ==================== -->
+<div class="section">
+  <h2>9. box-sizing 盒模型</h2>
+  <div class="note">
+    <code>box-sizing: border-box</code> 让 width/height 包含 padding 和 border，避免手动计算。
+  </div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:20px;">
+      <div style="width:200px;padding:16px;background:#fadbd8;border:3px solid #e74c3c;border-radius:8px;font-size:13px;">
+        <strong>content-box（默认）</strong><br>
+        width: 200px + padding 32px + border 6px<br>
+        实际宽度 = <span style="color:#e74c3c;font-weight:bold;">238px</span>
+      </div>
+      <div style="width:200px;padding:16px;background:#d4efdf;border:3px solid #27ae60;border-radius:8px;font-size:13px;box-sizing:border-box;">
+        <strong>border-box</strong><br>
+        width: 200px（已含 padding + border）<br>
+        实际宽度 = <span style="color:#27ae60;font-weight:bold;">200px</span>
+      </div>
+    </div>
+    <p style="margin-top:12px;color:#7f8c8d;font-size:0.9em;">两者 CSS width 都是 200px，但实际占用宽度不同</p>
+  </div>
+  <pre><code>&lt;style&gt;
+* { box-sizing: border-box; } /* 推荐全局设置 */
+
+.content-box {
+  box-sizing: content-box; /* 默认：width 不含 padding/border */
+  width: 200px; padding: 16px; border: 3px solid red;
+  /* 实际宽度 = 200 + 32 + 6 = 238px */
+}
+.border-box {
+  box-sizing: border-box;
+  width: 200px; padding: 16px; border: 3px solid green;
+  /* 实际宽度 = 200px（padding 和 border 包含在内） */
+}
+&lt;/style&gt;</code></pre>
+</div>
+
+<!-- ==================== 10. outline-offset ==================== -->
+<div class="section">
+  <h2>10. outline-offset 与 resize</h2>
+  <div class="note">
+    <code>outline-offset</code> 控制轮廓与边框的间距。<code>resize</code> 允许用户拖拽调整元素大小。
+  </div>
+
+  <div class="demo-box">
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:start;">
+      <div>
+        <p style="font-size:0.9em;color:#666;margin-bottom:8px;">outline-offset: 8px（悬停查看）：</p>
+        <div style="padding:12px 20px;border:2px solid #3498db;border-radius:8px;outline:2px dashed #e74c3c;outline-offset:8px;display:inline-block;">outline-offset</div>
+      </div>
+      <div>
+        <p style="font-size:0.9em;color:#666;margin-bottom:8px;">resize: both（可拖拽）：</p>
+        <textarea style="width:180px;height:80px;padding:12px;border:2px solid #3498db;border-radius:8px;resize:both;font-size:13px;" placeholder="拖拽右下角调整大小..."></textarea>
+      </div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+.outline-demo {
+  padding: 12px 20px;
+  border: 2px solid #3498db;
+  outline: 2px dashed #e74c3c;
+  outline-offset: 8px;  /* 轮廓与边框间距 */
+}
+.resize-demo {
+  resize: both;   /* 允许水平+垂直拖拽 */
+  overflow: auto;
+}
+&lt;/style&gt;
+
+&lt;div class="outline-demo"&gt;outline-offset&lt;/div&gt;
+&lt;textarea class="resize-demo"&gt;可拖拽&lt;/textarea&gt;</code></pre>
+</div>
+
+<!-- ==================== 11. pseudo-class ==================== -->
+<div class="section">
+  <h2>11. 伪类选择器</h2>
+  <div class="note">
+    <code>:nth-child(n)</code>、<code>:nth-last-child(n)</code>、<code>:last-child</code> 等伪类选择器可选取特定位置的元素。
+    <code>n</code> 可以是数字、关键字（odd/even）或公式（2n+1）。
+  </div>
+
+  <div class="demo-box">
+    <ul class="pseudo-list">
+      <li>第 1 项</li>
+      <li>第 2 项（even）</li>
+      <li>第 3 项（odd）</li>
+      <li>第 4 项（even）</li>
+      <li>第 5 项（odd）— :last-child</li>
+    </ul>
+  </div>
+  <pre><code>&lt;style&gt;
+.list li { padding: 8px 12px; margin: 4px 0; border-radius: 6px; }
+.list li:nth-child(odd)  { background: #d6eaf8; } /* 奇数行 */
+.list li:nth-child(even) { background: #d4efdf; } /* 偶数行 */
+.list li:last-child { font-weight: bold; border-left: 4px solid #e74c3c; }
+&lt;/style&gt;
+
+&lt;ul class="list"&gt;
+  &lt;li&gt;第 1 项&lt;/li&gt;
+  &lt;li&gt;第 2 项&lt;/li&gt;
+  &lt;li&gt;第 3 项&lt;/li&gt;
+  &lt;li&gt;第 4 项&lt;/li&gt;
+  &lt;li&gt;第 5 项&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</div>
+
+<!-- ==================== 12. pseudo-element ==================== -->
+<div class="section">
+  <h2>12. 伪元素 ::before / ::after / ::selection</h2>
+  <div class="note">
+    <code>::before</code> 和 <code>::after</code> 在元素内容前后插入装饰内容。<code>::selection</code> 自定义选中高亮。
+  </div>
+
+  <div class="demo-box">
+    <p class="pseudo-content" style="margin-bottom:12px;">这段文字使用了 ::before 和 ::after 伪元素添加装饰符号。</p>
+    <p style="color:#7f8c8d;font-size:0.9em;">↓ 选中下面的文字查看 ::selection 效果</p>
+    <p class="pseudo-select">选中我试试！这段文字有自定义的选中颜色。</p>
+  </div>
+  <pre><code>&lt;style&gt;
+/* ::before / ::after */
+.content::before { content: "👉 "; color: #e74c3c; font-weight: bold; }
+.content::after  { content: " ✅"; color: #27ae60; font-weight: bold; }
+
+/* ::selection — 选中高亮 */
+.custom-select::selection {
+  background: #3498db;
+  color: white;
+}
+&lt;/style&gt;
+
+&lt;p class="content"&gt;这段文字有装饰符号&lt;/p&gt;
+&lt;p class="custom-select"&gt;选中我试试！&lt;/p&gt;</code></pre>
+</div>
+
+<!-- ==================== 13. 综合练习 ==================== -->
+<div class="section">
+  <h2>13. 综合练习 — CSS3 卡片</h2>
+  <div class="note">综合运用圆角、阴影、滤镜、过渡和伪类，创建一个交互式卡片组件。</div>
+
+  <div class="demo-box">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:20px;">
+      <div class="practice-card">
+        <div class="practice-card-img" style="background:linear-gradient(135deg,#667eea,#764ba2);">🎯</div>
+        <div class="practice-card-body">
+          <h3>圆角与阴影</h3>
+          <p>border-radius + box-shadow 实现卡片外观</p>
+        </div>
+      </div>
+      <div class="practice-card">
+        <div class="practice-card-img" style="background:linear-gradient(135deg,#f093fb,#f5576c);">✨</div>
+        <div class="practice-card-body">
+          <h3>滤镜与过渡</h3>
+          <p>filter + transition 实现悬停效果</p>
+        </div>
+      </div>
+      <div class="practice-card">
+        <div class="practice-card-img" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">🚀</div>
+        <div class="practice-card-body">
+          <h3>变量与伪元素</h3>
+          <p>CSS 变量 + ::after 装饰内容</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pre><code>&lt;style&gt;
+:root { --card-radius: 16px; --card-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+
+.card {
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+.card-img {
+  height: 140px; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 3em; color: white;
+}
+.card-body { padding: 16px; }
+.card-body h3 { color: #2c3e50; margin-bottom: 8px; }
+.card-body p { color: #7f8c8d; font-size: 0.9em; }
+/* ::after 装饰线 */
+.card-body h3::after {
+  content: ""; display: block; width: 40px;
+  height: 3px; background: var(--primary, #3498db);
+  border-radius: 2px; margin-top: 6px;
+}
+&lt;/style&gt;
+
+&lt;div class="card"&gt;
+  &lt;div class="card-img" style="background:linear-gradient(135deg,#667eea,#764ba2);"&gt;🎯&lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h3&gt;CSS3 卡片&lt;/h3&gt;
+    &lt;p&gt;综合运用 CSS3 增强特性&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<script src="js/example-playground.js"></script>
+</body>
+</html>

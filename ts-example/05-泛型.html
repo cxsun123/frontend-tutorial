@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05-泛型</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #3178c6; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #3178c6; }
+    .intro { background: linear-gradient(135deg, #3178c6, #235a97); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #3178c6; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #ebf5fb; color: #3178c6; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #3178c6; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 TypeScript 示例</a>
+  <h1>05-泛型 <span>.ts</span></h1>
+
+  <div class="section">
+    <h3>泛型函数</h3>
+    <p class="desc">function identity<T>(arg: T): T</p>
+    <pre><code class="language-typescript">function identity&lt;T&gt;(arg: T): T {
+  return arg;
+}
+console.log(identity&lt;string&gt;("hello"));
+console.log(identity&lt;number&gt;(42));
+
+// 简写：类型推论
+const result = identity("TypeScript");
+console.log(result.toUpperCase());</code></pre>
+  </div>
+  <div class="section">
+    <h3>泛型接口</h3>
+    <p class="desc">可省略类型参数，TS 自动推断</p>
+    <pre><code class="language-typescript">interface ApiResponse&lt;T&gt; {
+  code: number;
+  message: string;
+  data: T;
+}
+
+interface User {
+  id: number;
+  name: string;
+}
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+}
+
+const userResponse: ApiResponse&lt;{ id: number; name: string }&gt; = {
+  code: 200,
+  message: "success",
+  data: { id: 1, name: "Alice" },
+};
+
+const productResponse: ApiResponse&lt;Product[]&gt; = {
+  code: 200,
+  message: "success",
+  data: [
+    { id: 1, title: "Phone", price: 999 },
+    { id: 2, title: "Laptop", price: 1999 },
+  ],
+};
+
+console.log("User:", (userResponse.data as any).name);
+console.log("Products:", productResponse.data.map((p) =&gt; p.title));</code></pre>
+  </div>
+  <div class="section">
+    <h3>泛型约束</h3>
+    <p class="desc">interface ApiResponse<T> { data: T }</p>
+    <pre><code class="language-typescript">interface HasLength {
+  length: number;
+}
+
+function logLength&lt;T extends HasLength&gt;(arg: T): T {
+  console.log(`Length: ${arg.length}`);
+  return arg;
+}
+
+logLength("hello");        // string 有 length
+logLength([1, 2, 3]);      // array 有 length
+logLength({ length: 10 }); // 对象有 length
+// logLength(123);         // 错误！number 没有 length</code></pre>
+  </div>
+  <div class="section">
+    <h3>泛型类</h3>
+    <p class="desc">T extends HasLength 限制 T 必须有 length</p>
+    <pre><code class="language-typescript">class Stack&lt;T&gt; {
+  private items: T[] = [];
+
+  push(item: T): void {
+    this.items.push(item);
+  }
+
+  pop(): T | undefined {
+    return this.items.pop();
+  }
+
+  peek(): T | undefined {
+    return this.items[this.items.length - 1];
+  }
+
+  get size(): number {
+    return this.items.length;
+  }
+
+  isEmpty(): boolean {
+    return this.items.length === 0;
+  }
+}
+
+const stack = new Stack&lt;number&gt;();
+stack.push(1);
+stack.push(2);
+stack.push(3);
+console.log("Stack size:", stack.size);
+console.log("Pop:", stack.pop());
+console.log("Peek:", stack.peek());</code></pre>
+  </div>
+  <div class="section">
+    <h3>keyof 约束</h3>
+    <p class="desc">class Stack<T> 支持任意类型</p>
+    <pre><code class="language-typescript">function getProperty&lt;T, K extends keyof T&gt;(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const personObj = { name: "Alice", age: 30, city: "Beijing" };
+console.log(getProperty(personObj, "name")); // "Alice"
+console.log(getProperty(personObj, "age"));  // 30
+// getProperty(person, "email"); // 错误！"email" 不是 person 的 key
+
+console.log("\n✅ 05-泛型.ts 运行完成");</code></pre>
+  </div>
+</body>
+</html>

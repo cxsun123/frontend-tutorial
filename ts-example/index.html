@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeScript 示例</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #3178c6; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #3178c6; }
+    .intro { background: linear-gradient(135deg, #3178c6, #235a97); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .card { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #3178c6; }
+    .card h3 { color: #1a5276; margin-bottom: 8px; }
+    .card p { color: #5d6d7e; margin-bottom: 12px; }
+    .card a { display: inline-block; background: #3178c6; color: white; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 0.9em; }
+    .card a:hover { background: #235a97; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+    pre { background: #253447; color: #ecf0f1; padding: 14px 18px; border-radius: 8px; overflow: auto; font-size: 0.85em; margin-top: 8px; }
+    code { font-family: "SF Mono", Consolas, monospace; }
+    .tag { display: inline-block; background: #ebf5fb; color: #3178c6; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <h1>TypeScript <span>示例集</span></h1>
+
+  <div class="intro">
+    <h2>什么是 TypeScript？</h2>
+    <p>TypeScript 是 JavaScript 的超集，添加了<strong>静态类型系统</strong>。它在编译时检查错误，编译为纯 JavaScript 运行。</p>
+    <p style="margin-top:8px;">
+      <span class="tag" style="background:rgba(255,255,255,0.2);color:white;">npm i -g typescript</span>
+      <span class="tag" style="background:rgba(255,255,255,0.2);color:white;">tsc 01-基本类型.ts</span>
+      <span class="tag" style="background:rgba(255,255,255,0.2);color:white;">node 01-基本类型.js</span>
+    </p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>01 - 基本类型</h3>
+      <p>string、number、boolean、null、undefined、数组、元组、枚举、any、void、never</p>
+      <a href="01-基本类型.html" target="_blank">查看示例</a>
+    </div>
+    <div class="card">
+      <h3>02 - 接口与类型别名</h3>
+      <p>interface 定义对象形状、可选属性、只读属性、接口继承、type 类型别名</p>
+      <a href="02-接口与类型别名.html" target="_blank">查看示例</a>
+    </div>
+    <div class="card">
+      <h3>03 - 函数类型</h3>
+      <p>参数类型、返回值、可选参数、默认参数、剩余参数、函数类型别名、函数重载</p>
+      <a href="03-函数类型.html" target="_blank">查看示例</a>
+    </div>
+    <div class="card">
+      <h3>04 - 类</h3>
+      <p>class、构造函数、getter/setter、继承 extends、抽象类 abstract、implements 接口</p>
+      <a href="04-类.html" target="_blank">查看示例</a>
+    </div>
+    <div class="card">
+      <h3>05 - 泛型</h3>
+      <p>泛型函数、泛型接口、泛型约束 extends、泛型类、keyof 约束</p>
+      <a href="05-泛型.html" target="_blank">查看示例</a>
+    </div>
+    <div class="card">
+      <h3>06 - 联合类型与类型守卫</h3>
+      <p>联合类型 |、类型守卫 typeof/in/is、字面量类型、可辨识联合</p>
+      <a href="06-联合类型与类型守卫.html" target="_blank">查看示例</a>
+    </div>
+    <div class="card">
+      <h3>07 - 高级类型</h3>
+      <p>交叉类型 &、映射类型、条件类型、内置工具类型 Pick/Omit/Record、infer</p>
+      <a href="07-高级类型.html" target="_blank">查看示例</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>快速开始</h3>
+    <pre><code># 安装 TypeScript
+npm install -g typescript
+
+# 编译单个文件
+tsc src/01-基本类型.ts
+
+# 使用 tsconfig.json 编译全部
+tsc
+
+# 运行编译后的 JS
+node dist/01-基本类型.js
+
+# 监听模式编译
+tsc --watch</code></pre>
+  </div>
+</body>
+</html>

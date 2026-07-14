@@ -1,0 +1,10 @@
+declare function add(a: number, b: number): number;
+declare function greet(name: string, title?: string): string;
+declare function power(base: number, exponent?: number): number;
+declare function sum(...numbers: number[]): number;
+type MathOperation = (a: number, b: number) => number;
+declare const multiply: MathOperation;
+declare const divide: MathOperation;
+declare function format(value: string): string;
+declare function format(value: number): string;
+declare function fetchData(url: string, callback: (data: string) => void): void;

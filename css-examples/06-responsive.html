@@ -1,16 +1,1052 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>06 - 响应式</title><link rel="stylesheet" href="css/style.css"></head><body><nav class="nav-bar"><a class="home" href="index.html">CSS2 / CSS3 首页</a><a href="01-selectors.html">选择器</a><a href="02-box-model.html">盒模型</a><a href="03-text-color.html">文本颜色</a><a href="04-layout.html">布局定位</a><a href="05-flex-grid.html">Flex </a><a href="06-responsive.html">响应式</a><a href="07-effects.html">过渡动画</a><a href="08-css3.html">CSS3增强</a></nav><h1>06 - 响应式</h1><p>媒体查询、流式容器和响应式图片。</p><div class="section"><h2>1. 核心概念</h2><div class="note">本节示例展示本章最常见用法。</div><div class="demo-box"><div class="sample-5">CSS 示例 6</div></div><pre><code>&lt;style&gt;
-.sample-5 { padding: 24px; border-radius: 10px; background: #eaf2f8; color: #1a5276; font-weight: bold; }
-&lt;/style&gt;
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 - 响应式设计</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ── 1. Viewport Meta 演示 ── */
+.demo-viewport {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+.viewport-card {
+  background: #fff;
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  transition: box-shadow .2s;
+}
+.viewport-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.viewport-card .icon { font-size: 2.2em; margin-bottom: 8px; }
+.viewport-card h4 { color: #1a5276; font-size: .95em; }
+.viewport-card p { color: #6c7a89; font-size: .82em; margin-top: 4px; }
 
-&lt;div class="sample-5"&gt;CSS 示例 6&lt;/div&gt;</code></pre></div><div class="section"><h2>2. 组合应用</h2><div class="note">把属性组合起来形成真实页面效果。</div><div class="demo-box"><div class="panel-5"><h3>标题</h3><p>这是一段用于观察样式变化的文本。</p></div></div><pre><code>&lt;style&gt;
-.panel-5 { max-width: 520px; padding: 22px; border: 1px solid #d5dbdb; border-radius: 12px; background: white; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
-.panel-5 h3 { color: #2980b9; margin-bottom: 8px; }
-.panel-5 p { color: #5d6d7e; }
-&lt;/style&gt;
+/* ── 2. 媒体查询断点演示 ── */
+.demo-breakpoints {
+  position: relative;
+  background: #fafbfc;
+  border: 2px dashed #bdc3c7;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bp-indicator {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.1em;
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: #fff;
+  transition: background .3s;
+}
+.bp-mobile { background: #e74c3c; display: none; }
+.bp-tablet { background: #f39c12; display: none; }
+.bp-desktop { background: #27ae60; display: none; }
+@media (max-width: 599px) { .bp-mobile { display: block; } }
+@media (min-width: 600px) and (max-width: 999px) { .bp-tablet { display: block; } }
+@media (min-width: 1000px) { .bp-desktop { display: block; } }
 
-&lt;div class="panel-5"&gt;&lt;h3&gt;标题&lt;/h3&gt;&lt;p&gt;这是一段用于观察样式变化的文本。&lt;/p&gt;&lt;/div&gt;</code></pre></div><div class="section"><h2>3. 练习片段</h2><div class="note">打开试验场后可以直接修改数值观察结果。</div><div class="demo-box"><button class="try-5">悬停观察</button></div><pre><code>&lt;style&gt;
-.try-5 { background: #3498db; color: white; transition: transform .2s, background .2s; }
-.try-5:hover { background: #2ecc71; transform: translateY(-3px); }
-&lt;/style&gt;
+/* ── 3. 响应式卡片网格 ── */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.r-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  border-top: 4px solid #3498db;
+  transition: transform .2s;
+}
+.r-card:hover { transform: translateY(-3px); }
+.r-card h4 { color: #1a5276; margin-bottom: 6px; }
+.r-card p { color: #6c7a89; font-size: .88em; }
+@media (max-width: 768px) {
+  .responsive-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .responsive-grid { grid-template-columns: 1fr; }
+}
 
-&lt;button class="try-5"&gt;悬停观察&lt;/button&gt;</code></pre></div><script src="js/example-playground.js"></script></body></html>
+/* ── 4. 流式图片 ── */
+.fluid-image-demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.fluid-img-box {
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fafbfc;
+}
+.fluid-img-box .label {
+  padding: 8px 12px;
+  font-size: .85em;
+  font-weight: 600;
+  color: #1a5276;
+  background: #eaf2f8;
+  border-bottom: 1px solid #d5dbdb;
+}
+.fluid-img-box img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.fluid-img-box img.fixed {
+  width: 600px;
+  max-width: none;
+}
+@media (max-width: 600px) {
+  .fluid-image-demo { grid-template-columns: 1fr; }
+}
+
+/* ── 5. 响应式导航 ── */
+.demo-nav {
+  background: #1a5276;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.demo-nav .nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  color: #fff;
+  font-weight: 700;
+}
+.demo-nav .hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+.demo-nav .nav-links {
+  display: flex;
+  list-style: none;
+  padding: 0 18px 12px;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.demo-nav .nav-links li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: block;
+  font-size: .9em;
+  transition: background .2s;
+}
+.demo-nav .nav-links li a:hover { background: rgba(255,255,255,.15); }
+@media (max-width: 600px) {
+  .demo-nav .hamburger { display: block; }
+  .demo-nav .nav-links {
+    display: none;
+    flex-direction: column;
+    padding: 0 18px 12px;
+  }
+  .demo-nav .nav-links.active { display: flex; }
+}
+
+/* ── 6. 流式排版 ── */
+.fluid-type-demo {
+  text-align: center;
+  padding: 20px;
+  background: #fafbfc;
+  border-radius: 10px;
+  border: 1px dashed #bdc3c7;
+}
+.fluid-type-demo h3 {
+  font-size: calc(1.2rem + 2vw);
+  color: #1a5276;
+  margin-bottom: 8px;
+}
+.fluid-type-demo p {
+  font-size: calc(0.85rem + 0.5vw);
+  color: #5d6d7e;
+  max-width: 65ch;
+  margin: 0 auto;
+}
+
+/* ── 7. Viewport 单位 ── */
+.vw-demo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  text-align: center;
+}
+.vw-box {
+  border-radius: 8px;
+  padding: 18px 10px;
+  color: #fff;
+  font-weight: 700;
+}
+.vw-box.vw { background: #8e44ad; font-size: 3vw; }
+.vw-box.vh { background: #2980b9; font-size: 3vh; }
+.vw-box.rem { background: #27ae60; font-size: 1.2rem; }
+@media (max-width: 480px) {
+  .vw-demo { grid-template-columns: 1fr; }
+}
+
+/* ── 8. 响应式表格 ── */
+.responsive-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.responsive-table {
+  width: 100%;
+  min-width: 500px;
+  border-collapse: collapse;
+  font-size: .9em;
+}
+.responsive-table th {
+  background: #1a5276;
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  white-space: nowrap;
+}
+.responsive-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #ecf0f1;
+}
+.responsive-table tr:nth-child(even) { background: #f8f9fa; }
+.responsive-table tr:hover { background: #eaf2f8; }
+
+/* ── 9. 响应式视频 ── */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+}
+.video-container iframe,
+.video-container video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+/* ── 10. 完整响应式布局 ── */
+.demo-full-layout {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "nav"
+    "main"
+    "aside"
+    "footer";
+  grid-template-rows: auto auto 1fr auto auto;
+  gap: 10px;
+  min-height: 320px;
+  font-size: .88em;
+  border: 1px solid #d5dbdb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.demo-full-layout > * { padding: 14px 18px; }
+.demo-full-layout .fl-header { grid-area: header; background: #1a5276; color: #fff; font-weight: 700; border-radius: 8px 8px 0 0; }
+.demo-full-layout .fl-nav { grid-area: nav; background: #2980b9; color: #fff; border-radius: 0; }
+.demo-full-layout .fl-main { grid-area: main; background: #fff; }
+.demo-full-layout .fl-aside { grid-area: aside; background: #eaf2f8; color: #1a5276; }
+.demo-full-layout .fl-footer { grid-area: footer; background: #34495e; color: #ecf0f1; border-radius: 0 0 8px 8px; }
+@media (min-width: 768px) {
+  .demo-full-layout {
+    grid-template-columns: 200px 1fr 180px;
+    grid-template-areas:
+      "header header header"
+      "nav    main   aside"
+      "footer footer footer";
+    grid-template-rows: auto 1fr auto;
+  }
+}
+
+/* ── 11. 响应式工具类 ── */
+.show-hide-demo { text-align: center; }
+.show-hide-demo .only-mobile {
+  background: #e74c3c; color: #fff;
+  padding: 8px 16px; border-radius: 6px;
+  display: none;
+}
+.show-hide-demo .only-tablet {
+  background: #f39c12; color: #fff;
+  padding: 8px 16px; border-radius: 6px;
+  display: none;
+}
+.show-hide-demo .only-desktop {
+  background: #27ae60; color: #fff;
+  padding: 8px 16px; border-radius: 6px;
+  display: none;
+}
+@media (max-width: 599px) { .show-hide-demo .only-mobile { display: inline-block; } }
+@media (min-width: 600px) and (max-width: 999px) { .show-hide-demo .only-tablet { display: inline-block; } }
+@media (min-width: 1000px) { .show-hide-demo .only-desktop { display: inline-block; } }
+</style>
+</head>
+<body>
+
+<nav class="nav-bar">
+  <a class="home" href="index.html">CSS2 / CSS3 首页</a>
+  <a href="01-selectors.html">选择器</a>
+  <a href="02-box-model.html">盒模型</a>
+  <a href="03-text-color.html">文本颜色</a>
+  <a href="04-layout.html">布局定位</a>
+  <a href="05-flex-grid.html">Flex </a>
+  <a href="06-responsive.html">响应式</a>
+  <a href="07-effects.html">过渡动画</a>
+  <a href="08-css3.html">CSS3增强</a>
+</nav>
+
+<h1>06 - 响应式设计</h1>
+<p>视口设置、媒体查询、流式布局、响应式图片/视频与移动端适配。</p>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 0. 什么是响应式设计 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" style="border-left:4px solid #8e44ad;">
+  <h2>什么是响应式设计？</h2>
+  <div class="note" style="background:#f5eef8;border-left-color:#8e44ad;">
+    <strong>响应式 Web 设计（Responsive Web Design, RWD）</strong>是一种让网页在<strong>所有设备</strong>上都能良好呈现的设计方法。
+    无论用户使用手机、平板还是桌面电脑访问，页面的布局、字体大小、图片尺寸都会<strong>自动适应</strong>当前屏幕，无需为每种设备单独开发一个网站。
+  </div>
+  <div class="demo-box">
+    <div class="demo-viewport" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+      <div class="viewport-card" style="border-top:4px solid #e74c3c;">
+        <div class="icon">📱</div>
+        <h4>手机（≤ 480px）</h4>
+        <p>单列布局，文字自动缩小，图片自适应宽度</p>
+      </div>
+      <div class="viewport-card" style="border-top:4px solid #f39c12;">
+        <div class="icon">📋</div>
+        <h4>平板（481-1024px）</h4>
+        <p>双列或三列布局，间距适中</p>
+      </div>
+      <div class="viewport-card" style="border-top:4px solid #27ae60;">
+        <div class="icon">🖥️</div>
+        <h4>桌面（≥ 1025px）</h4>
+        <p>多栏布局，内容区最宽，侧边栏展开</p>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:14px;color:#6c7a89;font-size:.88em;">
+      ↑ 以上三个卡片本身就是一个响应式网格 — 缩小窗口试试，它们会自动堆叠 ↑
+    </p>
+  </div>
+  <pre><code>/* 响应式设计的三大核心技术 */
+
+1. 流式布局 (Fluid Grid)
+   使用相对单位 (%, rem, vw, fr) 而非固定像素
+   容器宽度随屏幕自动伸缩
+
+2. 弹性媒体 (Flexible Media)
+   图片和视频设置 max-width: 100%
+   防止内容溢出容器
+
+3. 媒体查询 (Media Queries)
+   @media 条件 { CSS规则 }
+   在不同屏幕宽度下应用不同的样式</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 0b. 为什么需要响应式设计 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" style="border-left:4px solid #e67e22;">
+  <h2>为什么需要响应式设计？</h2>
+  <div class="demo-box">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <!-- 没有响应式 -->
+      <div style="background:#fdf2f2;border-radius:10px;padding:20px;border:2px solid #e74c3c;">
+        <h3 style="color:#e74c3c;margin-bottom:12px;">❌ 没有响应式</h3>
+        <ul style="list-style:none;padding:0;font-size:.9em;color:#5d6d7e;">
+          <li style="margin-bottom:8px;">• 固定 960px 宽度 → 手机需要左右滚动</li>
+          <li style="margin-bottom:8px;">• 桌面大图直接加载 → 浪费手机流量</li>
+          <li style="margin-bottom:8px;">• 小字在手机上看不清 → 用户体验差</li>
+          <li style="margin-bottom:8px;">• 可能需要维护两套网站 → 开发成本高</li>
+          <li style="margin-bottom:8px;">• SEO 不友好 → 搜索引擎降低排名</li>
+        </ul>
+      </div>
+      <!-- 有响应式 -->
+      <div style="background:#eafaf1;border-radius:10px;padding:20px;border:2px solid #27ae60;">
+        <h3 style="color:#27ae60;margin-bottom:12px;">✅ 有响应式</h3>
+        <ul style="list-style:none;padding:0;font-size:.9em;color:#5d6d7e;">
+          <li style="margin-bottom:8px;">• 一套代码适配所有设备 → 维护简单</li>
+          <li style="margin-bottom:8px;">• 布局自动伸缩 → 无需滚动查看</li>
+          <li style="margin-bottom:8px;">• 图片按需加载 → 省流量、加载快</li>
+          <li style="margin-bottom:8px;">• 字体自适应 → 任何屏幕都易读</li>
+          <li style="margin-bottom:8px;">• 搜索引擎统一索引 → SEO 友好</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="note" style="background:#fef9e7;border-left-color:#e67e22;">
+    <strong>关键数据：</strong>
+    全球超过 <strong>60%</strong> 的网页流量来自移动设备。
+    Google 自 2019 年起采用<strong>移动优先索引</strong>（Mobile-First Indexing），
+    即用移动端版本来评估和排名网站。没有响应式设计意味着在搜索引擎中处于劣势。
+  </div>
+  <pre><code>/* 响应式 vs 非响应式对比 */
+
+非响应式（旧做法）：
+  &lt;!-- 为手机单独建站 --&gt;
+  m.example.com  ← 手机用户跳转到 m 站
+  www.example.com ← 桌面用户访问原站
+  → 需要维护两套代码、两套内容
+
+响应式（现代做法）：
+  一套 HTML + CSS + 媒体查询
+  同一 URL，不同设备看到不同布局
+  → 一套代码、一套内容、自动适配</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 1. 视口 Meta 标签 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>1. 视口 Meta 标签</h2>
+  <div class="note">
+    所有响应式网页必须在 <code>&lt;head&gt;</code> 中添加：<br>
+    <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code><br>
+    它告诉浏览器：视口宽度 = 设备宽度，并以 100% 缩放渲染。没有它，移动端会按 980px 桌面视口渲染。
+  </div>
+  <div class="demo-box">
+    <div class="demo-viewport">
+      <div class="viewport-card">
+        <div class="icon">📱</div>
+        <h4>width=device-width</h4>
+        <p>视口宽度等于设备实际宽度</p>
+      </div>
+      <div class="viewport-card">
+        <div class="icon">🔍</div>
+        <h4>initial-scale=1.0</h4>
+        <p>初始缩放比例为 1:1</p>
+      </div>
+      <div class="viewport-card">
+        <div class="icon">🚫</div>
+        <h4>user-scalable=no</h4>
+        <p>禁止用户缩放（不推荐）</p>
+      </div>
+      <div class="viewport-card">
+        <div class="icon">📐</div>
+        <h4>min/max-scale</h4>
+        <p>限制缩放范围 0.5~2.0</p>
+      </div>
+    </div>
+  </div>
+  <pre><code>&lt;head&gt;
+  &lt;meta name="viewport"
+        content="width=device-width, initial-scale=1.0"&gt;
+&lt;/head&gt;
+
+/* 常见 viewport 属性 */
+width=device-width    设备宽度
+initial-scale=1.0    初始缩放
+maximum-scale=2.0    最大缩放
+minimum-scale=0.5    最小缩放
+user-scalable=yes    是否允许缩放</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 2. 媒体查询基础 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>2. 媒体查询（Media Queries）</h2>
+  <div class="note">
+    媒体查询根据设备特征（宽度、高度、方向等）有条件地应用 CSS 规则。<br>
+    <code>@media</code> 规则在满足条件时才生效，是响应式设计的核心技术。
+  </div>
+  <div class="demo-box">
+    <div class="demo-breakpoints">
+      <div class="bp-indicator bp-mobile">📱 移动端（&lt; 600px）</div>
+      <div class="bp-indicator bp-tablet">📋 平板端（600px ~ 999px）</div>
+      <div class="bp-indicator bp-desktop">🖥️ 桌面端（≥ 1000px）</div>
+    </div>
+    <p style="text-align:center;margin-top:12px;color:#6c7a89;font-size:.85em;">
+      ← 试试调整浏览器窗口宽度，观察上方色块变化 →
+    </p>
+  </div>
+  <pre><code>/* 基本语法 */
+@media 媒体类型 and (条件) {
+  /* CSS 规则 */
+}
+
+/* 示例：小于 600px 时背景变蓝 */
+@media only screen and (max-width: 600px) {
+  body { background-color: lightblue; }
+}
+
+/* 示例：平板端特定样式 */
+@media only screen and (min-width: 600px) and (max-width: 999px) {
+  .container { width: 95%; }
+}
+
+/* 示例：桌面端样式 */
+@media only screen and (min-width: 1000px) {
+  .container { max-width: 1200px; margin: 0 auto; }
+}
+
+/* 媒体类型 */
+all        所有设备（默认）
+screen     屏幕设备
+print      打印预览
+speech     屏幕阅读器</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 3. 断点与移动优先 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>3. 断点与移动优先（Mobile First）</h2>
+  <div class="note">
+    <strong>移动优先</strong>：先写移动端样式（无媒体查询），再用 <code>min-width</code> 向上增强。<br>
+    这比从桌面端开始用 <code>max-width</code> 缩减更符合渐进增强原则。<br>
+    推荐断点：480px（手机）、768px（平板）、1024px（桌面）、1200px（大屏）。
+  </div>
+  <div class="demo-box">
+    <div class="responsive-grid">
+      <div class="r-card">
+        <h4>📱 手机</h4>
+        <p>≤ 480px · 单列布局 · 紧凑间距</p>
+      </div>
+      <div class="r-card">
+        <h4>📱 大手机</h4>
+        <p>481-768px · 单列或双列 · 适中间距</p>
+      </div>
+      <div class="r-card">
+        <h4>📋 平板</h4>
+        <p>769-1024px · 双列布局 · 充足间距</p>
+      </div>
+      <div class="r-card">
+        <h4>🖥️ 桌面</h4>
+        <p>1025-1200px · 三列布局 · 宽松间距</p>
+      </div>
+      <div class="r-card">
+        <h4>🖥️ 大屏</h4>
+        <p>≥ 1201px · 三列+侧栏 · 最大宽度</p>
+      </div>
+      <div class="r-card">
+        <h4>⚙️ 工具</h4>
+        <p>Chrome DevTools 可模拟各种设备尺寸</p>
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── 移动优先写法（推荐）── */
+/* 基础样式：手机 */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* 平板及以上 */
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* 桌面及以上 */
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+/* ── 桌面优先写法（不推荐）── */
+.card-grid {
+  grid-template-columns: repeat(3, 1fr);  /* 桌面 */
+}
+@media (max-width: 767px) {
+  .card-grid {
+    grid-template-columns: 1fr;  /* 手机覆盖 */
+  }
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 4. 响应式网格布局 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>4. 响应式网格布局</h2>
+  <div class="note">
+    使用 CSS Grid 的 <code>repeat()</code> + <code>auto-fill</code>/<code>auto-fit</code> + <code>minmax()</code> 
+    可以实现无需媒体查询的响应式网格。浏览器自动根据容器宽度决定列数。
+  </div>
+  <div class="demo-box">
+    <div class="responsive-grid">
+      <div class="r-card"><h4>卡片 A</h4><p>自动适应容器宽度</p></div>
+      <div class="r-card"><h4>卡片 B</h4><p>无需媒体查询</p></div>
+      <div class="r-card"><h4>卡片 C</h4><p>自动换行排列</p></div>
+      <div class="r-card"><h4>卡片 D</h4><p>间距由 gap 控制</p></div>
+      <div class="r-card"><h4>卡片 E</h4><p>宽度 >= minmax 最小值</p></div>
+      <div class="r-card"><h4>卡片 F</h4><p>宽度 <= minmax 最大值</p></div>
+    </div>
+  </div>
+  <pre><code>/* ── auto-fill：自动填充尽可能多的列 ── */
+.auto-fill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+/* ── auto-fit：拉伸填充可用空间 ── */
+.auto-fit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+/* 区别：auto-fill 保留空列，auto-fit 拉伸填满 */
+
+/* ── 12 列响应式网格（经典）── */
+.row { display: flex; flex-wrap: wrap; gap: 16px; }
+.col-4  { flex: 0 0 calc(33.333% - 11px); } /* 4/12 = 33% */
+.col-6  { flex: 0 0 calc(50% - 8px); }      /* 6/12 = 50% */
+.col-12 { flex: 0 0 100%; }                  /* 12/12 = 100% */
+@media (max-width: 768px) {
+  .col-4, .col-6 { flex: 0 0 100%; }        /* 手机全部单列 */
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 5. 响应式图片 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>5. 响应式图片</h2>
+  <div class="note">
+    响应式图片的核心：<code>max-width: 100%</code> 让图片不超过容器宽度，<code>height: auto</code> 保持宽高比。<br>
+    使用 <code>&lt;picture&gt;</code> 元素和 <code>srcset</code> 属性可以根据屏幕尺寸加载不同分辨率的图片。
+  </div>
+  <div class="demo-box">
+    <div class="fluid-image-demo">
+      <div class="fluid-img-box">
+        <div class="label">✅ max-width: 100%（响应式）</div>
+        <img src="https://picsum.photos/seed/rwd1/600/300" alt="响应式图片示例">
+      </div>
+      <div class="fluid-img-box">
+        <div class="label">❌ 固定宽度 600px（溢出容器）</div>
+        <img src="https://picsum.photos/seed/rwd2/600/300" alt="固定宽度图片示例" class="fixed">
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── 基础响应式图片 ── */
+img {
+  max-width: 100%;   /* 不超过容器 */
+  height: auto;      /* 保持宽高比 */
+}
+
+/* ── &lt;picture&gt; 元素：不同屏幕加载不同图片 ── */
+&lt;picture&gt;
+  &lt;source srcset="img-large.jpg"  media="(min-width: 1024px)"&gt;
+  &lt;source srcset="img-medium.jpg" media="(min-width: 600px)"&gt;
+  &lt;img src="img-small.jpg" alt="响应式图片"&gt;
+&lt;/picture&gt;
+
+/* ── srcset 属性：浏览器自动选择最佳图片 ── */
+&lt;img src="img-800.jpg"
+     srcset="img-400.jpg 400w,
+             img-800.jpg 800w,
+             img-1200.jpg 1200w"
+     sizes="(max-width: 600px) 100vw,
+            (max-width: 1024px) 50vw,
+            33vw"
+     alt="自适应图片"&gt;
+
+/* ── 响应式视频 ── */
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;  /* 16:9 比例 */
+  height: 0;
+  overflow: hidden;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 6. 流式排版 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>6. 流式排版（Fluid Typography）</h2>
+  <div class="note">
+    使用 <code>calc()</code> 结合 <code>rem</code> 和 <code>vw</code> 单位，可以让字号随视口宽度平滑缩放，<br>
+    无需在每个断点重复设置 <code>font-size</code>。这比在媒体查询中逐个调整更优雅。
+  </div>
+  <div class="demo-box">
+    <div class="fluid-type-demo">
+      <h3>这段标题会随窗口缩放</h3>
+      <p>这段正文也会平滑变化。拖动浏览器窗口边缘，观察字号如何从移动端的小尺寸过渡到桌面端的大尺寸，无需任何断点切换。</p>
+    </div>
+  </div>
+  <pre><code>/* ── 流式排版 ── */
+h1 {
+  /* 最小 1.5rem，随视口增加 4vw */
+  font-size: calc(1.5rem + 4vw);
+}
+
+p {
+  font-size: calc(0.875rem + 0.5vw);
+}
+
+/* ── 配合 clamp() 更简洁（CSS3）── */
+h1 {
+  font-size: clamp(1.5rem, 4vw + 0.5rem, 3.5rem);
+  /*        最小值   理想值            最大值 */
+}
+
+/* ── Viewport 单位 ── */
+vw  视口宽度的 1%  (1vw = 视口宽度 / 100)
+vh  视口高度的 1%  (1vh = 视口高度 / 100)
+vmin 取 vw 和 vh 中较小的值
+vmax 取 vw 和 vh 中较大的值</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 7. Viewport 单位 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>7. Viewport 单位</h2>
+  <div class="note">
+    <code>vw</code>、<code>vh</code>、<code>vmin</code>、<code>vmax</code> 是相对视口尺寸的单位，<br>
+    常用于全屏布局、响应式间距和流式排版。注意不要单独用 <code>vw</code> 设置文字大小，会影响可缩放性。
+  </div>
+  <div class="demo-box">
+    <div class="vw-demo">
+      <div class="vw-box vw">3vw</div>
+      <div class="vw-box vh">3vh</div>
+      <div class="vw-box rem">1.2rem</div>
+    </div>
+    <p style="text-align:center;margin-top:12px;color:#6c7a89;font-size:.85em;">
+      对比：vw 随窗口变化 · vh 随窗口高度变化 · rem 固定不变
+    </p>
+  </div>
+  <pre><code>/* Viewport 单位示例 */
+.full-screen-section {
+  width: 100vw;     /* 满视口宽度 */
+  min-height: 100vh; /* 至少满视口高度 */
+  padding: 5vw;     /* 与视口成比例的内边距 */
+}
+
+/* vmin 示例：取较小的视口维度 */
+.icon {
+  font-size: 10vmin; /* 在手机竖屏时跟随宽度，在横屏时跟随高度 */
+}
+
+/* 全屏背景 */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 8. 响应式导航栏 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>8. 响应式导航栏</h2>
+  <div class="note">
+    桌面端水平排列导航链接，移动端折叠为汉堡菜单按钮。通过媒体查询切换布局。<br>
+    点击下方示例中的 ☰ 按钮可切换导航展开/收起。
+  </div>
+  <div class="demo-box">
+    <div class="demo-nav">
+      <div class="nav-header">
+        <span>MySite</span>
+        <button class="hamburger" onclick="this.closest('.demo-nav').querySelector('.nav-links').classList.toggle('active')">☰</button>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">产品</a></li>
+        <li><a href="#">关于我们</a></li>
+        <li><a href="#">博客</a></li>
+        <li><a href="#">联系方式</a></li>
+      </ul>
+    </div>
+  </div>
+  <pre><code>/* ── 桌面端：水平导航 ── */
+.nav { display: flex; align-items: center; }
+.nav-links { display: flex; gap: 8px; list-style: none; }
+.hamburger { display: none; }  /* 隐藏菜单按钮 */
+
+/* ── 移动端：汉堡菜单 ── */
+@media (max-width: 600px) {
+  .hamburger { display: block; }   /* 显示菜单按钮 */
+  .nav-links {
+    display: none;                 /* 默认隐藏链接 */
+    flex-direction: column;        /* 纵向排列 */
+    width: 100%;
+  }
+  .nav-links.active { display: flex; }  /* JS 切换 */
+}
+
+/* ── 纯 CSS 方案（使用 :target 或 checkbox hack）── */
+.nav-toggle:checked ~ .nav-links { display: flex; }
+.nav-toggle:checked ~ .hamburger .open { display: none; }
+.nav-toggle:checked ~ .hamburger .close { display: block; }</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 9. 响应式表格 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>9. 响应式表格</h2>
+  <div class="note">
+    表格在小屏幕上容易溢出。常用方案：外层 <code>overflow-x: auto</code> 实现横向滚动，<br>
+    或将表格转换为卡片列表。
+  </div>
+  <div class="demo-box">
+    <div class="responsive-table-wrapper">
+      <table class="responsive-table">
+        <thead>
+          <tr>
+            <th>技术</th>
+            <th>作用</th>
+            <th>适用场景</th>
+            <th>学习难度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Media Queries</td>
+            <td>根据屏幕宽度切换样式</td>
+            <td>所有响应式页面</td>
+            <td>⭐</td>
+          </tr>
+          <tr>
+            <td>CSS Grid</td>
+            <td>二维网格布局</td>
+            <td>复杂页面骨架</td>
+            <td>⭐⭐</td>
+          </tr>
+          <tr>
+            <td>Flexbox</td>
+            <td>一维弹性布局</td>
+            <td>导航栏、卡片行</td>
+            <td>⭐</td>
+          </tr>
+          <tr>
+            <td>Viewport 单位</td>
+            <td>相对视口的尺寸单位</td>
+            <td>全屏、流式排版</td>
+            <td>⭐</td>
+          </tr>
+          <tr>
+            <td>clamp()</td>
+            <td>限制值在最小与最大之间</td>
+            <td>流式排版</td>
+            <td>⭐</td>
+          </tr>
+          <tr>
+            <td>&lt;picture&gt;</td>
+            <td>根据条件加载不同图片</td>
+            <td>响应式图片</td>
+            <td>⭐⭐</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <pre><code>/* 方案 1：横向滚动 */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+table { min-width: 600px; }
+
+/* 方案 2：小屏变卡片 */
+@media (max-width: 600px) {
+  table, thead, tbody, th, td, tr { display: block; }
+  thead { display: none; }
+  td {
+    padding: 8px 14px;
+    position: relative;
+    padding-left: 50%;
+  }
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 14px;
+    font-weight: 700;
+  }
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 10. 完整响应式布局示例 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>10. 完整响应式布局示例</h2>
+  <div class="note">
+    一个典型的响应式页面骨架：Header + Nav + Main + Sidebar + Footer。<br>
+    移动端单列堆叠，桌面端三栏并排。拖动窗口观察布局切换。
+  </div>
+  <div class="demo-box">
+    <div class="demo-full-layout">
+      <div class="fl-header">Header — 网站头部</div>
+      <div class="fl-nav">Nav — 导航栏</div>
+      <div class="fl-main">
+        <strong>Main — 主内容区</strong><br>
+        这里放置文章、列表、表单等主要内容。在移动端占据全部宽度，在桌面端只占中间一列。
+      </div>
+      <div class="fl-aside">
+        <strong>Aside — 侧边栏</strong><br>
+        相关链接、广告、标签云等辅助内容。
+      </div>
+      <div class="fl-footer">Footer — 页脚 © 2024</div>
+    </div>
+  </div>
+  <pre><code>/* ── 移动优先的完整布局 ── */
+.layout {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "nav"
+    "main"
+    "aside"
+    "footer";
+  gap: 10px;
+}
+
+.layout .header  { grid-area: header; }
+.layout .nav     { grid-area: nav; }
+.layout .main    { grid-area: main; }
+.layout .aside   { grid-area: aside; }
+.layout .footer  { grid-area: footer; }
+
+/* ── 桌面端切换为三栏 ── */
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 200px 1fr 180px;
+    grid-template-areas:
+      "header header header"
+      "nav    main   aside"
+      "footer footer footer";
+  }
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 11. 响应式工具类 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>11. 响应式工具类</h2>
+  <div class="note">
+    常见框架（Bootstrap、Tailwind）提供按设备显隐的工具类。<br>
+    下方演示根据不同视口宽度显示不同标签。
+  </div>
+  <div class="demo-box">
+    <div class="show-hide-demo">
+      <span class="only-mobile">📱 仅移动端可见</span>
+      <span class="only-tablet">📋 仅平板端可见</span>
+      <span class="only-desktop">🖥️ 仅桌面端可见</span>
+    </div>
+  </div>
+  <pre><code>/* ── 显隐工具类（移动优先）── */
+.hide-mobile  { display: none; }
+.hide-tablet  { display: none; }
+.hide-desktop { display: none; }
+
+@media (max-width: 599px) {
+  .show-mobile  { display: block; }   /* 手机显示 */
+  .hide-mobile  { display: none; }    /* 手机隐藏 */
+}
+@media (min-width: 600px) and (max-width: 999px) {
+  .show-tablet  { display: block; }   /* 平板显示 */
+  .hide-tablet  { display: none; }    /* 平板隐藏 */
+}
+@media (min-width: 1000px) {
+  .show-desktop { display: block; }   /* 桌面显示 */
+  .hide-desktop { display: none; }    /* 桌面隐藏 */
+}
+
+/* ── 常见 Bootstrap 工具类 ── */
+.d-none            { display: none !important; }
+.d-md-block        { display: block @media(md); }
+.d-lg-flex         { display: flex @media(lg); }
+.text-center       { text-align: center; }
+.text-md-left      { text-align: left @media(md); }</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 12. 最佳实践总结 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>12. 响应式设计最佳实践</h2>
+  <div class="note">
+    总结响应式设计的关键原则和常见陷阱。
+  </div>
+  <div class="demo-box">
+    <div class="responsive-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+      <div class="r-card" style="border-top-color: #27ae60;">
+        <h4>✅ 移动优先</h4>
+        <p>先写手机样式，用 min-width 向上增强。更少的覆盖，更清晰的代码。</p>
+      </div>
+      <div class="r-card" style="border-top-color: #27ae60;">
+        <h4>✅ 用相对单位</h4>
+        <p>rem、em、vw、%、fr。避免固定 px，让布局自然流动。</p>
+      </div>
+      <div class="r-card" style="border-top-color: #27ae60;">
+        <h4>✅ 流式图片</h4>
+        <p>img { max-width: 100%; height: auto; } 一行代码解决 90% 的图片溢出问题。</p>
+      </div>
+      <div class="r-card" style="border-top-color: #e74c3c;">
+        <h4>❌ 隐藏内容</h4>
+        <p>不要因为小屏就隐藏重要信息。重新排列内容，而不是删除它。</p>
+      </div>
+      <div class="r-card" style="border-top-color: #e74c3c;">
+        <h4>❌ 固定宽度容器</h4>
+        <p>width: 960px 会让移动端溢出。用 max-width + 百分比替代。</p>
+      </div>
+      <div class="r-card" style="border-top-color: #e74c3c;">
+        <h4>❌ 只测一个设备</h4>
+        <p>用 Chrome DevTools 的设备模拟测试多种尺寸，不要只看手机。</p>
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── 推荐的响应式 CSS Reset 片段 ── */
+* {
+  box-sizing: border-box;
+}
+
+img, picture, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── 常见断点参考 ── */
+/* 手机竖屏 */  @media (max-width: 575px)  { }
+/* 手机横屏 */  @media (min-width: 576px)  { }
+/* 平板 */      @media (min-width: 768px)  { }
+/* 桌面 */      @media (min-width: 992px)  { }
+/* 大屏 */      @media (min-width: 1200px) { }
+
+/* ── 性能优化 ── */
+/* 使用图片 CDN + srcset 按需加载 */
+/* 避免在移动端加载桌面大图 */</code></pre>
+</div>
+
+<script src="js/example-playground.js"></script>
+</body>
+</html>

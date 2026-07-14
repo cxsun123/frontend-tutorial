@@ -27,9 +27,14 @@
   }
 
   function getInlineStyles() {
-    return Array.prototype.map.call(document.querySelectorAll('style'), function(style) {
-      return '    <style>\n' + indentLines(style.textContent.trim(), 8) + '\n    </style>';
-    });
+    return Array.prototype.map.call(
+      Array.prototype.filter.call(document.querySelectorAll('style'), function(style) {
+        return style.parentNode && style.parentNode.tagName !== 'HEAD';
+      }),
+      function(style) {
+        return '    <style>\n' + indentLines(style.textContent.trim(), 8) + '\n    </style>';
+      }
+    );
   }
 
   function getPlaygroundHeadExtras() {

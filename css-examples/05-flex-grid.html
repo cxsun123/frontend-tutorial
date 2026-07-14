@@ -1,16 +1,881 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>05 - Flex 与 Grid</title><link rel="stylesheet" href="css/style.css"></head><body><nav class="nav-bar"><a class="home" href="index.html">CSS2 / CSS3 首页</a><a href="01-selectors.html">选择器</a><a href="02-box-model.html">盒模型</a><a href="03-text-color.html">文本颜色</a><a href="04-layout.html">布局定位</a><a href="05-flex-grid.html">Flex </a><a href="06-responsive.html">响应式</a><a href="07-effects.html">过渡动画</a><a href="08-css3.html">CSS3增强</a></nav><h1>05 - Flex 与 Grid</h1><p>现代一维与二维布局。</p><div class="section"><h2>1. Flexbox</h2><div class="note">Flex 适合一维布局和空间分配。</div><div class="demo-box"><div class="flex-demo"><div>1</div><div>2</div><div>3</div></div></div><pre><code>&lt;style&gt;
-.flex-demo { display: flex; gap: 12px; justify-content: space-between; }
-.flex-demo div { flex: 1; background: #e8f8f5; padding: 20px; text-align: center; border-radius: 8px; }
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05 - Flex 与 Grid</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .flex-item { background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px; padding: 16px; text-align: center; font-weight: bold; color: #1a5276; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+    .flex-item-green { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+    .flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+    .flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+    .flex-item-red { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+    .dir-row { display: flex; flex-direction: row; gap: 10px; }
+    .dir-row-reverse { display: flex; flex-direction: row-reverse; gap: 10px; }
+    .dir-column { display: flex; flex-direction: column; gap: 10px; }
+    .dir-column-reverse { display: flex; flex-direction: column-reverse; gap: 10px; }
+
+    .jc-demo { display: flex; gap: 10px; min-height: 70px; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 10px; background: #fafbfc; margin-bottom: 12px; }
+    .jc-label { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 4px; font-weight: bold; }
+
+    .ai-demo { display: flex; gap: 10px; height: 120px; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 10px; background: #fafbfc; margin-bottom: 12px; }
+    .ai-item { width: 80px; }
+
+    .flex-grow-demo { display: flex; gap: 10px; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 10px; background: #fafbfc; margin-bottom: 12px; }
+    .fg-1 { flex-grow: 1; }
+    .fg-2 { flex-grow: 2; }
+    .fg-3 { flex-grow: 3; }
+
+    .flex-basis-demo { display: flex; gap: 10px; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 10px; background: #fafbfc; }
+    .fb-auto { flex-basis: auto; }
+    .fb-150 { flex-basis: 150px; }
+    .fb-200 { flex-basis: 200px; }
+
+    .order-demo { display: flex; gap: 10px; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 10px; background: #fafbfc; }
+
+    .align-self-demo { display: flex; gap: 10px; height: 160px; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 10px; background: #fafbfc; }
+
+    .wrap-demo { display: flex; flex-wrap: wrap; gap: 10px; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 10px; background: #fafbfc; }
+    .wrap-demo .flex-item { min-width: 120px; }
+
+    .grid-item { background: #fdf2e9; border: 2px solid #e67e22; border-radius: 8px; padding: 20px; text-align: center; font-weight: bold; color: #935116; }
+    .grid-item-blue { background: #d6eaf8; border-color: #2980b9; color: #1a5276; }
+    .grid-item-green { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+    .grid-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+
+    .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .compare-card { border: 1px solid #d5dbdb; border-radius: 8px; padding: 16px; background: white; }
+    .compare-card h4 { margin-bottom: 8px; color: #2980b9; }
+    .compare-card .mini-demo { min-height: 60px; border: 1px dashed #bdc3c7; border-radius: 6px; background: #fafbfc; padding: 8px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <a class="home" href="index.html">CSS2 / CSS3 首页</a>
+    <a href="01-selectors.html">选择器</a>
+    <a href="02-box-model.html">盒模型</a>
+    <a href="03-text-color.html">文本颜色</a>
+    <a href="04-layout.html">布局定位</a>
+    <a href="05-flex-grid.html">Flex </a>
+    <a href="06-responsive.html">响应式</a>
+    <a href="07-effects.html">过渡动画</a>
+    <a href="08-css3.html">CSS3增强</a>
+  </nav>
+
+  <h1>05 - Flex 与 Grid</h1>
+  <p>Flexbox 用于一维布局（行或列），Grid 用于二维布局（行和列同时控制）。</p>
+
+  <!-- ==================== Flexbox ==================== -->
+  <div class="section">
+    <h2>1. Flexbox 基础</h2>
+    <div class="note">
+      设置 <code>display: flex</code> 后，容器变为<strong>弹性容器</strong>，子元素变为<strong>弹性项目</strong>。弹性项目沿主轴（main axis）排列，默认方向为水平（row）。
+    </div>
+
+    <h3>1.1 弹性容器与弹性项目</h3>
+    <div class="demo-box">
+      <div style="display:flex;gap:10px;">
+        <div class="flex-item">1</div>
+        <div class="flex-item flex-item-green">2</div>
+        <div class="flex-item flex-item-orange">3</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.container { display: flex; gap: 10px; }
+.item { padding: 16px; border-radius: 8px; }
 &lt;/style&gt;
 
-&lt;div class="flex-demo"&gt;&lt;div&gt;1&lt;/div&gt;&lt;div&gt;2&lt;/div&gt;&lt;div&gt;3&lt;/div&gt;&lt;/div&gt;</code></pre></div><div class="section"><h2>2. Grid</h2><div class="note">Grid 适合同时控制行和列。</div><div class="demo-box"><div class="grid-demo"><div>A</div><div>B</div><div>C</div><div>D</div></div></div><pre><code>&lt;style&gt;
-.grid-demo { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.grid-demo div { background: #fdf2e9; padding: 24px; border-radius: 8px; text-align: center; }
+&lt;div class="container"&gt;
+  &lt;div class="item"&gt;1&lt;/div&gt;
+  &lt;div class="item"&gt;2&lt;/div&gt;
+  &lt;div class="item"&gt;3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2. flex-direction — 主轴方向</h2>
+    <div class="note">
+      <code>flex-direction</code> 决定主轴方向，即弹性项目的排列方向。<br>
+      <code>row</code>（默认）= 从左到右 | <code>row-reverse</code> = 从右到左 | <code>column</code> = 从上到下 | <code>column-reverse</code> = 从下到上
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>flex-direction: row</h4>
+        <div class="mini-demo dir-row">
+          <div class="flex-item">A</div>
+          <div class="flex-item flex-item-green">B</div>
+          <div class="flex-item flex-item-orange">C</div>
+        </div>
+      </div>
+      <div class="compare-card">
+        <h4>flex-direction: row-reverse</h4>
+        <div class="mini-demo dir-row-reverse">
+          <div class="flex-item">A</div>
+          <div class="flex-item flex-item-green">B</div>
+          <div class="flex-item flex-item-orange">C</div>
+        </div>
+      </div>
+      <div class="compare-card">
+        <h4>flex-direction: column</h4>
+        <div class="mini-demo dir-column">
+          <div class="flex-item">A</div>
+          <div class="flex-item flex-item-green">B</div>
+          <div class="flex-item flex-item-orange">C</div>
+        </div>
+      </div>
+      <div class="compare-card">
+        <h4>flex-direction: column-reverse</h4>
+        <div class="mini-demo dir-column-reverse">
+          <div class="flex-item">A</div>
+          <div class="flex-item flex-item-green">B</div>
+          <div class="flex-item flex-item-orange">C</div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.row         { display: flex; flex-direction: row; gap: 10px; }
+.row-reverse { display: flex; flex-direction: row-reverse; gap: 10px; }
+.column      { display: flex; flex-direction: column; gap: 10px; }
+.col-reverse { display: flex; flex-direction: column-reverse; gap: 10px; }
 &lt;/style&gt;
 
-&lt;div class="grid-demo"&gt;&lt;div&gt;A&lt;/div&gt;&lt;div&gt;B&lt;/div&gt;&lt;div&gt;C&lt;/div&gt;&lt;div&gt;D&lt;/div&gt;&lt;/div&gt;</code></pre></div><div class="section"><h2>3. 练习片段</h2><div class="note">打开试验场后可以直接修改数值观察结果。</div><div class="demo-box"><button class="try-4">悬停观察</button></div><pre><code>&lt;style&gt;
-.try-4 { background: #3498db; color: white; transition: transform .2s, background .2s; }
-.try-4:hover { background: #2ecc71; transform: translateY(-3px); }
+&lt;div class="row"&gt;
+  &lt;div class="flex-item"&gt;A&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green"&gt;B&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange"&gt;C&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="column" style="height:200px;"&gt;
+  &lt;div class="flex-item"&gt;A&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green"&gt;B&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange"&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>3. flex-wrap — 换行</h2>
+    <div class="note">
+      默认情况下弹性项目不换行（<code>nowrap</code>），容器空间不足时项目会压缩。<code>wrap</code> 允许换行，<code>wrap-reverse</code> 反向换行。
+    </div>
+
+    <h3>3.1 nowrap（默认）vs wrap</h3>
+    <div class="demo-box">
+      <p class="jc-label">nowrap — 不换行，项目被压缩：</p>
+      <div style="display:flex;gap:10px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;margin-bottom:16px;">
+        <div class="flex-item" style="min-width:150px;">1</div>
+        <div class="flex-item flex-item-green" style="min-width:150px;">2</div>
+        <div class="flex-item flex-item-orange" style="min-width:150px;">3</div>
+        <div class="flex-item flex-item-purple" style="min-width:150px;">4</div>
+        <div class="flex-item flex-item-red" style="min-width:150px;">5</div>
+      </div>
+      <p class="jc-label">wrap — 自动换行：</p>
+      <div class="wrap-demo">
+        <div class="flex-item" style="min-width:150px;">1</div>
+        <div class="flex-item flex-item-green" style="min-width:150px;">2</div>
+        <div class="flex-item flex-item-orange" style="min-width:150px;">3</div>
+        <div class="flex-item flex-item-purple" style="min-width:150px;">4</div>
+        <div class="flex-item flex-item-red" style="min-width:150px;">5</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.nowrap { display: flex; flex-wrap: nowrap; gap: 10px; }
+.wrap   { display: flex; flex-wrap: wrap; gap: 10px; }
 &lt;/style&gt;
 
-&lt;button class="try-4"&gt;悬停观察&lt;/button&gt;</code></pre></div><script src="js/example-playground.js"></script></body></html>
+&lt;div class="nowrap"&gt;
+  &lt;div class="flex-item" style="min-width:150px;"&gt;1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="min-width:150px;"&gt;2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="min-width:150px;"&gt;3&lt;/div&gt;
+  &lt;div class="flex-item flex-item-purple" style="min-width:150px;"&gt;4&lt;/div&gt;
+  &lt;div class="flex-item flex-item-red" style="min-width:150px;"&gt;5&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="wrap"&gt;
+  &lt;div class="flex-item" style="min-width:150px;"&gt;1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="min-width:150px;"&gt;2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="min-width:150px;"&gt;3&lt;/div&gt;
+  &lt;div class="flex-item flex-item-purple" style="min-width:150px;"&gt;4&lt;/div&gt;
+  &lt;div class="flex-item flex-item-red" style="min-width:150px;"&gt;5&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4. justify-content — 主轴对齐</h2>
+    <div class="note">
+      <code>justify-content</code> 控制弹性项目在<strong>主轴</strong>方向上的对齐方式。
+    </div>
+
+    <div class="demo-box">
+      <p class="jc-label">flex-start（默认）</p>
+      <div class="jc-demo" style="justify-content:flex-start;">
+        <div class="flex-item" style="width:60px;">1</div>
+        <div class="flex-item flex-item-green" style="width:60px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:60px;">3</div>
+      </div>
+      <p class="jc-label">flex-end</p>
+      <div class="jc-demo" style="justify-content:flex-end;">
+        <div class="flex-item" style="width:60px;">1</div>
+        <div class="flex-item flex-item-green" style="width:60px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:60px;">3</div>
+      </div>
+      <p class="jc-label">center</p>
+      <div class="jc-demo" style="justify-content:center;">
+        <div class="flex-item" style="width:60px;">1</div>
+        <div class="flex-item flex-item-green" style="width:60px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:60px;">3</div>
+      </div>
+      <p class="jc-label">space-between</p>
+      <div class="jc-demo" style="justify-content:space-between;">
+        <div class="flex-item" style="width:60px;">1</div>
+        <div class="flex-item flex-item-green" style="width:60px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:60px;">3</div>
+      </div>
+      <p class="jc-label">space-around</p>
+      <div class="jc-demo" style="justify-content:space-around;">
+        <div class="flex-item" style="width:60px;">1</div>
+        <div class="flex-item flex-item-green" style="width:60px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:60px;">3</div>
+      </div>
+      <p class="jc-label">space-evenly</p>
+      <div class="jc-demo" style="justify-content:space-evenly;">
+        <div class="flex-item" style="width:60px;">1</div>
+        <div class="flex-item flex-item-green" style="width:60px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:60px;">3</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px; min-height: 70px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc; margin-bottom: 12px;
+}
+&lt;/style&gt;
+
+&lt;div class="demo-container" style="justify-content:flex-start;"&gt;
+  &lt;div class="flex-item" style="width:60px;"&gt;1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="width:60px;"&gt;2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="width:60px;"&gt;3&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="demo-container" style="justify-content:center;"&gt;
+  &lt;div class="flex-item" style="width:60px;"&gt;1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="width:60px;"&gt;2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="width:60px;"&gt;3&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="demo-container" style="justify-content:space-between;"&gt;
+  &lt;div class="flex-item" style="width:60px;"&gt;1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="width:60px;"&gt;2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="width:60px;"&gt;3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>5. align-items — 交叉轴对齐</h2>
+    <div class="note">
+      <code>align-items</code> 控制弹性项目在<strong>交叉轴</strong>（与主轴垂直的方向）上的对齐方式。
+    </div>
+
+    <div class="demo-box">
+      <p class="jc-label">stretch（默认）— 拉伸填满</p>
+      <div class="ai-demo" style="align-items:stretch;">
+        <div class="flex-item">A</div>
+        <div class="flex-item flex-item-green" style="height:auto;">B<br>两行</div>
+        <div class="flex-item flex-item-orange">C</div>
+      </div>
+      <p class="jc-label">center — 居中</p>
+      <div class="ai-demo" style="align-items:center;">
+        <div class="flex-item ai-item">A</div>
+        <div class="flex-item flex-item-green ai-item">B</div>
+        <div class="flex-item flex-item-orange ai-item">C</div>
+      </div>
+      <p class="jc-label">flex-start — 顶部对齐</p>
+      <div class="ai-demo" style="align-items:flex-start;">
+        <div class="flex-item ai-item">A</div>
+        <div class="flex-item flex-item-green ai-item">B</div>
+        <div class="flex-item flex-item-orange ai-item">C</div>
+      </div>
+      <p class="jc-label">flex-end — 底部对齐</p>
+      <div class="ai-demo" style="align-items:flex-end;">
+        <div class="flex-item ai-item">A</div>
+        <div class="flex-item flex-item-green ai-item">B</div>
+        <div class="flex-item flex-item-orange ai-item">C</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px; height: 120px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+&lt;/style&gt;
+
+&lt;div class="demo-container" style="align-items:stretch;"&gt;
+  &lt;div class="flex-item" style="width:80px;"&gt;A&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="width:80px;"&gt;B&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="width:80px;"&gt;C&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="demo-container" style="align-items:center;"&gt;
+  &lt;div class="flex-item" style="width:80px;"&gt;A&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="width:80px;"&gt;B&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="width:80px;"&gt;C&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="demo-container" style="align-items:flex-end;"&gt;
+  &lt;div class="flex-item" style="width:80px;"&gt;A&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="width:80px;"&gt;B&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="width:80px;"&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6. gap — 间距</h2>
+    <div class="note">
+      <code>gap</code> 设置弹性项目之间的间距，替代传统的 margin 方案，不会在容器边缘产生多余间距。
+    </div>
+
+    <div class="demo-box">
+      <p class="jc-label">gap: 10px</p>
+      <div style="display:flex;gap:10px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;margin-bottom:12px;">
+        <div class="flex-item">1</div>
+        <div class="flex-item flex-item-green">2</div>
+        <div class="flex-item flex-item-orange">3</div>
+      </div>
+      <p class="jc-label">gap: 20px 8px（行间距 20px，列间距 8px）</p>
+      <div style="display:flex;flex-wrap:wrap;gap:20px 8px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;">
+        <div class="flex-item" style="min-width:100px;">1</div>
+        <div class="flex-item flex-item-green" style="min-width:100px;">2</div>
+        <div class="flex-item flex-item-orange" style="min-width:100px;">3</div>
+        <div class="flex-item flex-item-purple" style="min-width:100px;">4</div>
+        <div class="flex-item flex-item-red" style="min-width:100px;">5</div>
+        <div class="flex-item" style="min-width:100px;">6</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; flex-wrap: wrap; gap: 20px 8px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item" style="min-width:100px;"&gt;1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="min-width:100px;"&gt;2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="min-width:100px;"&gt;3&lt;/div&gt;
+  &lt;div class="flex-item flex-item-purple" style="min-width:100px;"&gt;4&lt;/div&gt;
+  &lt;div class="flex-item flex-item-red" style="min-width:100px;"&gt;5&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7. flex — 弹性分配</h2>
+    <div class="note">
+      <code>flex</code> 是 <code>flex-grow</code> + <code>flex-shrink</code> + <code>flex-basis</code> 的简写。<br>
+      <code>flex-grow</code>：空间富余时的放大比例（默认 0 不放大）<br>
+      <code>flex-shrink</code>：空间不足时的缩小比例（默认 1）<br>
+      <code>flex-basis</code>：初始大小（默认 auto）
+    </div>
+
+    <h3>7.1 flex-grow — 放大比例</h3>
+    <div class="demo-box">
+      <div class="flex-grow-demo">
+        <div class="flex-item fg-1">flex: 1</div>
+        <div class="flex-item flex-item-green fg-2">flex: 2</div>
+        <div class="flex-item flex-item-orange fg-3">flex: 3</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+.item-a { flex: 1; }  /* 占 1/6 */
+.item-b { flex: 2; }  /* 占 2/6 = 1/3 */
+.item-c { flex: 3; }  /* 占 3/6 = 1/2 */
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item item-a"&gt;flex: 1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green item-b"&gt;flex: 2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange item-c"&gt;flex: 3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>7.2 flex-basis — 初始大小</h3>
+    <div class="demo-box">
+      <div class="flex-basis-demo">
+        <div class="flex-item fb-auto">auto</div>
+        <div class="flex-item flex-item-green fb-150">150px</div>
+        <div class="flex-item flex-item-orange fb-200">200px</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+.item-a { flex-basis: auto; }   /* 根据内容决定 */
+.item-b { flex-basis: 150px; }  /* 固定 150px */
+.item-c { flex-basis: 200px; }  /* 固定 200px */
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item item-a"&gt;auto&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green item-b"&gt;150px&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange item-c"&gt;200px&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>7.3 flex-shrink — 缩小比例</h3>
+    <div class="note">
+      当容器空间不足时，<code>flex-shrink</code> 控制项目如何缩小。默认值为 1（等比例缩小），设为 0 则不缩小。
+    </div>
+    <div class="demo-box">
+      <p class="jc-label">容器宽度固定，项目总宽超出容器 — 看谁缩小更多：</p>
+      <div style="display:flex;gap:10px;width:400px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;">
+        <div class="flex-item" style="flex-shrink:0;width:150px;">shrink:0<br>不缩小</div>
+        <div class="flex-item flex-item-green" style="flex-shrink:1;width:150px;">shrink:1<br>默认</div>
+        <div class="flex-item flex-item-orange" style="flex-shrink:2;width:150px;">shrink:2<br>缩小2倍</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px; width: 400px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+.item-a { flex-shrink: 0; width: 150px; } /* 不缩小，可能溢出 */
+.item-b { flex-shrink: 1; width: 150px; } /* 默认，等比缩小 */
+.item-c { flex-shrink: 2; width: 150px; } /* 缩小更多 */
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item item-a"&gt;shrink:0&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green item-b"&gt;shrink:1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange item-c"&gt;shrink:2&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>7.4 flex 常用简写值</h3>
+    <div class="note">
+      <code>flex</code> 是 <code>flex-grow</code> + <code>flex-shrink</code> + <code>flex-basis</code> 的简写。
+    </div>
+    <div class="demo-box">
+      <div class="compare-grid" style="gap:12px;">
+        <div style="border:1px solid #d5dbdb;border-radius:8px;padding:12px;background:white;">
+          <h4 style="color:#2980b9;font-size:0.9rem;">flex: 1</h4>
+          <p style="font-size:0.82rem;color:#7f8c8d;">等分剩余空间（grow:1, shrink:1, basis:0%）</p>
+        </div>
+        <div style="border:1px solid #d5dbdb;border-radius:8px;padding:12px;background:white;">
+          <h4 style="color:#2980b9;font-size:0.9rem;">flex: none</h4>
+          <p style="font-size:0.82rem;color:#7f8c8d;">不弹性（grow:0, shrink:0, basis:auto）</p>
+        </div>
+        <div style="border:1px solid #d5dbdb;border-radius:8px;padding:12px;background:white;">
+          <h4 style="color:#2980b9;font-size:0.9rem;">flex: auto</h4>
+          <p style="font-size:0.82rem;color:#7f8c8d;">完全弹性（grow:1, shrink:1, basis:auto）</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;margin-top:12px;">
+        <div class="flex-item" style="flex:1;">flex:1</div>
+        <div class="flex-item flex-item-green" style="flex:none;">flex:none</div>
+        <div class="flex-item flex-item-orange" style="flex:auto;">flex:auto</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+.item-a { flex: 1; }     /* grow:1 shrink:1 basis:0% — 等分空间 */
+.item-b { flex: none; }  /* grow:0 shrink:0 basis:auto — 不弹性 */
+.item-c { flex: auto; }  /* grow:1 shrink:1 basis:auto — 完全弹性 */
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item item-a"&gt;flex:1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green item-b"&gt;flex:none&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange item-c"&gt;flex:auto&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.5 align-content — 多行对齐</h2>
+    <div class="note">
+      <code>align-content</code> 控制<strong>多行</strong>弹性项目在交叉轴上的对齐方式。仅在 <code>flex-wrap: wrap</code> 且容器有剩余高度时生效。
+    </div>
+
+    <div class="demo-box">
+      <p class="jc-label">stretch（默认）— 行拉伸填满</p>
+      <div style="display:flex;flex-wrap:wrap;align-content:stretch;height:250px;gap:8px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;margin-bottom:12px;">
+        <div class="flex-item" style="width:calc(33% - 8px);min-width:80px;">1</div>
+        <div class="flex-item flex-item-green" style="width:calc(33% - 8px);min-width:80px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:calc(33% - 8px);min-width:80px;">3</div>
+        <div class="flex-item flex-item-purple" style="width:calc(33% - 8px);min-width:80px;">4</div>
+        <div class="flex-item flex-item-red" style="width:calc(33% - 8px);min-width:80px;">5</div>
+      </div>
+      <p class="jc-label">center — 行居中</p>
+      <div style="display:flex;flex-wrap:wrap;align-content:center;height:250px;gap:8px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;margin-bottom:12px;">
+        <div class="flex-item" style="width:calc(33% - 8px);min-width:80px;">1</div>
+        <div class="flex-item flex-item-green" style="width:calc(33% - 8px);min-width:80px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:calc(33% - 8px);min-width:80px;">3</div>
+        <div class="flex-item flex-item-purple" style="width:calc(33% - 8px);min-width:80px;">4</div>
+        <div class="flex-item flex-item-red" style="width:calc(33% - 8px);min-width:80px;">5</div>
+      </div>
+      <p class="jc-label">space-between — 行之间均匀分布</p>
+      <div style="display:flex;flex-wrap:wrap;align-content:space-between;height:250px;gap:8px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;margin-bottom:12px;">
+        <div class="flex-item" style="width:calc(33% - 8px);min-width:80px;">1</div>
+        <div class="flex-item flex-item-green" style="width:calc(33% - 8px);min-width:80px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:calc(33% - 8px);min-width:80px;">3</div>
+        <div class="flex-item flex-item-purple" style="width:calc(33% - 8px);min-width:80px;">4</div>
+        <div class="flex-item flex-item-red" style="width:calc(33% - 8px);min-width:80px;">5</div>
+      </div>
+      <p class="jc-label">space-around — 行之间等间距</p>
+      <div style="display:flex;flex-wrap:wrap;align-content:space-around;height:250px;gap:8px;border:2px dashed #bdc3c7;border-radius:8px;padding:10px;background:#fafbfc;">
+        <div class="flex-item" style="width:calc(33% - 8px);min-width:80px;">1</div>
+        <div class="flex-item flex-item-green" style="width:calc(33% - 8px);min-width:80px;">2</div>
+        <div class="flex-item flex-item-orange" style="width:calc(33% - 8px);min-width:80px;">3</div>
+        <div class="flex-item flex-item-purple" style="width:calc(33% - 8px);min-width:80px;">4</div>
+        <div class="flex-item flex-item-red" style="width:calc(33% - 8px);min-width:80px;">5</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; flex-wrap: wrap; align-content: center;
+  height: 250px; gap: 8px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item" style="width:calc(33% - 8px);min-width:80px;"&gt;1&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green" style="width:calc(33% - 8px);min-width:80px;"&gt;2&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange" style="width:calc(33% - 8px);min-width:80px;"&gt;3&lt;/div&gt;
+  &lt;div class="flex-item flex-item-purple" style="width:calc(33% - 8px);min-width:80px;"&gt;4&lt;/div&gt;
+  &lt;div class="flex-item flex-item-red" style="width:calc(33% - 8px);min-width:80px;"&gt;5&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>8. order — 排列顺序</h2>
+    <div class="note">
+      <code>order</code> 改变弹性项目的视觉排列顺序（不影响 DOM 顺序）。默认值为 0，数值越小越靠前。
+    </div>
+
+    <div class="demo-box">
+      <p class="jc-label">原始顺序：A B C D E → 视觉顺序：C E A B D</p>
+      <div class="order-demo">
+        <div class="flex-item" style="order:3;">A (order:3)</div>
+        <div class="flex-item flex-item-green" style="order:4;">B (order:4)</div>
+        <div class="flex-item flex-item-orange" style="order:0;">C (order:0)</div>
+        <div class="flex-item flex-item-purple" style="order:5;">D (order:5)</div>
+        <div class="flex-item flex-item-red" style="order:1;">E (order:1)</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+.item-a { order: 3; }
+.item-b { order: 4; }
+.item-c { order: 0; }  /* 最靠前 */
+.item-d { order: 5; }
+.item-e { order: 1; }
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item item-a"&gt;A (order:3)&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green item-b"&gt;B (order:4)&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange item-c"&gt;C (order:0)&lt;/div&gt;
+  &lt;div class="flex-item flex-item-purple item-d"&gt;D (order:5)&lt;/div&gt;
+  &lt;div class="flex-item flex-item-red item-e"&gt;E (order:1)&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>9. align-self — 单个项目对齐</h2>
+    <div class="note">
+      <code>align-self</code> 允许单个弹性项目覆盖容器的 <code>align-items</code> 设置。
+    </div>
+
+    <div class="demo-box">
+      <p class="jc-label">容器 align-items: flex-start，但项目 B 单独设置 flex-end</p>
+      <div class="align-self-demo" style="align-items:flex-start;">
+        <div class="flex-item" style="width:80px;">A<br>默认</div>
+        <div class="flex-item flex-item-green" style="width:80px;align-self:flex-end;">B<br>flex-end</div>
+        <div class="flex-item flex-item-orange" style="width:80px;align-self:center;">C<br>center</div>
+        <div class="flex-item flex-item-purple" style="width:80px;">D<br>默认</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.flex-item {
+  background: #d6eaf8; border: 2px solid #2980b9; border-radius: 8px;
+  padding: 16px; text-align: center; font-weight: bold; color: #1a5276;
+  min-height: 60px; display: flex; align-items: center; justify-content: center;
+}
+.flex-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.flex-item-orange { background: #fdebd0; border-color: #e67e22; color: #935116; }
+.flex-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+.flex-item-red    { background: #fadbd8; border-color: #e74c3c; color: #922b21; }
+
+.demo-container {
+  display: flex; gap: 10px; height: 160px; align-items: flex-start;
+  border: 2px dashed #bdc3c7; border-radius: 8px;
+  padding: 10px; background: #fafbfc;
+}
+.item-b { align-self: flex-end; }
+.item-c { align-self: center; }
+&lt;/style&gt;
+
+&lt;div class="demo-container"&gt;
+  &lt;div class="flex-item" style="width:80px;"&gt;A&lt;br&gt;默认&lt;/div&gt;
+  &lt;div class="flex-item flex-item-green item-b" style="width:80px;"&gt;B&lt;br&gt;flex-end&lt;/div&gt;
+  &lt;div class="flex-item flex-item-orange item-c" style="width:80px;"&gt;C&lt;br&gt;center&lt;/div&gt;
+  &lt;div class="flex-item flex-item-purple" style="width:80px;"&gt;D&lt;br&gt;默认&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- ==================== Grid ==================== -->
+  <div class="section">
+    <h2>10. CSS Grid 基础</h2>
+    <div class="note">
+      Grid 是二维布局系统，可以同时控制行和列。设置 <code>display: grid</code> 后，通过 <code>grid-template-columns</code> 和 <code>grid-template-rows</code> 定义网格结构。
+    </div>
+
+    <h3>10.1 基本网格</h3>
+    <div class="demo-box">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div class="grid-item">A</div>
+        <div class="grid-item grid-item-blue">B</div>
+        <div class="grid-item grid-item-green">C</div>
+        <div class="grid-item grid-item-purple">D</div>
+        <div class="grid-item">E</div>
+        <div class="grid-item grid-item-blue">F</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.grid-item {
+  background: #fdf2e9; border: 2px solid #e67e22; border-radius: 8px;
+  padding: 20px; text-align: center; font-weight: bold; color: #935116;
+}
+.grid-item-blue   { background: #d6eaf8; border-color: #2980b9; color: #1a5276; }
+.grid-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.grid-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+&lt;/style&gt;
+
+&lt;div class="demo-grid"&gt;
+  &lt;div class="grid-item"&gt;A&lt;/div&gt;
+  &lt;div class="grid-item grid-item-blue"&gt;B&lt;/div&gt;
+  &lt;div class="grid-item grid-item-green"&gt;C&lt;/div&gt;
+  &lt;div class="grid-item grid-item-purple"&gt;D&lt;/div&gt;
+  &lt;div class="grid-item"&gt;E&lt;/div&gt;
+  &lt;div class="grid-item grid-item-blue"&gt;F&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>10.2 不等宽列 + 跨列</h3>
+    <div class="demo-box">
+      <div style="display:grid;grid-template-columns:200px 1fr 1fr;gap:12px;">
+        <div class="grid-item" style="grid-row:span 2;">侧边栏<br>span 2行</div>
+        <div class="grid-item grid-item-blue" style="grid-column:span 2;">主内容区 — span 2列</div>
+        <div class="grid-item grid-item-green">底部 A</div>
+        <div class="grid-item grid-item-purple">底部 B</div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+/* ── 基础样式（演示用）── */
+.grid-item {
+  background: #fdf2e9; border: 2px solid #e67e22; border-radius: 8px;
+  padding: 20px; text-align: center; font-weight: bold; color: #935116;
+}
+.grid-item-blue   { background: #d6eaf8; border-color: #2980b9; color: #1a5276; }
+.grid-item-green  { background: #d4efdf; border-color: #27ae60; color: #1e8449; }
+.grid-item-purple { background: #e8daef; border-color: #8e44ad; color: #6c3483; }
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  gap: 12px;
+}
+.sidebar { grid-row: span 2; }
+.main    { grid-column: span 2; }
+&lt;/style&gt;
+
+&lt;div class="demo-grid"&gt;
+  &lt;div class="grid-item sidebar"&gt;侧边栏&lt;br&gt;span 2行&lt;/div&gt;
+  &lt;div class="grid-item grid-item-blue main"&gt;主内容区 — span 2列&lt;/div&gt;
+  &lt;div class="grid-item grid-item-green"&gt;底部 A&lt;/div&gt;
+  &lt;div class="grid-item grid-item-purple"&gt;底部 B&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>11. 综合练习</h2>
+    <div class="note">经典导航栏布局：左侧 logo + 右侧导航链接，使用 Flexbox 实现。</div>
+    <div class="demo-box">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#1a5276;color:white;padding:12px 20px;border-radius:8px;">
+        <div style="font-weight:bold;font-size:1.1em;">Logo</div>
+        <div style="display:flex;gap:16px;">
+          <a href="#" style="color:white;text-decoration:none;">首页</a>
+          <a href="#" style="color:white;text-decoration:none;">课程</a>
+          <a href="#" style="color:white;text-decoration:none;">关于</a>
+          <a href="#" style="color:white;text-decoration:none;">联系</a>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;style&gt;
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a5276;
+  padding: 12px 20px;
+}
+.nav-links { display: flex; gap: 16px; }
+&lt;/style&gt;
+
+&lt;div class="navbar"&gt;
+  &lt;div class="logo"&gt;Logo&lt;/div&gt;
+  &lt;div class="nav-links"&gt;
+    &lt;a href="#"&gt;首页&lt;/a&gt;
+    &lt;a href="#"&gt;课程&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <script src="js/example-playground.js"></script>
+</body>
+</html>

@@ -1,16 +1,781 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>07 - 过渡动画</title><link rel="stylesheet" href="css/style.css"></head><body><nav class="nav-bar"><a class="home" href="index.html">CSS2 / CSS3 首页</a><a href="01-selectors.html">选择器</a><a href="02-box-model.html">盒模型</a><a href="03-text-color.html">文本颜色</a><a href="04-layout.html">布局定位</a><a href="05-flex-grid.html">Flex </a><a href="06-responsive.html">响应式</a><a href="07-effects.html">过渡动画</a><a href="08-css3.html">CSS3增强</a></nav><h1>07 - 过渡动画</h1><p>transition、transform、animation。</p><div class="section"><h2>1. 核心概念</h2><div class="note">本节示例展示本章最常见用法。</div><div class="demo-box"><div class="sample-6">CSS 示例 7</div></div><pre><code>&lt;style&gt;
-.sample-6 { padding: 24px; border-radius: 10px; background: #eaf2f8; color: #1a5276; font-weight: bold; }
-&lt;/style&gt;
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 - 过渡与动画</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ── 1. Transition 基础演示 ── */
+.trans-demo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+.trans-box {
+  height: 100px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.trans-box:hover { transform: scale(1.08); }
+.trans-color { background: #3498db; }
+.trans-color:hover { background: #e74c3c; }
+.trans-radius { background: #9b59b6; border-radius: 4px; }
+.trans-radius:hover { border-radius: 50%; }
+.trans-shadow { background: #27ae60; box-shadow: 0 0 0 rgba(0,0,0,0); }
+.trans-shadow:hover { box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+.trans-move { background: #e67e22; }
+.trans-move:hover { transform: translateY(-8px); }
 
-&lt;div class="sample-6"&gt;CSS 示例 7&lt;/div&gt;</code></pre></div><div class="section"><h2>2. 组合应用</h2><div class="note">把属性组合起来形成真实页面效果。</div><div class="demo-box"><div class="panel-6"><h3>标题</h3><p>这是一段用于观察样式变化的文本。</p></div></div><pre><code>&lt;style&gt;
-.panel-6 { max-width: 520px; padding: 22px; border: 1px solid #d5dbdb; border-radius: 12px; background: white; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
-.panel-6 h3 { color: #2980b9; margin-bottom: 8px; }
-.panel-6 p { color: #5d6d7e; }
-&lt;/style&gt;
+/* ── 2. Transition 时长对比 ── */
+.timing-demo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.timing-bar {
+  height: 50px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: #fff;
+  font-weight: 600;
+  font-size: .85em;
+  transition-property: transform;
+  transition-timing-function: ease;
+}
+.timing-bar:hover { transform: scaleX(1.05); }
+.t-ease { background: #3498db; transition-duration: .2s; }
+.t-linear { background: #27ae60; transition-duration: .5s; }
+.t-ease-in { background: #e67e22; transition-duration: .8s; }
+.t-ease-out { background: #9b59b6; transition-duration: 1.2s; }
+.t-ease-in-out { background: #e74c3c; transition-duration: 1.6s; }
 
-&lt;div class="panel-6"&gt;&lt;h3&gt;标题&lt;/h3&gt;&lt;p&gt;这是一段用于观察样式变化的文本。&lt;/p&gt;&lt;/div&gt;</code></pre></div><div class="section"><h2>3. 练习片段</h2><div class="note">打开试验场后可以直接修改数值观察结果。</div><div class="demo-box"><button class="try-6">悬停观察</button></div><pre><code>&lt;style&gt;
-.try-6 { background: #3498db; color: white; transition: transform .2s, background .2s; }
-.try-6:hover { background: #2ecc71; transform: translateY(-3px); }
-&lt;/style&gt;
+/* ── 3. Transform 2D 演示 ── */
+.transform-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+}
+.tf-box {
+  width: 80px; height: 80px;
+  margin: 20px auto;
+  background: #3498db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: .8em;
+  transition: transform .4s ease;
+}
+.tf-box:hover { transform: var(--hover-transform); }
+.tf-card {
+  background: #fff;
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  transition: box-shadow .2s;
+}
+.tf-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.tf-card h5 { color: #1a5276; font-size: .85em; margin: 8px 0 4px; }
+.tf-card code { font-size: .72em; color: #6c7a89; }
 
-&lt;button class="try-6"&gt;悬停观察&lt;/button&gt;</code></pre></div><script src="js/example-playground.js"></script></body></html>
+/* ── 4. Transform 组合 ── */
+.combo-box {
+  width: 80px; height: 80px;
+  margin: 20px auto;
+  background: #e74c3c;
+  border-radius: 8px;
+  transition: transform .5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+}
+.combo-box:hover { transform: rotate(45deg) scale(0.8) skewX(10deg); }
+
+/* ── 5. @keyframes 基础 ── */
+@keyframes colorShift {
+  0%   { background: #3498db; }
+  25%  { background: #e74c3c; }
+  50%  { background: #f39c12; }
+  75%  { background: #27ae60; }
+  100% { background: #3498db; }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-30px); }
+}
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.15); opacity: .7; }
+}
+@keyframes slideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes fadeInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50%      { border-color: #333; }
+}
+
+.anim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+.anim-card {
+  background: #fff;
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.anim-card h5 { color: #1a5276; font-size: .85em; margin-bottom: 8px; }
+.anim-demo {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.anim-dot {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+}
+
+/* ── 6. animation 属性演示 ── */
+.prop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.prop-card {
+  background: #fff;
+  border: 1px solid #d5dbdb;
+  border-radius: 10px;
+  padding: 18px;
+}
+.prop-card h5 { color: #1a5276; font-size: .9em; margin-bottom: 10px; }
+.prop-bar {
+  height: 36px;
+  background: #3498db;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: #fff;
+  font-size: .78em;
+  font-weight: 600;
+}
+
+/* ── 7. 综合案例 ── */
+@keyframes loadBar {
+  0%   { width: 0; }
+  100% { width: 100%; }
+}
+@keyframes spin360 {
+  to { transform: rotate(360deg); }
+}
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+.case-card {
+  background: #fff;
+  border: 1px solid #d5dbdb;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+}
+.case-card h5 { color: #1a5276; font-size: .9em; margin-bottom: 12px; }
+.loader {
+  width: 100%;
+  height: 6px;
+  background: #ecf0f1;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+.loader-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 3px;
+  animation: loadBar 2s ease-in-out infinite;
+}
+.spinner {
+  width: 36px; height: 36px;
+  border: 4px solid #ecf0f1;
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin360 .8s linear infinite;
+  margin: 10px auto;
+}
+.loading-text {
+  font-size: .85em;
+  color: #6c7a89;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.typing-demo {
+  display: inline-block;
+  border-right: 2px solid #333;
+  animation: typewriter 3s steps(20) 1s forwards, blink .6s step-end infinite;
+  font-size: .9em;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  font-weight: 600;
+}
+.float-icon {
+  font-size: 2em;
+  animation: float 2s ease-in-out infinite;
+}
+.pulse-dot {
+  width: 14px; height: 14px;
+  background: #2ecc71;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-bar">
+  <a class="home" href="index.html">CSS2 / CSS3 首页</a>
+  <a href="01-selectors.html">选择器</a>
+  <a href="02-box-model.html">盒模型</a>
+  <a href="03-text-color.html">文本颜色</a>
+  <a href="04-layout.html">布局定位</a>
+  <a href="05-flex-grid.html">Flex </a>
+  <a href="06-responsive.html">响应式</a>
+  <a href="07-effects.html">过渡动画</a>
+  <a href="08-css3.html">CSS3增强</a>
+</nav>
+
+<h1>07 - 过渡与动画</h1>
+<p>CSS Transition 过渡、CSS Transform 2D 变换、CSS Animation 关键帧动画。</p>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 1. CSS Transition 过渡 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>1. CSS Transition 过渡</h2>
+  <div class="note">
+    <strong>Transition</strong> 让属性值在两个状态之间<strong>平滑变化</strong>。
+    最常用于 hover 效果。需要触发条件（如 :hover、:focus、class 切换）才会生效。
+  </div>
+  <div class="demo-box">
+    <div class="trans-demo">
+      <div class="trans-box trans-color">颜色变化</div>
+      <div class="trans-box trans-radius">圆角变化</div>
+      <div class="trans-box trans-shadow">阴影扩展</div>
+      <div class="trans-box trans-move">位移弹起</div>
+    </div>
+    <p style="text-align:center;margin-top:14px;color:#6c7a89;font-size:.85em;">↑ 悬停每个色块观察不同属性的过渡效果 ↑</p>
+  </div>
+  <pre><code>/* ── transition 四个子属性 ── */
+.box {
+  transition-property: all;       /* 过渡哪些属性 */
+  transition-duration: 0.3s;      /* 持续时间 */
+  transition-timing-function: ease; /* 速度曲线 */
+  transition-delay: 0s;           /* 延迟多久开始 */
+}
+
+/* ── 简写形式 ── */
+.box { transition: all .3s ease 0s; }
+/*         属性   时长  曲线  延迟 */
+
+/* ── 常用场景 ── */
+.btn {
+  transition: background .2s, transform .2s;
+}
+.btn:hover {
+  background: #2ecc71;
+  transform: translateY(-3px);
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 2. Transition 速度曲线 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>2. Transition 速度曲线</h2>
+  <div class="note">
+    <code>transition-timing-function</code> 控制过渡的加速度曲线。
+    <code>ease</code> 是默认值（慢-快-慢），<code>linear</code> 是匀速。
+  </div>
+  <div class="demo-box">
+    <div class="timing-demo">
+      <div class="timing-bar t-ease">ease（默认）— 0.2s</div>
+      <div class="timing-bar t-linear">linear（匀速）— 0.5s</div>
+      <div class="timing-bar t-ease-in">ease-in（慢入）— 0.8s</div>
+      <div class="timing-bar t-ease-out">ease-out（慢出）— 1.2s</div>
+      <div class="timing-bar t-ease-in-out">ease-in-out（慢入慢出）— 1.6s</div>
+    </div>
+    <p style="text-align:center;margin-top:14px;color:#6c7a89;font-size:.85em;">↑ 悬停色块观察不同速度曲线的差异 ↑</p>
+  </div>
+  <pre><code>/* timing-function 关键字 */
+transition-timing-function: ease;        /* 默认：慢→快→慢 */
+transition-timing-function: linear;      /* 匀速 */
+transition-timing-function: ease-in;     /* 慢启动 */
+transition-timing-function: ease-out;    /* 慢结束 */
+transition-timing-function: ease-in-out; /* 慢启动 + 慢结束 */
+
+/* 贝塞尔曲线（自定义） */
+transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 3. CSS Transform 2D 变换 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>3. CSS Transform 2D 变换</h2>
+  <div class="note">
+    <code>transform</code> 可以对元素进行<strong>旋转、缩放、平移、倾斜</strong>等变换，
+    不影响文档流（其他元素位置不变）。常配合 transition 实现平滑动画。
+  </div>
+  <div class="demo-box">
+    <div class="transform-grid">
+      <div class="tf-card">
+        <div class="tf-box" style="--hover-transform:rotate(45deg);">hover</div>
+        <h5>rotate</h5>
+        <code>rotate(45deg)</code>
+      </div>
+      <div class="tf-card">
+        <div class="tf-box" style="--hover-transform:scale(1.3);">hover</div>
+        <h5>scale</h5>
+        <code>scale(1.3)</code>
+      </div>
+      <div class="tf-card">
+        <div class="tf-box" style="--hover-transform:translateX(20px);">hover</div>
+        <h5>translateX</h5>
+        <code>translateX(20px)</code>
+      </div>
+      <div class="tf-card">
+        <div class="tf-box" style="--hover-transform:translateY(-20px);">hover</div>
+        <h5>translateY</h5>
+        <code>translateY(-20px)</code>
+      </div>
+      <div class="tf-card">
+        <div class="tf-box" style="--hover-transform:skewX(15deg);">hover</div>
+        <h5>skewX</h5>
+        <code>skewX(15deg)</code>
+      </div>
+      <div class="tf-card">
+        <div class="tf-box" style="--hover-transform:rotate(-45deg) scale(.8);">hover</div>
+        <h5>组合</h5>
+        <code>rotate(-45deg) scale(.8)</code>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:14px;color:#6c7a89;font-size:.85em;">↑ 悬停蓝色方块观察各种变换效果 ↑</p>
+  </div>
+  <pre><code>/* ── 2D Transform 常用函数 ── */
+.box {
+  transform: rotate(45deg);        /* 旋转 */
+  transform: scale(1.5);           /* 缩放（1=原始大小） */
+  transform: translateX(50px);     /* 水平平移 */
+  transform: translateY(-30px);    /* 垂直平移 */
+  transform: skewX(15deg);         /* X 轴倾斜 */
+  transform: skewY(10deg);         /* Y 轴倾斜 */
+}
+
+/* ── 多个变换组合（空格分隔）── */
+.box {
+  transform: rotate(45deg) scale(1.2) translateX(20px);
+}
+
+/* ── transform-origin 变换原点 ── */
+.box {
+  transform-origin: center center; /* 默认中心 */
+  transform-origin: top left;      /* 左上角 */
+  transform-origin: 50% 50%;       /* 等同 center */
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 4. CSS @keyframes 基础 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>4. CSS @keyframes 关键帧动画</h2>
+  <div class="note">
+    <code>@keyframes</code> 定义动画的关键帧序列，通过 <code>animation</code> 属性应用到元素上。
+    与 transition 不同，animation <strong>无需触发条件</strong>，可以自动播放、循环、延迟。
+  </div>
+  <div class="demo-box">
+    <div class="anim-grid">
+      <div class="anim-card">
+        <h5>颜色循环</h5>
+        <div class="anim-demo">
+          <div class="anim-dot" style="background:#3498db;animation:colorShift 3s ease-in-out infinite;"></div>
+        </div>
+      </div>
+      <div class="anim-card">
+        <h5>弹跳</h5>
+        <div class="anim-demo">
+          <div class="anim-dot" style="background:#e74c3c;border-radius:50%;animation:bounce .8s ease-in-out infinite;"></div>
+        </div>
+      </div>
+      <div class="anim-card">
+        <h5>旋转</h5>
+        <div class="anim-demo">
+          <div class="anim-dot" style="background:#9b59b6;border-radius:4px 12px;animation:rotate 2s linear infinite;"></div>
+        </div>
+      </div>
+      <div class="anim-card">
+        <h5>脉冲</h5>
+        <div class="anim-demo">
+          <div class="anim-dot" style="background:#f39c12;border-radius:50%;animation:pulse 1.5s ease-in-out infinite;"></div>
+        </div>
+      </div>
+      <div class="anim-card">
+        <h5>滑入</h5>
+        <div class="anim-demo">
+          <div class="anim-dot" style="background:#27ae60;animation:slideIn 2s ease forwards;"></div>
+        </div>
+      </div>
+      <div class="anim-card">
+        <h5>淡入上移</h5>
+        <div class="anim-demo">
+          <div class="anim-dot" style="background:#e67e22;animation:fadeInUp 1.8s ease forwards;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── @keyframes 定义动画帧 ── */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }    /* 开始和结束 */
+  50%      { transform: translateY(-30px); } /* 中间 */
+}
+
+@keyframes colorShift {
+  0%   { background: #3498db; }
+  25%  { background: #e74c3c; }
+  50%  { background: #f39c12; }
+  75%  { background: #27ae60; }
+  100% { background: #3498db; }
+}
+
+/* ── 应用动画 ── */
+.box {
+  animation-name: bounce;          /* 引用 @keyframes 名称 */
+  animation-duration: 0.8s;        /* 单次时长 */
+  animation-iteration-count: infinite; /* 无限循环 */
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 5. animation 属性详解 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>5. animation 属性详解</h2>
+  <div class="note">
+    <code>animation</code> 是 8 个子属性的简写。掌握这些属性可以精确控制动画行为。
+  </div>
+  <div class="demo-box">
+    <div class="prop-grid">
+      <div class="prop-card">
+        <h5>delay — 延迟 2s 后开始</h5>
+        <div class="prop-bar" style="animation:slideIn .5s ease 2s both;">2 秒后滑入</div>
+      </div>
+      <div class="prop-card">
+        <h5>direction — alternate 交替方向</h5>
+        <div class="prop-bar" style="animation:bounce .6s ease-in-out 3 alternate;">来回弹跳</div>
+      </div>
+      <div class="prop-card">
+        <h5>fill-mode — forwards 保留结束状态</h5>
+        <div class="prop-bar" style="animation:slideIn .8s ease forwards;">动画结束后保留位置</div>
+      </div>
+      <div class="prop-card">
+        <h5>play-state — paused / running</h5>
+        <div class="prop-bar" style="animation:loadBar 3s linear infinite;" onmouseenter="this.style.animationPlayState='paused'" onmouseleave="this.style.animationPlayState='running'">悬停暂停 ↑</div>
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── animation 八大子属性 ── */
+.box {
+  animation-name: myAnim;            /* ① @keyframes 名称 */
+  animation-duration: 2s;            /* ② 单次时长 */
+  animation-delay: 1s;               /* ③ 延迟多久开始 */
+  animation-timing-function: ease;   /* ④ 速度曲线 */
+  animation-iteration-count: infinite; /* ⑤ 播放次数（数字 / infinite）*/
+  animation-direction: alternate;    /* ⑥ 方向 */
+                                       /*   normal    正向 → → */
+                                       /*   reverse   反向 ← ← */
+                                       /*   alternate 正→反→正  */
+                                       /*   alternate-reverse 反→正→反 */
+  animation-fill-mode: forwards;     /* ⑦ 结束后保留状态 */
+                                       /*   none / forwards / backwards / both */
+  animation-play-state: running;     /* ⑧ running / paused */
+}
+
+/* ── 简写形式（推荐）── */
+/* animation: name duration timing-function delay
+              iteration-count direction fill-mode play-state; */
+.box {
+  animation: myAnim 2s ease 1s infinite alternate forwards;
+}
+
+/* 最少写两个值：name + duration */
+.box { animation: myAnim 2s; }</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 6. @keyframes 百分比写法 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>6. @keyframes 百分比写法</h2>
+  <div class="note">
+    除了 <code>from</code>/<code>to</code>（等同 0%/100%），可以用百分比定义多个中间关键帧，
+    制作更复杂的动画序列。
+  </div>
+  <div class="demo-box">
+    <div class="anim-grid">
+      <div class="anim-card">
+        <h5>多段变色</h5>
+        <div class="anim-demo">
+          <div class="anim-dot" style="background:#3498db;animation:colorShift 4s ease-in-out infinite;border-radius:50%;"></div>
+        </div>
+      </div>
+      <div class="anim-card">
+        <h5>渐变背景移动</h5>
+        <div class="anim-demo">
+          <div style="width:80px;height:40px;border-radius:8px;background:linear-gradient(90deg,#3498db,#e74c3c,#f39c12,#27ae60,#3498db);background-size:200% 100%;animation:shimmer 2s linear infinite;"></div>
+        </div>
+      </div>
+      <div class="anim-card">
+        <h5>loading 转圈</h5>
+        <div class="anim-demo">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── 百分比关键帧 ── */
+@keyframes colorShift {
+  0%   { background: #3498db; }  /* 开始 */
+  25%  { background: #e74c3c; }  /* 25% 处 */
+  50%  { background: #f39c12; }  /* 50% 处 */
+  75%  { background: #27ae60; }  /* 75% 处 */
+  100% { background: #3498db; }  /* 结束 */
+}
+
+/* ── 简写：0% 和 100% 可省略 ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 多步动画（如 loading spinner）── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #ecf0f1;
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 7. 综合实战案例 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>7. 综合实战案例</h2>
+  <div class="note">
+    将 transition、transform、animation 组合运用到真实 UI 场景中。
+  </div>
+  <div class="demo-box">
+    <div class="case-grid">
+      <div class="case-card">
+        <h5>进度条动画</h5>
+        <div class="loader">
+          <div class="loader-bar"></div>
+        </div>
+      </div>
+      <div class="case-card">
+        <h5>加载旋转器</h5>
+        <div class="spinner" style="margin:16px auto;"></div>
+      </div>
+      <div class="case-card">
+        <h5>打字机效果</h5>
+        <div style="padding:12px 0;">
+          <span class="typing-demo">Hello, CSS Animation!</span>
+        </div>
+      </div>
+      <div class="case-card">
+        <h5>浮动图标</h5>
+        <div style="padding:10px 0;">
+          <span class="float-icon">🚀</span>
+        </div>
+      </div>
+      <div class="case-card">
+        <h5>在线状态脉冲</h5>
+        <div style="padding:10px 0;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span class="pulse-dot"></span>
+          <span style="font-size:.9em;color:#27ae60;font-weight:600;">在线</span>
+        </div>
+      </div>
+      <div class="case-card">
+        <h5>渐变文字</h5>
+        <div style="font-size:1.4em;font-weight:700;background:linear-gradient(90deg,#3498db,#e74c3c,#f39c12,#27ae60);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;">
+          渐变文字
+        </div>
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── 进度条 ── */
+@keyframes loadBar {
+  0%   { width: 0; }
+  100% { width: 100%; }
+}
+.loader-bar {
+  animation: loadBar 2s ease-in-out infinite;
+}
+
+/* ── Loading 旋转器 ── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  border: 4px solid #ecf0f1;
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+/* ── 打字机效果 ── */
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50%      { border-color: #333; }
+}
+.typing {
+  display: inline-block;
+  border-right: 2px solid #333;
+  animation: typewriter 3s steps(20) forwards,
+             blink .6s step-end infinite;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* ── 浮动效果 ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.float { animation: float 2s ease-in-out infinite; }
+
+/* ── 脉冲在线状态 ── */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.2); opacity: .6; }
+}
+.pulse-dot {
+  width: 12px; height: 12px;
+  background: #2ecc71;
+  border-radius: 50%;
+  animation: pulse 1.2s ease-in-out infinite;
+}</code></pre>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 8. 性能优化 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section">
+  <h2>8. 动画性能优化</h2>
+  <div class="note">
+    动画卡顿通常是由于触发了浏览器的<strong>重排（reflow）</strong>。优先使用只触发<strong>合成（composite）</strong>的属性。
+  </div>
+  <div class="demo-box">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div style="background:#eafaf1;border-radius:10px;padding:18px;border:2px solid #27ae60;">
+        <h4 style="color:#27ae60;margin-bottom:10px;">✅ 高性能（仅合成层）</h4>
+        <ul style="font-size:.88em;color:#5d6d7e;padding-left:18px;line-height:1.8;">
+          <li><code>transform</code> — 位移、旋转、缩放</li>
+          <li><code>opacity</code> — 透明度变化</li>
+        </ul>
+      </div>
+      <div style="background:#fdf2f2;border-radius:10px;padding:18px;border:2px solid #e74c3c;">
+        <h4 style="color:#e74c3c;margin-bottom:10px;">❌ 低性能（触发重排）</h4>
+        <ul style="font-size:.88em;color:#5d6d7e;padding-left:18px;line-height:1.8;">
+          <li><code>width / height</code></li>
+          <li><code>margin / padding</code></li>
+          <li><code>top / left / right / bottom</code></li>
+          <li><code>font-size</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <pre><code>/* ── 性能对比 ── */
+
+/* ❌ 用 margin 移动（触发重排） */
+.box {
+  transition: margin-top .3s;
+}
+.box:hover { margin-top: -10px; }
+
+/* ✅ 用 transform 移动（仅合成） */
+.box {
+  transition: transform .3s;
+}
+.box:hover { transform: translateY(-10px); }
+
+/* ❌ 用 width 变化（触发重排） */
+.bar { transition: width .3s; }
+
+/* ✅ 用 scaleX 变化（仅合成） */
+.bar { transition: transform .3s; }
+/* transform: scaleX(0.5) 等效于 width 缩半 */
+
+/* ── will-change 提示浏览器 ── */
+.box {
+  will-change: transform, opacity;
+  /* 提前告知浏览器将要变化的属性，
+     使其提前创建合成层 */</code></pre>
+</div>
+
+<script src="js/example-playground.js"></script>
+</body>
+</html>

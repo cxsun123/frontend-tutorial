@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07-高级类型</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #3178c6; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #3178c6; }
+    .intro { background: linear-gradient(135deg, #3178c6, #235a97); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #3178c6; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #ebf5fb; color: #3178c6; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #3178c6; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 TypeScript 示例</a>
+  <h1>07-高级类型 <span>.ts</span></h1>
+
+  <div class="section">
+    <h3>交叉类型 (Intersection)</h3>
+    <p class="desc">HasName & HasAge 合并多个类型</p>
+    <pre><code class="language-typescript">type HasName = { name: string };
+type HasAge = { age: number };
+type Person2 = HasName &amp; HasAge;
+
+const personData: Person2 = { name: "Alice", age: 30 };
+console.log("Person:", personData);</code></pre>
+  </div>
+  <div class="section">
+    <h3>映射类型 (Mapped Types)</h3>
+    <p class="desc">readonly [K in keyof T]: T[K]</p>
+    <pre><code class="language-typescript">type Readonly2&lt;T&gt; = {
+  readonly [K in keyof T]: T[K];
+};
+
+type Partial2&lt;T&gt; = {
+  [K in keyof T]?: T[K];
+};
+
+interface Todo {
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
+type ReadonlyTodo = Readonly2&lt;Todo&gt;;
+type PartialTodo = Partial2&lt;Todo&gt;;
+
+const todo: ReadonlyTodo = {
+  title: "Learn TypeScript",
+  description: "Complete the tutorial",
+  completed: false,
+};
+// todo.title = "New title"; // 错误！readonly</code></pre>
+  </div>
+  <div class="section">
+    <h3>条件类型 (Conditional Types)</h3>
+    <p class="desc">T extends string ? "yes" : "no"</p>
+    <pre><code class="language-typescript">type IsString&lt;T&gt; = T extends string ? "yes" : "no";
+
+type A = IsString&lt;string&gt;;  // "yes"
+type B = IsString&lt;number&gt;;  // "no"</code></pre>
+  </div>
+  <div class="section">
+    <h3>内置工具类型</h3>
+    <p class="desc">Pick / Omit / Record / Partial / Readonly</p>
+    <pre><code class="language-typescript">interface UserProfile {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+// Pick: 选取部分属性
+type UserBasic = Pick&lt;UserProfile, "id" | "name"&gt;;
+const userBasic: UserBasic = { id: 1, name: "Alice" };
+
+// Omit: 排除部分属性
+type UserWithoutEmail = Omit&lt;UserProfile, "email"&gt;;
+const userNoEmail: UserWithoutEmail = { id: 1, name: "Bob", age: 25 };
+
+// Record: 构造键值对类型
+type Roles = "admin" | "user" | "guest";
+type RolePermissions = Record&lt;Roles, string[]&gt;;
+const permissions: RolePermissions = {
+  admin: ["read", "write", "delete"],
+  user: ["read", "write"],
+  guest: ["read"],
+};
+console.log("Admin permissions:", permissions.admin);</code></pre>
+  </div>
+  <div class="section">
+    <h3>模板字面量类型</h3>
+    <p class="desc">在条件类型中推断类型</p>
+    <pre><code class="language-typescript">type EventName = "click" | "focus" | "blur";
+type HandlerName = `on${Capitalize&lt;EventName&gt;}`;
+// HandlerName = "onClick" | "onFocus" | "onBlur"</code></pre>
+  </div>
+  <div class="section">
+    <h3>infer 关键字</h3>
+    <p class="desc"></p>
+    <pre><code class="language-typescript">type ReturnType2&lt;T&gt; = T extends (...args: any[]) =&gt; infer R ? R : any;
+type Fn = () =&gt; string;
+type Result2 = ReturnType2&lt;Fn&gt;; // string</code></pre>
+  </div>
+  <div class="section">
+    <h3>实际应用：API 类型安全</h3>
+    <p class="desc"></p>
+    <pre><code class="language-typescript">interface ApiEndpoints {
+  "/users": { method: "GET"; response: UserProfile[] };
+  "/users/:id": { method: "GET"; response: UserProfile };
+  "/posts": { method: "POST"; response: { id: number; title: string } };
+}
+
+type GetResponse&lt;T extends keyof ApiEndpoints&gt; =
+  ApiEndpoints[T] extends { response: infer R } ? R : never;
+
+type UsersResponse = GetResponse&lt;"/users"&gt;; // UserProfile[]
+type PostResponse = GetResponse&lt;"/posts"&gt;;  // { id: number; title: string }
+
+console.log("UserBasic:", userBasic);
+console.log("UserWithoutEmail:", userNoEmail);
+
+console.log("\n✅ 07-高级类型.ts 运行完成");</code></pre>
+  </div>
+</body>
+</html>
