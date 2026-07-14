@@ -119,6 +119,9 @@ node ts-example/dist/01-基本类型.js
 **方式一：docker-compose（推荐）**
 
 ```bash
+# 停止旧容器（首次无需执行）
+docker stop frontend-tutorial 2>/dev/null; docker rm frontend-tutorial 2>/dev/null
+
 # 构建并启动
 docker compose up -d
 
