@@ -2,6 +2,12 @@
 
 > HTML / CSS / JavaScript / TypeScript 课程示例与课件
 
+![首页预览](Screenshot1.jpg)
+
+![课程内容](Screenshot2.jpg)
+
+![示例页面](Screenshot3.jpg)
+
 ## 快速启动
 
 ### 1. 安装 Bun
@@ -119,14 +125,13 @@ node ts-example/dist/01-基本类型.js
 **方式一：docker-compose（推荐）**
 
 ```bash
-# 停止旧容器（首次无需执行）
-docker stop frontend-tutorial 2>/dev/null; docker rm frontend-tutorial 2>/dev/null
-
-# 构建并启动
-docker compose up -d
 
 # 停止
-docker compose down
+docker compose down 
+
+# 构建并启动
+docker compose up -d --build
+
 ```
 
 **方式二：docker 命令**
