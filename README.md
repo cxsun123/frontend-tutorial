@@ -77,6 +77,7 @@ frontend-tutorial/
 ├── JavaScript.pptx               # JavaScript 课件
 ├── TypeScript_Introduction.pptx  # TypeScript 课件
 ├── Dockerfile                    # Docker 配置
+├── docker-compose.yml            # Docker Compose 配置
 └── .dockerignore                 # Docker 忽略文件
 ```
 
@@ -115,16 +116,27 @@ node ts-example/dist/01-基本类型.js
 
 ## Docker 部署
 
+**方式一：docker-compose（推荐）**
+
+```bash
+# 构建并启动
+docker compose up -d
+
+# 停止
+docker compose down
+```
+
+**方式二：docker 命令**
+
 ```bash
 # 构建镜像
 docker build -t frontend-tutorial .
 
 # 运行容器
 docker run -d -p 8091:8091 --name frontend-tutorial frontend-tutorial
-
-# 访问
-# http://localhost:8091
 ```
+
+访问: http://localhost:8091
 
 ## 相关资源
 
