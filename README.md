@@ -11,40 +11,7 @@
 
 ## 快速启动
 
-### 1. 安装 Bun
-
-Bun 是一个快速的 JavaScript/TypeScript 运行时，内置开发服务器。
-
-```bash
-# macOS / Linux
-curl -fsSL https://bun.sh/install | bash
-
-# Windows (PowerShell)
-powershell -c "irm bun.sh/install.ps1 | iex"
-
-# 或通过 npm 安装
-npm install -g bun
-
-# 或通过 Homebrew 安装 (macOS)
-brew install oven-sh/bun/bun
-```
-
-安装后验证：
-
-```bash
-bun --version
-```
-
-### 2. 启动开发服务器
-
-**方式一：使用 Bun（推荐）**
-
-```bash
-# 在项目根目录启动
-bun ./index.html --port=8091
-```
-
-**方式二：使用 Python**
+### 1. 启动开发服务器
 
 ```bash
 # Python 3
@@ -56,7 +23,7 @@ python -m SimpleHTTPServer 8091
 
 默认监听 `http://localhost:8091`。
 
-### 3. 访问页面
+### 2. 访问页面
 
 启动后在浏览器打开：
 
@@ -102,24 +69,6 @@ tsc --project ts-example/tsconfig.json --watch
 # 运行编译后的 JS
 node ts-example/dist/01-基本类型.js
 ```
-
-## 为什么选择 Bun？
-
-- **快**: 启动速度比 Node.js 快 3-4 倍
-- **TypeScript 原生支持**: 无需额外配置，直接运行 .ts 文件
-- **内置开发服务器**: 无需安装额外的 serve 包
-- **兼容 npm**: 可直接使用 npm 生态的包
-
-## Bun vs Python 对比
-
-| 特性 | Bun | Python |
-|------|-----|--------|
-| 安装 | 需要安装 | 系统自带 |
-| TypeScript 支持 | 原生支持 | 仅显示源码 |
-| 启动速度 | 极快 | 一般 |
-| 热重载 | 支持 | 不支持 |
-
-> **提示**: 查看 TypeScript 源码时，两种方式都可以。如需运行 TypeScript，建议使用 Bun 或先用 `tsc` 编译。
 
 ## Docker 部署
 
