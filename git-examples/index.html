@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git 入门教程</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #f05033; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #f05033; }
+    .intro { background: linear-gradient(135deg, #f05033, #c9302c); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #f05033; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .back { display: inline-block; margin-bottom: 20px; color: #f05033; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .tip { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+    .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 Git 教程</a>
+  <h1>Git 入门 <span>教程</span></h1>
+
+  <div class="intro">
+    <h2>什么是 Git？</h2>
+    <p>Git 是一款强大的<strong>分布式版本控制系统</strong>。它能精准记录每一位团队成员的操作轨迹，让每一次编辑都更加安心、高效。</p>
+    <p style="margin-top:8px;">
+      <span class="tag" style="background:rgba(255,255,255,0.2);color:white;">git init</span>
+      <span class="tag" style="background:rgba(255,255,255,0.2);color:white;">git add</span>
+      <span class="tag" style="background:rgba(255,255,255,0.2);color:white;">git commit</span>
+      <span class="tag" style="background:rgba(255,255,255,0.2);color:white;">git push</span>
+    </p>
+  </div>
+
+  <div class="section">
+    <h3>1. 安装 Git</h3>
+    <p class="desc">不同操作系统的安装方式</p>
+    <pre><code class="language-bash"># macOS（自带 Git，或使用 Homebrew）
+brew install git
+
+# Windows：从官网下载安装包
+# https://git-scm.com/download/win
+
+# Linux
+sudo apt-get install git    # Debian/Ubuntu
+sudo yum install git        # CentOS
+
+# 验证安装
+git --version</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>2. 基础配置</h3>
+    <p class="desc">配置用户名和邮箱（必配）</p>
+    <pre><code class="language-bash"># 配置用户信息（global 级别，对所有仓库生效）
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+
+# 查看配置
+git config --list</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>3. 初始化仓库</h3>
+    <p class="desc">将目录纳入 Git 版本管理</p>
+    <pre><code class="language-bash"># 初始化本地仓库
+git init
+
+# 克隆远程仓库
+git clone https://github.com/user/repo.git</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>4. .gitignore 文件</h3>
+    <p class="desc">排除不需要版本控制的文件</p>
+    <pre><code class="language-bash"># 常用通配符
+*.log          # 忽略所有日志文件
+*.pyc          # 忽略 Python 编译文件
+node_modules/  # 忽略 node_modules 目录
+dist/          # 忽略构建输出目录
+.DS_Store      # 忽略 macOS 系统文件
+
+# 示例 .gitignore
+node_modules/
+dist/
+*.log
+.env
+.DS_Store</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>5. 工作区、暂存区、本地仓库</h3>
+    <p class="desc">Git 的三个核心区域</p>
+    <pre><code class="language-bash"># 工作区 -> 暂存区
+git add file.txt
+git add .              # 添加所有文件
+
+# 暂存区 -> 本地仓库
+git commit -m "提交信息"
+
+# 查看状态
+git status
+
+# 查看历史
+git log
+git log --oneline     # 简洁模式</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>6. 分支操作</h3>
+    <p class="desc">创建、切换、合并分支</p>
+    <pre><code class="language-bash"># 创建分支
+git branch feature
+
+# 切换分支
+git checkout feature
+git switch feature      # 新语法
+
+# 创建并切换分支
+git checkout -b feature
+git switch -c feature   # 新语法
+
+# 查看分支
+git branch              # 本地分支
+git branch -a           # 所有分支
+
+# 删除分支
+git branch -d feature   # 删除已合并分支
+git branch -D feature   # 强制删除</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>7. 远程仓库操作</h3>
+    <p class="desc">与远程仓库同步代码</p>
+    <pre><code class="language-bash"># 添加远程仓库
+git remote add origin https://github.com/user/repo.git
+
+# 推送到远程
+git push origin main
+git push -u origin main  # 首次推送并关联
+
+# 拉取代码
+git pull origin main
+
+# 查看远程仓库
+git remote -v</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>8. 分支合并</h3>
+    <p class="desc">将一个分支的修改融入另一个分支</p>
+    <pre><code class="language-bash"># 合并分支
+git checkout main
+git merge feature
+
+# 快进合并（--ff）
+git merge --ff feature
+
+# 非快进合并（保留分支历史）
+git merge --no-ff feature -m "合并 feature 分支"</code></pre>
+    <div class="tip">
+      <strong>提示：</strong>Fast-forward 合并不会创建新的提交，而非快进合并会保留分支拓扑结构。
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>9. 解决冲突</h3>
+    <p class="desc">当两个分支修改同一文件时</p>
+    <pre><code class="language-bash"># 冲突标记
+<<<<<<< HEAD
+当前分支的修改
+=======
+要合并分支的修改
+>>>>>>> feature
+
+# 解决步骤
+# 1. 手动编辑文件，保留需要的代码
+# 2. 删除冲突标记
+# 3. 标记为已解决
+git add file.txt
+
+# 4. 完成合并
+git commit</code></pre>
+    <div class="warning">
+      <strong>注意：</strong>解决冲突后记得删除 &lt;&lt;&lt;&lt;&lt;&lt;&lt;、=======、&gt;&gt;&gt;&gt;&gt;&gt;&gt; 标记。
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>10. Rebase 变基</h3>
+    <p class="desc">将一个分支的修改"移植"到另一个分支顶部</p>
+    <pre><code class="language-bash"># 在特性分支上 rebase main
+git checkout feature
+git rebase main
+
+# 交互式 rebase（修改最近 3 个提交）
+git rebase -i HEAD~3
+
+# 常用命令
+# pick    - 使用该提交
+# reword  - 修改提交信息
+# squash  - 合并到前一个提交
+# fixup   - 合并并丢弃日志
+# drop    - 移除该提交</code></pre>
+    <div class="warning">
+      <strong>重要原则：</strong>不要在公共分支（如 main）上执行 rebase！
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>11. 撤销操作</h3>
+    <p class="desc">reset、revert、stash</p>
+    <pre><code class="language-bash"># 软重置（保留修改）
+git reset --soft HEAD~1
+
+# 硬重置（丢弃修改，慎用！）
+git reset --hard HEAD~1
+
+# 还原（创建新提交来撤销）
+git revert commit-hash
+
+# 临时存储修改
+git stash
+git stash pop
+git stash list</code></pre>
+    <div class="tip">
+      <strong>提示：</strong>reset 移动 HEAD，revert 创建新提交。公共分支推荐用 revert。
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>12. 标签与 Reflog</h3>
+    <p class="desc">打标签和事故恢复</p>
+    <pre><code class="language-bash"># 打标签
+git tag v1.0.0
+git tag -a v1.0.0 -m "版本 1.0.0"
+git push origin v1.0.0
+
+# 查看标签
+git tag
+
+# Reflog（查看所有操作历史）
+git reflog
+
+# 使用 reflog 恢复误删的提交
+git reset --hard HEAD@{1}</code></pre>
+    <div class="tip">
+      <strong>提示：</strong>Reflog 是安全网，即使执行了 hard reset 也能找回丢失的提交（90天内）。
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>常用命令速查</h3>
+    <p class="desc">日常开发必备命令</p>
+    <pre><code class="language-bash"># 查看状态
+git status
+
+# 查看差异
+git diff              # 工作区 vs 暂存区
+git diff --cached     # 暂存区 vs 本地仓库
+
+# 修改最后一次提交
+git commit --amend
+
+# 查看文件修改历史
+git log file.txt
+git blame file.txt</code></pre>
+  </div>
+</body>
+</html>
