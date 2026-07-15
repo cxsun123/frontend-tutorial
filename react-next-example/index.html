@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React & NextJS 入门教程</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #61dafb; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #61dafb; }
+    h2 { font-size: 1.4em; margin: 24px 0 16px; color: #1a5276; border-left: 4px solid #61dafb; padding-left: 12px; }
+    h2.next { border-left-color: #000; }
+    .intro { background: linear-gradient(135deg, #61dafb, #20232a); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h3 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .card { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #61dafb; }
+    .card.next { border-top-color: #000; }
+    .card h3 { color: #1a5276; margin-bottom: 8px; }
+    .card p { color: #5d6d7e; margin-bottom: 12px; }
+    .card a { display: inline-block; background: #61dafb; color: #20232a; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 0.9em; font-weight: 600; }
+    .card.next a { background: #000; color: white; }
+    .card a:hover { opacity: 0.85; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+    pre { background: #253447; color: #ecf0f1; padding: 14px 18px; border-radius: 8px; overflow: auto; font-size: 0.85em; margin-top: 8px; }
+    code { font-family: "SF Mono", Consolas, monospace; }
+    .tag { display: inline-block; background: #e0f7fa; color: #00838f; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .tag.dark { background: #e0e0e0; color: #333; }
+    .section-tag { font-size: 0.8em; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <h1>React & Next.js <span>入门教程</span></h1>
+
+  <div class="intro">
+    <h3>React + Next.js 全栈开发</h3>
+    <p>本课程从 React 基础开始，逐步深入到 Next.js 全栈框架。适合有 JavaScript 基础的开发者。<br>
+    共 <strong>10</strong> 个章节，覆盖组件、状态、副作用、路由、数据获取、API 开发和部署上线。</p>
+  </div>
+
+  <div class="section-tag" style="color:#61dafb;">React 基础</div>
+  <h2>React 核心概念</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>01 - React 入门与环境搭建</h3>
+      <p>React 概念介绍、Vite 项目创建、项目结构、第一个组件、入口文件</p>
+      <a href="01-React入门与环境搭建.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>02 - JSX 与组件</h3>
+      <p>JSX 语法规则、内联样式、函数组件、组件组合、条件渲染</p>
+      <a href="02-JSX与组件.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>03 - State 与 Props</h3>
+      <p>Props 父传子、Props 默认值、useState Hook、状态更新特性、事件处理、状态提升</p>
+      <a href="03-State与Props.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>04 - 条件渲染与列表</h3>
+      <p>条件渲染模式、列表与 map、key 的重要性、过滤列表、受控组件与表单</p>
+      <a href="04-条件渲染与列表.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>05 - useEffect 与生命周期</h3>
+      <p>useEffect 基础、依赖数组行为、数据请求、生命周期映射、常见用例</p>
+      <a href="05-useEffect与生命周期.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>06 - React 进阶 Hooks 与 Context</h3>
+      <p>useRef、useMemo、useCallback、useContext、自定义 Hook、开发工具</p>
+      <a href="06-React进阶Hooks与Context.html" target="_blank">查看教程</a>
+    </div>
+  </div>
+
+  <div class="section-tag" style="color:#000; margin-top: 24px;">Next.js 全栈</div>
+  <h2 class="next">Next.js 框架</h2>
+  <div class="grid">
+    <div class="card next">
+      <h3>07 - Next.js 入门</h3>
+      <p>框架介绍、SSR vs SSG vs CSR、创建项目、App Router 结构、根布局</p>
+      <a href="07-NextJS入门.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card next">
+      <h3>08 - Next.js 路由与页面</h3>
+      <p>文件系统路由、动态路由 [param]、Link 导航、useRouter、嵌套 Layout、loading/error</p>
+      <a href="08-NextJS路由与页面.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card next">
+      <h3>09 - Next.js 数据获取与 API</h3>
+      <p>服务端组件 fetch、缓存策略 ISR、动态/静态渲染、API Routes、CRUD 示例</p>
+      <a href="09-NextJS数据获取与API.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card next">
+      <h3>10 - Next.js 部署与全栈开发</h3>
+      <p>构建部署、环境变量、Middleware、NextAuth 认证、图片优化、SEO、项目结构</p>
+      <a href="10-NextJS部署与全栈开发.html" target="_blank">查看教程</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:28px; border-top-color: #4caf50;">
+    <h3>快速开始</h3>
+    <pre><code># React: 创建 Vite 项目
+npm create vite@latest my-app -- --template react
+cd my-app && npm install && npm run dev
+
+# Next.js: 创建项目
+npx create-next-app@latest my-next-app
+cd my-next-app && npm run dev</code></pre>
+  </div>
+</body>
+</html>

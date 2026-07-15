@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02 - JSX与组件</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/jsx.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #61dafb; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #61dafb; }
+    .intro { background: linear-gradient(135deg, #61dafb, #20232a); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #61dafb; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #e0f7fa; color: #00838f; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #61dafb; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 React & NextJS 教程</a>
+  <h1>02 - JSX 与组件</h1>
+
+  <div class="intro">
+    <h2>JSX 是 React 的核心语法</h2>
+    <p>JSX 是 JavaScript 的语法扩展，看起来像 HTML，但实际上是 JavaScript 表达式。组件是 React 的构建单元。</p>
+  </div>
+
+  <div class="section">
+    <h3>JSX 语法规则</h3>
+    <p class="desc">JSX 必须遵循几条基本规则</p>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li><strong>单一根元素</strong> — 必须用一个父标签包裹所有子元素（或用 Fragment &lt;&gt;&lt;/&gt;）</li>
+      <li><strong>关闭所有标签</strong> — 即使是 &lt;br&gt; 也要写成 &lt;br /&gt;</li>
+      <li><strong>驼峰命名</strong> — className、onClick、tabIndex</li>
+      <li><strong>花括号表达式</strong> — 用 {} 嵌入 JavaScript 表达式</li>
+    </ul>
+    <pre><code class="language-jsx">function Welcome() {
+  const name = "小明";
+  return (
+    &lt;&gt;
+      &lt;h1 className="title"&gt;你好, {name}!&lt;/h1&gt;
+      &lt;p&gt;当前时间: {new Date().toLocaleString()}&lt;/p&gt;
+      &lt;img src="/avatar.png" alt="头像" /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>内联样式</h3>
+    <p class="desc">JSX 中使用 JavaScript 对象表示样式</p>
+    <pre><code class="language-jsx">function StyledBox() {
+  const boxStyle = {
+    backgroundColor: '#f0f0f0',
+    padding: '20px',
+    borderRadius: '8px',
+    color: '#333'
+  };
+
+  return (
+    &lt;div style={boxStyle}&gt;
+      &lt;p&gt;这是一个带内联样式的盒子&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>函数组件</h3>
+    <p class="desc">React 组件就是一个返回 JSX 的函数</p>
+    <pre><code class="language-jsx">// 定义组件（首字母必须大写）
+function Greeting() {
+  return &lt;h2&gt;欢迎来到 React!&lt;/h2&gt;;
+}
+
+function UserCard() {
+  return (
+    &lt;div className="card"&gt;
+      &lt;Greeting /&gt;
+      &lt;p&gt;用户名: 管理员&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// 使用组件
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;UserCard /&gt;
+      &lt;UserCard /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>组件组合</h3>
+    <p class="desc">组件可以嵌套组合使用，构建复杂 UI</p>
+    <pre><code class="language-jsx">function Avatar() {
+  return &lt;img className="avatar" src="/user.png" alt="用户" /&gt;;
+}
+
+function UserInfo() {
+  return (
+    &lt;div&gt;
+      &lt;Avatar /&gt;
+      &lt;h3&gt;用户名&lt;/h3&gt;
+    &lt;/div&gt;
+  );
+}
+
+function Comment() {
+  return (
+    &lt;div className="comment"&gt;
+      &lt;UserInfo /&gt;
+      &lt;p&gt;这是一条评论内容&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>条件渲染</h3>
+    <p class="desc">在 JSX 中使用 JavaScript 条件表达式</p>
+    <pre><code class="language-jsx">function StatusMessage({ isLoggedIn }) {
+  return (
+    &lt;div&gt;
+      {isLoggedIn ? (
+        &lt;h2&gt;欢迎回来！&lt;/h2&gt;
+      ) : (
+        &lt;button&gt;登录&lt;/button&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+function Notice({ hasNew }) {
+  return (
+    &lt;div&gt;
+      {hasNew && &lt;span&gt;有新消息！&lt;/span&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li>JSX 在 JS 中写类似 HTML 的标签</li>
+      <li>用 {} 嵌入任何 JavaScript 表达式</li>
+      <li>函数组件是接受 props 返回 JSX 的函数</li>
+      <li>组件首字母必须大写以区分原生标签</li>
+      <li>组件可以任意组合和复用</li>
+    </ul>
+  </div>
+</body>
+</html>

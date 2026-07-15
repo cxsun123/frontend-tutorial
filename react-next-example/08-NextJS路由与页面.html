@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 - NextJS路由与页面</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/jsx.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #000; }
+    .intro { background: linear-gradient(135deg, #000, #333); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #000; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #e0e0e0; color: #333; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #000; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 React & NextJS 教程</a>
+  <h1>08 - Next.js 路由与页面</h1>
+
+  <div class="intro">
+    <h2>基于文件系统的路由</h2>
+    <p>Next.js 的 App Router 使用文件系统定义路由，目录嵌套即路由嵌套。</p>
+  </div>
+
+  <div class="section">
+    <h3>基本路由</h3>
+    <p class="desc">文件路径对应 URL 路径</p>
+    <pre><code class="language-jsx">// app/page.jsx           →  /（首页）
+// app/about/page.jsx     →  /about
+// app/blog/page.jsx      →  /blog
+// app/contact/page.jsx   →  /contact
+
+// 每个 page.jsx 导出默认组件
+export default function AboutPage() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;关于我们&lt;/h1&gt;
+      &lt;p&gt;这是一个 Next.js 示例应用&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>动态路由</h3>
+    <p class="desc">用方括号 [param] 创建动态路由</p>
+    <pre><code class="language-jsx">// app/blog/[slug]/page.jsx  →  /blog/hello-world
+
+export default function BlogPost({ params }) {
+  return &lt;h1&gt;文章: {params.slug}&lt;/h1&gt;;
+}
+
+// app/products/[category]/[id]/page.jsx
+// → /products/electronics/123
+
+export default function ProductPage({ params }) {
+  return (
+    &lt;div&gt;
+      &lt;p&gt;分类: {params.category}&lt;/p&gt;
+      &lt;p&gt;商品 ID: {params.id}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// app/[...slug]/page.jsx    → 捕获所有路径
+// app/[[...slug]]/page.jsx  → 可选捕获所有路径</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>导航组件 — Link</h3>
+    <p class="desc">next/link 提供客户端导航，无页面刷新</p>
+    <pre><code class="language-jsx">import Link from 'next/link';
+
+export default function Navbar() {
+  return (
+    &lt;nav&gt;
+      &lt;Link href="/"&gt;首页&lt;/Link&gt;
+      &lt;Link href="/about"&gt;关于&lt;/Link&gt;
+      &lt;Link
+        href="/blog/post-1"
+        className="nav-link"
+      &gt;
+        博客文章
+      &lt;/Link&gt;
+
+      {/* 动态路由 */}
+      &lt;Link href={`/products/${category}/${id}`}&gt;
+        商品详情
+      &lt;/Link&gt;
+
+      {/* 替换历史记录 */}
+      &lt;Link href="/dashboard" replace&gt;
+        仪表盘
+      &lt;/Link&gt;
+    &lt;/nav&gt;
+  );
+}</code></pre>
+    <div class="note">Link 默认预取视口中的链接页面，实现即时导航。</div>
+  </div>
+
+  <div class="section">
+    <h3>编程式导航 — useRouter</h3>
+    <p class="desc">用 useRouter Hook 在代码中跳转</p>
+    <pre><code class="language-jsx">'use client'; // 需要在客户端组件中使用
+
+import { useRouter } from 'next/navigation';
+
+export default function LoginButton() {
+  const router = useRouter();
+
+  function handleLogin() {
+    // 登录逻辑...
+    router.push('/dashboard');       // 跳转
+    router.replace('/dashboard');    // 替换（不能后退）
+    router.back();                   // 后退
+    router.refresh();                // 刷新当前页
+  }
+
+  return &lt;button onClick={handleLogin}&gt;登录&lt;/button&gt;;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>嵌套布局</h3>
+    <p class="desc">Layout 可以嵌套，实现不同区域的共享 UI</p>
+    <pre><code class="language-jsx">// app/dashboard/layout.jsx
+export default function DashboardLayout({ children }) {
+  return (
+    &lt;section&gt;
+      &lt;aside&gt;
+        &lt;nav&gt;侧边栏导航...&lt;/nav&gt;
+      &lt;/aside&gt;
+      &lt;main&gt;{children}&lt;/main&gt;
+    &lt;/section&gt;
+  );
+}
+
+// app/dashboard/settings/page.jsx
+export default function SettingsPage() {
+  return &lt;h1&gt;设置页面&lt;/h1&gt;;
+}
+
+// 结构:
+// app/layout.jsx         → 全局（导航 + footer）
+// app/dashboard/layout.jsx → 侧边栏（嵌套在全局内）
+// app/dashboard/settings/page.jsx → 嵌套在侧边栏内</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>加载与错误处理</h3>
+    <p class="desc">内置的 loading 和 error 组件</p>
+    <pre><code class="language-jsx">// app/blog/loading.jsx — 路由切换时显示
+export default function Loading() {
+  return (
+    &lt;div className="spinner"&gt;
+      &lt;p&gt;加载中...&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// app/blog/error.jsx — 运行时错误的兜底 UI
+'use client';
+
+export default function Error({ error, reset }) {
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;出错了!&lt;/h2&gt;
+      &lt;p&gt;{error.message}&lt;/p&gt;
+      &lt;button onClick={() => reset()}&gt;重试&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li>page.jsx 定义页面，文件路径即路由路径</li>
+      <li>[param] 动态路由匹配 URL 参数</li>
+      <li>Link 组件实现客户端导航，useRouter 实现编程式导航</li>
+      <li>Layout 可以嵌套，实现多层级共享布局</li>
+      <li>loading.jsx 和 error.jsx 实现加载态和错误处理</li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06 - React进阶Hooks与Context</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/jsx.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #61dafb; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #61dafb; }
+    .intro { background: linear-gradient(135deg, #61dafb, #20232a); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #61dafb; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #e0f7fa; color: #00838f; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #61dafb; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 React & NextJS 教程</a>
+  <h1>06 - React 进阶: Hooks 与 Context</h1>
+
+  <div class="intro">
+    <h2>掌握更多 Hook 和 Context API</h2>
+    <p>useRef 操作 DOM / useMemo 优化性能 / useContext 全局状态 / 自定义 Hook 封装逻辑</p>
+  </div>
+
+  <div class="section">
+    <h3>useRef — 引用 DOM</h3>
+    <p class="desc">useRef 创建一个可变的引用对象，不会触发重新渲染</p>
+    <pre><code class="language-jsx">import { useRef, useEffect } from 'react';
+
+function AutoFocus() {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    // 组件挂载后自动聚焦输入框
+    inputRef.current.focus();
+  }, []);
+
+  return &lt;input ref={inputRef} placeholder="自动聚焦" /&gt;;
+}
+
+// 存储可变值（不触发重渲染）
+function Stopwatch() {
+  const [count, setCount] = useState(0);
+  const intervalRef = useRef(null);
+
+  function start() {
+    intervalRef.current = setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+  }
+
+  function stop() {
+    clearInterval(intervalRef.current);
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{count}s&lt;/p&gt;
+      &lt;button onClick={start}&gt;开始&lt;/button&gt;
+      &lt;button onClick={stop}&gt;停止&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>useMemo — 性能优化</h3>
+    <p class="desc">缓存计算结果，仅在依赖变化时重新计算</p>
+    <pre><code class="language-jsx">import { useMemo, useState } from 'react';
+
+function ExpensiveList({ numbers, filter }) {
+  // 仅当 numbers 或 filter 变化时重新计算
+  const filtered = useMemo(() => {
+    console.log('执行过滤计算...');
+    return numbers.filter(n => n > filter);
+  }, [numbers, filter]);
+
+  return (
+    &lt;ul&gt;
+      {filtered.map((n, i) => (
+        &lt;li key={i}&gt;{n}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// useCallback — 缓存函数引用
+import { useCallback } from 'react';
+
+function Parent() {
+  const [count, setCount] = useState(0);
+
+  const increment = useCallback(() => {
+    setCount(c => c + 1);
+  }, []); // 函数引用永远不变
+
+  return &lt;Child onIncrement={increment} /&gt;;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>useContext — 全局状态</h3>
+    <p class="desc">Context API 无需 prop drilling，直接在任意层级获取数据</p>
+    <pre><code class="language-jsx">import { createContext, useContext, useState } from 'react';
+
+// 1. 创建 Context
+const ThemeContext = createContext('light');
+const UserContext = createContext(null);
+
+// 2. Provider 提供数据
+function App() {
+  const [theme, setTheme] = useState('light');
+  const user = { name: '小明', role: 'admin' };
+
+  return (
+    &lt;ThemeContext.Provider value={{ theme, setTheme }}&gt;
+      &lt;UserContext.Provider value={user}&gt;
+        &lt;Main /&gt;
+      &lt;/UserContext.Provider&gt;
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+// 3. 任意子组件消费
+function Navbar() {
+  const { theme, setTheme } = useContext(ThemeContext);
+  const user = useContext(UserContext);
+
+  return (
+    &lt;nav style={{
+      background: theme === 'dark' ? '#333' : '#fff'
+    }}&gt;
+      &lt;span&gt;{user.name}&lt;/span&gt;
+      &lt;button onClick={() =>
+        setTheme(t => t === 'dark' ? 'light' : 'dark')
+      }&gt;
+        切换主题
+      &lt;/button&gt;
+    &lt;/nav&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>自定义 Hook</h3>
+    <p class="desc">将组件逻辑提取为可复用的函数</p>
+    <pre><code class="language-jsx">// 自定义 Hook（必须以 use 开头）
+function useWindowSize() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return size;
+}
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error('请求失败');
+        return res.json();
+      })
+      .then(data => {
+        if (!cancelled) { setData(data); setError(null); }
+      })
+      .catch(err => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => { cancelled = true; };
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+// 使用自定义 Hook
+function Page() {
+  const { width } = useWindowSize();
+  const { data, loading } = useFetch('/api/users');
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;当前窗口宽度: {width}&lt;/p&gt;
+      {loading ? &lt;p&gt;加载中...&lt;/p&gt; : &lt;p&gt;用户数: {data?.length}&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>React 开发工具</h3>
+    <p class="desc">推荐的开发工具链</p>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li><strong>React DevTools</strong> — 浏览器扩展，检查组件树和状态</li>
+      <li><strong>Vite</strong> — 开发服务器，HMR 热更新</li>
+      <li><strong>ESLint + eslint-plugin-react-hooks</strong> — 规范 Hook 使用</li>
+      <li><strong>TypeScript</strong> — 类型安全，推荐用于中大型项目</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li>useRef — 引用 DOM 节点和存储可变值</li>
+      <li>useMemo/useCallback — 缓存计算结果和函数引用</li>
+      <li>useContext — 跨组件层级共享数据</li>
+      <li>自定义 Hook — 将组件逻辑提取为可复用函数</li>
+      <li>现在你已经掌握了 React 的核心能力！</li>
+    </ul>
+  </div>
+</body>
+</html>

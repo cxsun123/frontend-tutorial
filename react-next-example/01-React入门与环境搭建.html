@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 - React入门与环境搭建</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/jsx.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #61dafb; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #61dafb; }
+    .intro { background: linear-gradient(135deg, #61dafb, #20232a); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #61dafb; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #e0f7fa; color: #00838f; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #61dafb; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 React & NextJS 教程</a>
+  <h1>01 - React 入门与环境搭建</h1>
+
+  <div class="intro">
+    <h2>什么是 React？</h2>
+    <p>React 是 Facebook（Meta）开发的用于构建用户界面的 JavaScript 库。它采用<strong>组件化</strong>开发模式，使用<strong>声明式</strong>语法，通过 Virtual DOM 实现高效渲染。React 是目前最流行的前端框架之一。</p>
+  </div>
+
+  <div class="section">
+    <h3>核心特性</h3>
+    <p class="desc">React 的几个关键概念</p>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li><strong>声明式</strong> — 描述 UI 应该是什么样子，React 负责更新 DOM</li>
+      <li><strong>组件化</strong> — 将 UI 拆分成独立、可复用的组件</li>
+      <li><strong>Virtual DOM</strong> — 通过内存中的虚拟 DOM 树最小化实际 DOM 操作</li>
+      <li><strong>单向数据流</strong> — 数据从父组件流向子组件</li>
+      <li><strong>JSX</strong> — JavaScript 的语法扩展，在 JS 中写 HTML 标签</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>创建项目</h3>
+    <p class="desc">React 官方推荐使用 Vite 或 Create React App 创建项目</p>
+    <pre><code class="language-bash"># 使用 Vite（推荐，更快）
+npm create vite@latest my-app -- --template react
+
+# 进入项目目录
+cd my-app
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev</code></pre>
+    <div class="note">Vite 是目前最流行的 React 项目脚手架，启动速度快，HMR 热更新体验好。</div>
+  </div>
+
+  <div class="section">
+    <h3>项目结构</h3>
+    <p class="desc">Vite + React 项目的目录结构</p>
+    <pre><code class="language-bash">my-app/
+├── index.html          # 入口 HTML
+├── package.json        # 项目配置与依赖
+├── vite.config.js      # Vite 配置文件
+├── public/             # 静态资源
+│   └── vite.svg
+└── src/                # 源代码
+    ├── main.jsx        # 应用入口 JS
+    ├── App.jsx         # 根组件
+    └── App.css         # 根组件样式</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>第一个 React 组件</h3>
+    <p class="desc">最简单 React 组件是一个返回 JSX 的函数</p>
+    <pre><code class="language-jsx">// src/App.jsx
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello, React!&lt;/h1&gt;
+      &lt;p&gt;这是我的第一个 React 应用&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>入口文件</h3>
+    <p class="desc">ReactDOM 将根组件渲染到 DOM</p>
+    <pre><code class="language-jsx">// src/main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+
+ReactDOM.createRoot(
+  document.getElementById('root')
+).render(
+  &lt;React.StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/React.StrictMode&gt;
+);</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <p class="desc">本章学习了 React 的核心概念和环境搭建</p>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li>React 是一个声明式、组件化的 UI 库</li>
+      <li>使用 Vite 快速创建 React 项目</li>
+      <li>理解项目目录结构</li>
+      <li>编写第一个函数组件</li>
+    </ul>
+  </div>
+</body>
+</html>

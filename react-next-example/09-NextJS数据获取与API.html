@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09 - NextJS数据获取与API</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/jsx.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #000; }
+    .intro { background: linear-gradient(135deg, #000, #333); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #000; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #e0e0e0; color: #333; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #000; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 React & NextJS 教程</a>
+  <h1>09 - Next.js 数据获取与 API</h1>
+
+  <div class="intro">
+    <h2>全栈数据获取方案</h2>
+    <p>Next.js 提供多种数据获取方式，并内置 API Routes 让你在同一个项目中编写后端接口。</p>
+  </div>
+
+  <div class="section">
+    <h3>服务端组件获取数据</h3>
+    <p class="desc">在 App Router 中，组件默认是服务端组件，可直接 async</p>
+    <pre><code class="language-jsx">// app/posts/page.jsx — 服务端组件，直接 fetch
+async function getPosts() {
+  const res = await fetch('https://api.example.com/posts');
+  // 默认缓存（SSG），设置 cache 控制策略
+  return res.json();
+}
+
+export default async function PostsPage() {
+  const posts = await getPosts();
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;文章列表&lt;/h1&gt;
+      {posts.map(post =&amp;gt; (
+        &lt;article key={post.id}&gt;
+          &lt;h2&gt;{post.title}&lt;/h2&gt;
+          &lt;p&gt;{post.body}&lt;/p&gt;
+        &lt;/article&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+    <div class="note">服务端组件中可以直接使用 async/await，无需 useState/useEffect。</div>
+  </div>
+
+  <div class="section">
+    <h3>缓存与重新验证</h3>
+    <p class="desc">fetch 的缓存策略控制</p>
+    <pre><code class="language-jsx">// 1. 静态数据（SSG）— 构建时获取，永不重新获取
+fetch(url);
+
+// 2. 按需重新验证（ISR）
+fetch(url, { next: { revalidate: 3600 } });
+// 或使用单独的函数
+export const revalidate = 3600; // 每 3600 秒重新生成
+
+// 3. 动态数据（SSR）— 每次请求都获取
+fetch(url, { cache: 'no-store' });
+
+// 4. 手动重新验证
+import { revalidatePath } from 'next/cache';
+revalidatePath('/posts'); // 重新验证 /posts 页面
+revalidateTag('posts'); // 重新验证标记为 'posts' 的 fetch</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>动态渲染 vs 静态生成</h3>
+    <p class="desc">控制页面的渲染策略</p>
+    <pre><code class="language-jsx">// app/dashboard/page.jsx
+
+// 动态渲染（每次请求重新生成）
+export const dynamic = 'force-dynamic';
+
+// 静态生成（默认）
+export const dynamic = 'force-static';
+
+// 增量静态生成
+export const revalidate = 60; // 60 秒后重新生成
+
+// 使用 cookies/headers 自动变为动态
+import { cookies } from 'next/headers';
+
+export default async function Page() {
+  const cookieStore = cookies();
+  const theme = cookieStore.get('theme');
+  return &lt;h1&gt;主题: {theme?.value}&lt;/h1&gt;;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>API Routes</h3>
+    <p class="desc">在 app/api/ 目录下创建 route.js 编写后端 API</p>
+    <pre><code class="language-jsx">// app/api/posts/route.js — GET /api/posts
+
+const posts = [
+  { id: 1, title: 'Hello World' },
+  { id: 2, title: 'Next.js 教程' },
+];
+
+export async function GET() {
+  return Response.json(posts);
+}
+
+export async function POST(request) {
+  const body = await request.json();
+  const newPost = { id: posts.length + 1, ...body };
+  posts.push(newPost);
+  return Response.json(newPost, { status: 201 });
+}
+
+// app/api/posts/[id]/route.js — GET /api/posts/1
+
+export async function GET(_, { params }) {
+  const post = posts.find(p => p.id === Number(params.id));
+  if (!post) {
+    return Response.json({ error: '未找到' }, { status: 404 });
+  }
+  return Response.json(post);
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>完整的 CRUD 示例</h3>
+    <p class="desc">一个简单的 Todo API</p>
+    <pre><code class="language-jsx">// app/api/todos/route.js
+let todos = [
+  { id: 1, text: '学习 Next.js', done: false },
+  { id: 2, text: '写项目', done: true },
+];
+
+export async function GET() {
+  return Response.json(todos);
+}
+
+export async function POST(request) {
+  const { text } = await request.json();
+  const todo = { id: Date.now(), text, done: false };
+  todos.push(todo);
+  return Response.json(todo, { status: 201 });
+}
+
+// app/api/todos/[id]/route.js
+export async function PUT(request, { params }) {
+  const { done } = await request.json();
+  const todo = todos.find(t => t.id === Number(params.id));
+  if (todo) todo.done = done;
+  return Response.json(todo);
+}
+
+export async function DELETE(_, { params }) {
+  todos = todos.filter(t => t.id !== Number(params.id));
+  return Response.json({ success: true });
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>客户端数据获取</h3>
+    <p class="desc">在客户端组件中调用自己的 API</p>
+    <pre><code class="language-jsx">'use client';
+
+import { useState, useEffect } from 'react';
+
+export default function TodoApp() {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/todos')
+      .then(res => res.json())
+      .then(setTodos);
+  }, []);
+
+  async function addTodo(text) {
+    const res = await fetch('/api/todos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    const newTodo = await res.json();
+    setTodos(prev => [...prev, newTodo]);
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() => addTodo('新任务')}&gt;添加&lt;/button&gt;
+      &lt;ul&gt;
+        {todos.map(todo => (
+          &lt;li key={todo.id}&gt;
+            {todo.text} {todo.done ? '✅' : '❌'}
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li>服务端组件可以直接 async/await 获取数据</li>
+      <li>fetch 的 cache 和 revalidate 控制缓存策略</li>
+      <li>API Routes 在 app/api/ 目录下编写后端代码</li>
+      <li>支持 GET/POST/PUT/DELETE 等 HTTP 方法</li>
+      <li>客户端组件通过 fetch 调用自己的 API 层</li>
+    </ul>
+  </div>
+</body>
+</html>

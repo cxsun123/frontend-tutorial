@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04 - 条件渲染与列表</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/jsx.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #61dafb; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #61dafb; }
+    .intro { background: linear-gradient(135deg, #61dafb, #20232a); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #61dafb; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #e0f7fa; color: #00838f; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #61dafb; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 React & NextJS 教程</a>
+  <h1>04 - 条件渲染与列表</h1>
+
+  <div class="intro">
+    <h2>动态渲染是 React 的核心能力</h2>
+    <p>React 让你可以像写 JavaScript 一样，用条件语句和循环动态生成 UI。</p>
+  </div>
+
+  <div class="section">
+    <h3>条件渲染方式</h3>
+    <p class="desc">四种常见的条件渲染模式</p>
+    <pre><code class="language-jsx">function UserGreeting({ user }) {
+  // 1. if/else 语句（推荐用于复杂逻辑）
+  if (!user) {
+    return &lt;p&gt;请先登录&lt;/p&gt;;
+  }
+  if (user.banned) {
+    return &lt;p&gt;账号已被禁用&lt;/p&gt;;
+  }
+
+  // 2. 三元运算符（简单条件）
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{user.name ? `欢迎, ${user.name}` : '欢迎, 游客'}&lt;/h2&gt;
+
+      {/* 3. 逻辑与 &&（有则显示） */}
+      {user.vip && &lt;span className="badge"&gt;VIP 会员&lt;/span&gt;}
+
+      {/* 4. 逻辑或 ||（无则默认） */}
+      &lt;p&gt;角色: {user.role || '普通用户'}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+    <div class="note">⚠️ 注意: 0 和空字符串在 && 中会被渲染，请确保左侧是布尔值。</div>
+  </div>
+
+  <div class="section">
+    <h3>列表渲染与 key</h3>
+    <p class="desc">使用数组的 map() 方法渲染列表</p>
+    <pre><code class="language-jsx">function TodoList() {
+  const todos = [
+    { id: 1, text: '学习 React', done: true },
+    { id: 2, text: '写项目', done: false },
+    { id: 3, text: '提交代码', done: false },
+  ];
+
+  return (
+    &lt;ul&gt;
+      {todos.map(todo => (
+        &lt;li key={todo.id}&gt;
+          &lt;span style={{
+            textDecoration: todo.done ? 'line-through' : 'none'
+          }}&gt;
+            {todo.text}
+          &lt;/span&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>key 的重要性</h3>
+    <p class="desc">key 帮助 React 识别列表元素的变更</p>
+    <pre><code class="language-jsx">// ✅ 正确: 使用唯一且稳定的 id
+{todos.map(todo => (
+  &lt;TodoItem key={todo.id} todo={todo} /&gt;
+))}
+
+// ❌ 错误: 使用索引（导致性能问题和状态混乱）
+{todos.map((todo, index) => (
+  &lt;TodoItem key={index} todo={todo} /&gt;
+))}
+
+// ❌ 错误: 不使用 key
+{todos.map(todo => (
+  &lt;TodoItem todo={todo} /&gt;
+))}</code></pre>
+    <div class="note">key 应该在数组中是唯一的且稳定的。不要用 Math.random() 生成 key。</div>
+  </div>
+
+  <div class="section">
+    <h3>过滤列表</h3>
+    <p class="desc">结合 filter() 和 map() 使用</p>
+    <pre><code class="language-jsx">function FilterableList() {
+  const [search, setSearch] = useState('');
+
+  const fruits = ['苹果', '香蕉', '橘子', '葡萄', '西瓜'];
+
+  const filtered = fruits.filter(fruit =>
+    fruit.includes(search)
+  );
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        placeholder="搜索水果..."
+      /&gt;
+      &lt;ul&gt;
+        {filtered.length > 0 ? (
+          filtered.map((fruit, i) => (
+            &lt;li key={i}&gt;{fruit}&lt;/li&gt;
+          ))
+        ) : (
+          &lt;li&gt;没有匹配的水果&lt;/li&gt;
+        )}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>表单处理</h3>
+    <p class="desc">受控组件 — 表单状态由 React 控制</p>
+    <pre><code class="language-jsx">function LoginForm() {
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+    remember: false
+  });
+
+  function handleChange(e) {
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log('登录信息:', form);
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input name="username" value={form.username}
+        onChange={handleChange} placeholder="用户名" /&gt;
+      &lt;input name="password" type="password" value={form.password}
+        onChange={handleChange} placeholder="密码" /&gt;
+      &lt;label&gt;
+        &lt;input name="remember" type="checkbox"
+          checked={form.remember} onChange={handleChange} /&gt;
+        记住我
+      &lt;/label&gt;
+      &lt;button type="submit"&gt;登录&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li>条件渲染: if/else、三元、&&、||</li>
+      <li>列表渲染: 用 map() 将数据数组转为 JSX 数组</li>
+      <li>每个列表项必须有一个稳定唯一的 key</li>
+      <li>受控组件让表单状态由 React 管理</li>
+      <li>filter() + map() 组合使用实现过滤列表</li>
+    </ul>
+  </div>
+</body>
+</html>

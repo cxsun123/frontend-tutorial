@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 - NextJS部署与全栈开发</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/jsx.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #000; }
+    .intro { background: linear-gradient(135deg, #000, #333); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #000; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #e0e0e0; color: #333; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #000; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回 React & NextJS 教程</a>
+  <h1>10 - Next.js 部署与全栈开发</h1>
+
+  <div class="intro">
+    <h2>从开发到上线</h2>
+    <p>本章涵盖 Next.js 的部署、环境变量、中间件、认证集成等生产环境必备知识。</p>
+  </div>
+
+  <div class="section">
+    <h3>构建与部署</h3>
+    <p class="desc">Next.js 项目构建后部署到各种平台</p>
+    <pre><code class="language-bash"># 构建项目
+npm run build
+
+# 启动生产服务器
+npm start
+
+# 导出静态站点（纯静态部署）
+npx next build && npx next export</code></pre>
+    <p class="desc" style="margin-top:12px;">推荐部署平台:</p>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li><strong>Vercel</strong> — Next.js 官方平台，一键部署，自动适配 SSR/SSG</li>
+      <li><strong>Netlify</strong> — 支持静态导出，通过 @netlify/plugin-nextjs</li>
+      <li><strong>Docker</strong> — 自定义容器部署到任意云平台</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>环境变量</h3>
+    <p class="desc">管理不同环境下的配置</p>
+    <pre><code class="language-bash"># .env.local — 本地开发（不上传到 git）
+DATABASE_URL="postgresql://localhost:5432/mydb"
+API_SECRET="my-secret-key"
+
+# .env — 所有环境共享
+NEXT_PUBLIC_SITE_URL="https://mysite.com"
+
+# .env.production — 生产环境
+# .env.development — 开发环境</code></pre>
+    <pre><code class="language-jsx">// 在服务端组件中使用
+export default async function Page() {
+  // 服务端环境变量（直接访问）
+  const dbUrl = process.env.DATABASE_URL;
+  return &lt;div&gt;DB: {dbUrl}&lt;/div&gt;;
+}
+
+// 'use client' 组件只能使用 NEXT_PUBLIC_ 前缀的变量
+console.log(process.env.NEXT_PUBLIC_SITE_URL);</code></pre>
+    <div class="note">NEXT_PUBLIC_ 前缀的变量会在客户端暴露，不要放敏感信息。</div>
+  </div>
+
+  <div class="section">
+    <h3>Middleware 中间件</h3>
+    <p class="desc">在请求到达页面之前执行逻辑</p>
+    <pre><code class="language-jsx">// middleware.js（在项目根目录）
+import { NextResponse } from 'next/server';
+
+export function middleware(request) {
+  const token = request.cookies.get('token');
+
+  // 未登录用户重定向到登录页
+  if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // 添加请求头
+  const response = NextResponse.next();
+  response.headers.set('x-custom-header', 'hello');
+  return response;
+}
+
+// 匹配路径配置
+export const config = {
+  matcher: ['/dashboard/:path*', '/admin/:path*'],
+};</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>认证集成</h3>
+    <p class="desc">使用 NextAuth.js 添加认证</p>
+    <pre><code class="language-jsx">// app/api/auth/[...nextauth]/route.js
+import NextAuth from 'next-auth';
+import GithubProvider from 'next-auth/providers/github';
+
+const handler = NextAuth({
+  providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
+  ],
+  callbacks: {
+    async session({ session, token }) {
+      session.user.id = token.sub;
+      return session;
+    },
+  },
+});
+
+export { handler as GET, handler as POST };
+
+// 在客户端组件中使用
+'use client';
+import { useSession, signIn, signOut } from 'next-auth/react';
+
+export default function AuthButton() {
+  const { data: session } = useSession();
+
+  if (session) {
+    return (
+      &lt;div&gt;
+        &lt;p&gt;欢迎, {session.user.name}&lt;/p&gt;
+        &lt;button onClick={() => signOut()}&gt;退出&lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+  return &lt;button onClick={() => signIn()}&gt;登录&lt;/button&gt;;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>图片优化</h3>
+    <p class="desc">next/image 提供自动优化</p>
+    <pre><code class="language-jsx">import Image from 'next/image';
+
+export default function Page() {
+  return (
+    &lt;div&gt;
+      {/* 本地图片 — 自动获取宽高 */}
+      &lt;Image
+        src="/profile.jpg"
+        alt="头像"
+        width={200}
+        height={200}
+        priority // 首屏图片优先加载
+      /&gt;
+
+      {/* 远程图片 — 需配置域名 */}
+      &lt;Image
+        src="https://example.com/photo.jpg"
+        alt="远程图片"
+        width={800}
+        height={600}
+        placeholder="blur" // 模糊占位
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+    <pre><code class="language-jsx">// next.config.js
+module.exports = {
+  images: {
+    domains: ['example.com'],
+    formats: ['image/avif', 'image/webp'],
+  },
+};</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>SEO 优化</h3>
+    <p class="desc">使用 metadata API 优化搜索引擎排名</p>
+    <pre><code class="language-jsx">// 静态 metadata
+export const metadata = {
+  title: '我的博客',
+  description: '一个 Next.js 博客应用',
+  openGraph: {
+    title: '我的博客',
+    description: '一个 Next.js 博客应用',
+    type: 'website',
+  },
+};
+
+// 动态 metadata
+export async function generateMetadata({ params }) {
+  const post = await getPost(params.slug);
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      images: [post.coverImage],
+    },
+  };
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>全栈项目示例</h3>
+    <p class="desc">一个完整的博客项目结构</p>
+    <pre><code class="language-bash">my-blog/
+├── app/
+│   ├── layout.jsx         # 根布局
+│   ├── page.jsx           # 首页（文章列表）
+│   ├── posts/
+│   │   ├── [slug]/
+│   │   │   └── page.jsx   # 文章详情
+│   │   └── page.jsx       # /posts
+│   ├── api/
+│   │   ├── auth/
+│   │   │   └── [...nextauth]/
+│   │   │       └── route.js
+│   │   └── posts/
+│   │       └── route.js   # 文章 API
+│   ├── loading.jsx        # 全局加载态
+│   └── error.jsx          # 全局错误处理
+├── components/
+│   ├── Header.jsx
+│   ├── PostCard.jsx
+│   └── AuthButton.jsx
+├── lib/
+│   ├── db.js              # 数据库连接
+│   └── auth.js            # 认证工具
+├── middleware.js           # 中间件
+├── next.config.js
+└── .env.local</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul style="margin: 8px 0 0 20px; color: #5d6d7e;">
+      <li>Vercel 是部署 Next.js 的最佳选择，一键部署</li>
+      <li>环境变量通过 .env 文件管理，NEXT_PUBLIC_ 前缀暴露给客户端</li>
+      <li>Middleware 在路由层面执行认证、重定向、日志等逻辑</li>
+      <li>NextAuth.js 快速集成 OAuth 认证</li>
+      <li>next/image 自动优化图片，metadata API 提升 SEO</li>
+      <li>恭喜！你已经掌握了 React + Next.js 全栈开发的核心知识！</li>
+    </ul>
+  </div>
+</body>
+</html>
