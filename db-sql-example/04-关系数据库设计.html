@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04 - 关系数据库设计</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #336791; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul, ol { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>04 - 关系数据库设计</h1>
+
+  <div class="intro">
+    <h2>好的设计让数据更可靠</h2>
+    <p>关系数据库设计的核心是数据建模、范式化和保持数据完整性。良好的设计可以减少冗余、避免异常。</p>
+  </div>
+
+  <div class="section">
+    <h3>关系型数据模型</h3>
+    <p class="desc">关系数据库以二维表的形式组织数据</p>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #336791; color: white;">
+          <th style="padding: 8px 12px;">概念</th>
+          <th style="padding: 8px 12px;">说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>关系（Relation）</strong></td>
+          <td style="padding: 8px 12px;">即一张二维表</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>元组（Tuple）</strong></td>
+          <td style="padding: 8px 12px;">表中的一行</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>属性（Attribute）</strong></td>
+          <td style="padding: 8px 12px;">表中的一列</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>域（Domain）</strong></td>
+          <td style="padding: 8px 12px;">属性的取值范围</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;"><strong>键（Key）</strong></td>
+          <td style="padding: 8px 12px;">唯一标识元组的属性集</td>
+        </tr>
+      </tbody>
+    </table>
+    <pre style="margin-top:12px;"><code class="language-sql">-- 关系模型示例：学生表
+CREATE TABLE Student (
+    student_id   CHAR(8)  PRIMARY KEY,         -- 学号（主键）
+    name         VARCHAR(50) NOT NULL,          -- 姓名
+    gender       CHAR(1) CHECK (gender IN ('M','F')),  -- 性别（域约束）
+    birth_date   DATE,
+    department   VARCHAR(50)
+);
+
+-- 课程表
+CREATE TABLE Course (
+    course_id    CHAR(6) PRIMARY KEY,
+    title        VARCHAR(100) NOT NULL,
+    credits      INTEGER CHECK (credits > 0)
+);
+
+-- 选课表（多对多关系）
+CREATE TABLE Enrollment (
+    student_id   CHAR(8) REFERENCES Student(student_id),
+    course_id    CHAR(6) REFERENCES Course(course_id),
+    grade        DECIMAL(3,1),
+    PRIMARY KEY (student_id, course_id)          -- 复合主键
+);</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>实体关系模型 (ER)</h3>
+    <p class="desc">使用 ER 图进行概念设计</p>
+    <ul>
+      <li><strong>实体（Entity）</strong> — 现实世界中的对象（学生、课程）</li>
+      <li><strong>属性（Attribute）</strong> — 实体的特征（姓名、学分）</li>
+      <li><strong>关系（Relationship）</strong> — 实体之间的关联（选课）</li>
+      <li><strong>关系类型</strong>：
+        <ul>
+          <li>1:1（一对一）— 一个学生一个学号</li>
+          <li>1:N（一对多）— 一个部门多个学生</li>
+          <li>M:N（多对多）— 一个学生选多门课，一门课被多个学生选</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>数据库范式 (Normalization)</h3>
+    <p class="desc">范式是评估表设计的标准，目的是减少数据冗余和更新异常</p>
+
+    <h4 style="color:#1a5276; margin: 16px 0 8px;">第一范式 (1NF)</h4>
+    <p class="desc">每个列都是不可分割的原子值</p>
+    <pre><code class="language-sql">-- ❌ 违反 1NF：phone 包含多个电话号码
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY,
+    phones       VARCHAR(200)  -- "13800138000,13900139000"
+);
+
+-- ✅ 符合 1NF：每个电话一行
+CREATE TABLE CustomerPhone (
+    customer_id INT REFERENCES Customer(customer_id),
+    phone       VARCHAR(20),
+    PRIMARY KEY (customer_id, phone)
+);</code></pre>
+
+    <h4 style="color:#1a5276; margin: 16px 0 8px;">第二范式 (2NF)</h4>
+    <p class="desc">在 1NF 基础上，消除非主属性对候选键的部分函数依赖</p>
+    <pre><code class="language-sql">-- ❌ 违反 2NF：订单明细表，product_name 只依赖于 product_id
+CREATE TABLE OrderDetail (
+    order_id    INT,
+    product_id  INT,
+    product_name VARCHAR(100),  -- 部分依赖
+    quantity    INT,
+    PRIMARY KEY (order_id, product_id)
+);
+
+-- ✅ 符合 2NF：拆成两张表
+CREATE TABLE OrderDetail (
+    order_id   INT,
+    product_id INT,
+    quantity   INT,
+    PRIMARY KEY (order_id, product_id)
+);
+-- Product 表单独存放 product_name</code></pre>
+
+    <h4 style="color:#1a5276; margin: 16px 0 8px;">第三范式 (3NF)</h4>
+    <p class="desc">在 2NF 基础上，消除传递依赖</p>
+    <pre><code class="language-sql">-- ❌ 违反 3NF：department_name 依赖于 department_id
+CREATE TABLE Employee (
+    emp_id          INT PRIMARY KEY,
+    name            VARCHAR(100),
+    department_id   INT,
+    department_name VARCHAR(100)  -- 传递依赖
+);
+
+-- ✅ 符合 3NF：部门信息独立成表
+CREATE TABLE Employee (
+    emp_id        INT PRIMARY KEY,
+    name          VARCHAR(100),
+    department_id INT REFERENCES Department(department_id)
+);
+
+CREATE TABLE Department (
+    department_id   INT PRIMARY KEY,
+    department_name VARCHAR(100)
+);</code></pre>
+    <div class="note">通常达到 3NF 已经满足大部分业务需求。BCNF、4NF、5NF 在实际中较少用到。</div>
+  </div>
+
+  <div class="section">
+    <h3>ACID 特性</h3>
+    <p class="desc">关系数据库事务的四大保证</p>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #336791; color: white;">
+          <th style="padding: 8px 12px;">特性</th>
+          <th style="padding: 8px 12px;">说明</th>
+          <th style="padding: 8px 12px;">示例</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>A</strong> 原子性</td>
+          <td style="padding: 8px 12px;">事务要么全部成功，要么全部失败</td>
+          <td style="padding: 8px 12px;">转账时扣款和入账必须同时完成</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>C</strong> 一致性</td>
+          <td style="padding: 8px 12px;">事务前后数据保持一致约束</td>
+          <td style="padding: 8px 12px;">转账后双方余额总和不变</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>I</strong> 隔离性</td>
+          <td style="padding: 8px 12px;">并发事务互不干扰</td>
+          <td style="padding: 8px 12px;">两个用户同时转账结果正确</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;"><strong>D</strong> 持久性</td>
+          <td style="padding: 8px 12px;">提交的事务永久保存</td>
+          <td style="padding: 8px 12px;">断电重启后数据不丢失</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>事务控制</h3>
+    <p class="desc">用 TCL 语句管理事务</p>
+    <pre><code class="language-sql">-- 开始事务
+BEGIN;
+
+-- 转账操作：A 扣钱
+UPDATE Account SET balance = balance - 1000
+WHERE account_id = 'A001';
+
+-- B 加钱
+UPDATE Account SET balance = balance + 1000
+WHERE account_id = 'B001';
+
+-- 确认提交
+COMMIT;
+
+-- 如果中途出错，可以回滚
+ROLLBACK;
+
+-- 设置保存点
+SAVEPOINT sp1;
+-- ... 某些操作
+ROLLBACK TO sp1;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>ER 模型是概念设计工具，关系模型是逻辑设计基础</li>
+      <li>1NF → 2NF → 3NF 逐步消除数据冗余和更新异常</li>
+      <li>ACID 是关系数据库事务的四大特性保证</li>
+      <li>事务用 BEGIN/COMMIT/ROLLBACK 控制</li>
+      <li>良好的数据库设计是应用稳定运行的基石</li>
+    </ul>
+  </div>
+</body>
+</html>

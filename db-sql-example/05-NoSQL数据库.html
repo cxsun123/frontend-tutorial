@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05 - NoSQL 数据库</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #3a7d5e, #1a4a36); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #3a7d5e; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d5e8d5; color: #1a4a36; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #3a7d5e; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul, ol { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>05 - NoSQL 数据库</h1>
+
+  <div class="intro">
+    <h2>NoSQL — Not Only SQL</h2>
+    <p>NoSQL 数据库是一类非关系型数据库的总称，专为大数据量、高并发、灵活数据模型而设计。</p>
+  </div>
+
+  <div class="section">
+    <h3>为什么需要 NoSQL？</h3>
+    <p class="desc">关系数据库的局限性催生了 NoSQL</p>
+    <ul>
+      <li><strong>扩展困难</strong> — RDBMS 纵向扩展（升级硬件）有上限，横向扩展复杂</li>
+      <li><strong>表结构固定</strong> — Schema 变更需要迁移，灵活性不足</li>
+      <li><strong>大数据性能</strong> — 复杂 JOIN 在海量数据下性能下降</li>
+      <li><strong>非结构化数据</strong> — JSON、日志、社交关系不适合表格存储</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>NoSQL 的五大类型</h3>
+    <p class="desc">不同数据模型适用于不同场景</p>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #3a7d5e; color: white;">
+          <th style="padding: 8px 12px; text-align: left;">类型</th>
+          <th style="padding: 8px 12px; text-align: left;">数据模型</th>
+          <th style="padding: 8px 12px; text-align: left;">代表产品</th>
+          <th style="padding: 8px 12px; text-align: left;">典型场景</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>文档型</strong></td>
+          <td style="padding: 8px 12px;">JSON / BSON 文档</td>
+          <td style="padding: 8px 12px;">MongoDB, Couchbase</td>
+          <td style="padding: 8px 12px;">CMS、博客、日志、电商</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>键值型</strong></td>
+          <td style="padding: 8px 12px;">Key-Value 对</td>
+          <td style="padding: 8px 12px;">Redis, DynamoDB</td>
+          <td style="padding: 8px 12px;">缓存、会话、购物车</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>列族型</strong></td>
+          <td style="padding: 8px 12px;">行+列族</td>
+          <td style="padding: 8px 12px;">Cassandra, HBase</td>
+          <td style="padding: 8px 12px;">时序、IoT、日志分析</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;"><strong>图数据库</strong></td>
+          <td style="padding: 8px 12px;">节点+边</td>
+          <td style="padding: 8px 12px;">Neo4j, JanusGraph</td>
+          <td style="padding: 8px 12px;">社交、推荐、风控</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>文档数据库 — MongoDB</h3>
+    <p class="desc">以 JSON 文档形式存储数据，灵活可嵌套</p>
+    <pre><code class="language-javascript">// MongoDB 文档示例
+{
+  "_id": "user_001",
+  "name": "张三",
+  "email": "zhangsan@example.com",
+  "address": {
+    "city": "北京",
+    "street": "朝阳路 100 号"
+  },
+  "orders": [
+    { "order_id": "O001", "amount": 1500 },
+    { "order_id": "O002", "amount": 800 }
+  ]
+}
+
+// 查询操作
+db.users.find({ "address.city": "北京" })
+db.users.find({ "orders.amount": { $gt: 1000 } })</code></pre>
+    <div class="note">文档数据库适合数据结构多变、有嵌套关系的场景。MongoDB 是当前最流行的文档数据库。</div>
+  </div>
+
+  <div class="section">
+    <h3>键值数据库 — Redis</h3>
+    <p class="desc">基于内存的键值存储，极高性能</p>
+    <pre><code class="language-bash"># Redis 命令示例
+SET user:1001 "张三"
+GET user:1001
+SET session:abc123 '{"user_id":1001,"expire":3600}'
+
+# 支持多种数据结构
+LPUSH queue task1         # 列表
+SADD tags:react "frontend"  # 集合
+ZADD leaderboard 100 "Alice"  # 有序集合
+EXPIRE session:abc123 3600   # 设置过期时间</code></pre>
+    <div class="note">Redis 速度快（微秒级），常用于缓存、分布式锁、计数器、排行榜等场景。也支持持久化。</div>
+  </div>
+
+  <div class="section">
+    <h3>列族数据库 — Cassandra</h3>
+    <p class="desc">面向列的宽表存储，适合大规模写入</p>
+    <pre><code class="language-sql">-- Cassandra CQL
+CREATE TABLE user_events (
+    user_id   UUID,
+    event_time TIMESTAMP,
+    event_type TEXT,
+    payload   TEXT,
+    PRIMARY KEY (user_id, event_time)
+);
+
+-- 按用户查询事件
+SELECT * FROM user_events
+WHERE user_id = 123e4567-e89b-12d3-a456-426614174000';</code></pre>
+    <div class="note">Cassandra 没有单点故障，支持跨数据中心复制，适合物联网、日志、时序数据。</div>
+  </div>
+
+  <div class="section">
+    <h3>图数据库 — Neo4j</h3>
+    <p class="desc">用节点和关系表示高度关联的数据</p>
+    <pre><code class="language-sql">-- Neo4j Cypher 查询
+// 创建节点和关系
+CREATE (a:Person {name: 'Alice'})
+CREATE (b:Person {name: 'Bob'})
+CREATE (a)-[:FRIENDS_WITH]->(b)
+
+// 查询好友的好友
+MATCH (a:Person {name: 'Alice'})
+      -[:FRIENDS_WITH]->()
+      -[:FRIENDS_WITH]->(fof)
+RETURN fof.name</code></pre>
+    <div class="note">图数据库将关系作为一等公民，遍历关系的性能远优于关系数据库的多层 JOIN。</div>
+  </div>
+
+  <div class="section">
+    <h3>RDBMS vs NoSQL 对比</h3>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #336791; color: white;">
+          <th style="padding: 8px 12px; text-align: left;">维度</th>
+          <th style="padding: 8px 12px; text-align: left;">RDBMS</th>
+          <th style="padding: 8px 12px; text-align: left;">NoSQL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">数据模型</td>
+          <td style="padding: 8px 12px;">表、行、列，严格 Schema</td>
+          <td style="padding: 8px 12px;">文档/键值/列族/图，灵活 Schema</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">扩展方式</td>
+          <td style="padding: 8px 12px;">纵向扩展为主（升级硬件）</td>
+          <td style="padding: 8px 12px;">横向扩展为主（增加节点）</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">ACID 事务</td>
+          <td style="padding: 8px 12px;">完整支持</td>
+          <td style="padding: 8px 12px;">通常支持 BASE（最终一致性）</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">查询语言</td>
+          <td style="padding: 8px 12px;">SQL 标准</td>
+          <td style="padding: 8px 12px;">各产品自己的查询语言</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">适合场景</td>
+          <td style="padding: 8px 12px;">传统业务、金融、ERP</td>
+          <td style="padding: 8px 12px;">大数据、实时、IoT、社交</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;">数据一致性</td>
+          <td style="padding: 8px 12px;">强一致</td>
+          <td style="padding: 8px 12px;">最终一致（部分支持强一致）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>如何选择？</h3>
+    <p class="desc">选择数据库的原则</p>
+    <ul>
+      <li><strong>数据结构固定、需要复杂关联</strong> → PostgreSQL / MySQL</li>
+      <li><strong>数据结构多变、嵌套深</strong> → MongoDB</li>
+      <li><strong>极速读写、缓存场景</strong> → Redis</li>
+      <li><strong>海量写入、时序数据</strong> → Cassandra / InfluxDB</li>
+      <li><strong>高度关联、关系遍历</strong> → Neo4j</li>
+      <li><strong>全文搜索和分析</strong> → Elasticsearch</li>
+    </ul>
+    <div class="note">现代架构常采用"混合持久化"（Polyglot Persistence），不同场景使用最合适的数据库。</div>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>NoSQL = Not Only SQL，是为解决 RDBMS 局限而生</li>
+      <li>文档 / 键值 / 列族 / 图 四种主要类型</li>
+      <li>NoSQL 通常支持横向扩展和灵活 Schema</li>
+      <li>NoSQL 牺牲强一致性换取性能和扩展性（BASE）</li>
+      <li>实际项目常采用多种数据库组合使用</li>
+    </ul>
+  </div>
+</body>
+</html>

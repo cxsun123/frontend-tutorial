@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 - 数据库概述与基本概念</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #336791; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul, ol { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>01 - 数据库概述与基本概念</h1>
+
+  <div class="intro">
+    <h2>什么是数据库？</h2>
+    <p>数据库（Database）是按照数据结构来组织、存储和管理数据的仓库。数据库管理系统（DBMS）是用于管理数据库的计算机软件系统。</p>
+  </div>
+
+  <div class="section">
+    <h3>为什么需要 DBMS？</h3>
+    <p class="desc">相比文本文件或 Excel，DBMS 的优势</p>
+    <ul>
+      <li><strong>多人共享</strong> — 支持多用户并发访问和操作</li>
+      <li><strong>海量存储</strong> — 处理 GB/TB 级别的数据</li>
+      <li><strong>数据一致性</strong> — 通过事务和约束保证数据正确</li>
+      <li><strong>安全性</strong> — 用户权限管理、数据加密</li>
+      <li><strong>故障恢复</strong> — 备份和恢复机制</li>
+      <li><strong>可编程</strong> — 存储过程、触发器、函数</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>核心术语</h3>
+    <p class="desc">数据库领域的基本概念</p>
+    <ul>
+      <li><strong>数据库（Database）</strong> — 保存有组织的数据的容器</li>
+      <li><strong>数据表（Table）</strong> — 某种特定类型数据的结构化清单</li>
+      <li><strong>模式（Schema）</strong> — 关于数据库和表的布局及特性的信息</li>
+      <li><strong>列（Column）</strong> — 表中的一个字段，定义数据类型</li>
+      <li><strong>行（Row）</strong> — 表中的一个记录（Record）</li>
+      <li><strong>主键（Primary Key）</strong> — 唯一标识表中每一行的列或列组合</li>
+      <li><strong>外键（Foreign Key）</strong> — 指向另一张表主键的列，建立表间关系</li>
+      <li><strong>索引（Index）</strong> — 加速数据检索的数据结构</li>
+      <li><strong>视图（View）</strong> — 基于 SQL 查询的虚拟表</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>DBMS 的发展历程</h3>
+    <p class="desc">数据库管理系统的演进</p>
+    <ul>
+      <li><strong>1960s</strong> — 层次数据库（IMS）和网状数据库</li>
+      <li><strong>1970s</strong> — 关系数据库诞生（IBM System R, Oracle）</li>
+      <li><strong>1980s</strong> — SQL 成为标准，RDBMS 商业化（DB2, SQL Server）</li>
+      <li><strong>1990s</strong> — 开源数据库兴起（MySQL, PostgreSQL）</li>
+      <li><strong>2000s</strong> — NoSQL 运动（MongoDB, Redis, Cassandra）</li>
+      <li><strong>2010s至今</strong> — NewSQL、云数据库（Spanner, Aurora, TiDB）</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>DBMS 分类</h3>
+    <p class="desc">根据数据模型分类</p>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #336791; color: white;">
+          <th style="padding: 8px 12px; text-align: left;">类型</th>
+          <th style="padding: 8px 12px; text-align: left;">代表产品</th>
+          <th style="padding: 8px 12px; text-align: left;">适用场景</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">关系型 (RDBMS)</td>
+          <td style="padding: 8px 12px;">PostgreSQL, MySQL, Oracle</td>
+          <td style="padding: 8px 12px;">传统业务、金融、ERP</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">文档型 (Document)</td>
+          <td style="padding: 8px 12px;">MongoDB, Couchbase</td>
+          <td style="padding: 8px 12px;">CMS、博客、日志</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">键值型 (Key-Value)</td>
+          <td style="padding: 8px 12px;">Redis, DynamoDB</td>
+          <td style="padding: 8px 12px;">缓存、会话、购物车</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">列族型 (Column-Family)</td>
+          <td style="padding: 8px 12px;">Cassandra, HBase</td>
+          <td style="padding: 8px 12px;">大数据、时序数据</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;">图数据库 (Graph)</td>
+          <td style="padding: 8px 12px;">Neo4j, JanusGraph</td>
+          <td style="padding: 8px 12px;">社交网络、推荐引擎</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>SQL 语言分类</h3>
+    <p class="desc">SQL（Structured Query Language）分为四大子语言</p>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #336791; color: white;">
+          <th style="padding: 8px 12px; text-align: left;">分类</th>
+          <th style="padding: 8px 12px; text-align: left;">全称</th>
+          <th style="padding: 8px 12px; text-align: left;">常用语句</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>DDL</strong></td>
+          <td style="padding: 8px 12px;">Data Definition Language</td>
+          <td style="padding: 8px 12px;">CREATE, ALTER, DROP, TRUNCATE</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>DML</strong></td>
+          <td style="padding: 8px 12px;">Data Manipulation Language</td>
+          <td style="padding: 8px 12px;">SELECT, INSERT, UPDATE, DELETE</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;"><strong>DCL</strong></td>
+          <td style="padding: 8px 12px;">Data Control Language</td>
+          <td style="padding: 8px 12px;">GRANT, REVOKE</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;"><strong>TCL</strong></td>
+          <td style="padding: 8px 12px;">Transaction Control Language</td>
+          <td style="padding: 8px 12px;">COMMIT, ROLLBACK, SAVEPOINT</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="note">实际使用中，90% 的 SQL 语句属于 DML（数据操纵语言），而 SELECT 是使用最频繁的操作。</div>
+  </div>
+
+  <div class="section">
+    <h3>SQL 语法要点</h3>
+    <p class="desc">写 SQL 时需要注意的基本规则</p>
+    <ul>
+      <li>SQL 语句<strong>不区分大小写</strong>，但习惯上关键字大写</li>
+      <li>多条 SQL 语句以<strong>分号（;）</strong>分隔</li>
+      <li>处理时<strong>所有空格都被忽略</strong>，可换行书写</li>
+      <li>注释：<code>--</code> 单行注释，<code>/* */</code> 多行注释</li>
+    </ul>
+    <pre><code class="language-sql">-- 查询所有用户
+SELECT id, name, email
+FROM users
+WHERE age > 18
+ORDER BY name ASC;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>数据库是结构化存储的容器，DBMS 是管理数据库的软件</li>
+      <li>核心术语：表、行、列、主键、外键、索引、视图</li>
+      <li>DBMS 从层次→关系→NoSQL→NewSQL 不断发展</li>
+      <li>SQL 分为 DDL / DML / DCL / TCL 四大类</li>
+      <li>不区分大小写，但推荐关键字大写增强可读性</li>
+    </ul>
+  </div>
+</body>
+</html>

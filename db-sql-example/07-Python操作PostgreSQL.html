@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07 - Python 操作 PostgreSQL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #336791; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>07 - Python 操作 PostgreSQL</h1>
+
+  <div class="intro">
+    <h2>Python + PostgreSQL = CRUD</h2>
+    <p>Python 的 <code>psycopg2</code> 库是操作 PostgreSQL 的事实标准。本章演示完整的增删改查和连接池管理。</p>
+  </div>
+
+  <div class="section">
+    <h3>安装与连接</h3>
+    <p class="desc">安装 psycopg2 并建立连接</p>
+    <pre><code class="language-bash">pip install psycopg2-binary</code></pre>
+    <pre><code class="language-python">import psycopg2
+from psycopg2 import Error
+
+try:
+    # 建立连接
+    conn = psycopg2.connect(
+        user="postgres",
+        password="mysecret",
+        host="127.0.0.1",
+        port="5432",
+        database="exampledb"
+    )
+    print("数据库连接成功！")
+
+    # 获取游标
+    cursor = conn.cursor()
+    cursor.execute("SELECT VERSION()")
+    version = cursor.fetchone()
+    print(f"PostgreSQL 版本: {version[0]}")
+
+except (Exception, Error) as err:
+    print(f"连接错误: {err}")
+finally:
+    if conn:
+        cursor.close()
+        conn.close()</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>创建表</h3>
+    <pre><code class="language-python">import psycopg2
+
+conn = psycopg2.connect(
+    database="exampledb", user="postgres",
+    password="mysecret", host="127.0.0.1", port="5432"
+)
+cursor = conn.cursor()
+
+create_table_sql = """
+CREATE TABLE IF NOT EXISTS employees (
+    id       SERIAL PRIMARY KEY,
+    name     VARCHAR(100) NOT NULL,
+    age      INTEGER,
+    position VARCHAR(100),
+    salary   NUMERIC(10, 2),
+    hired_at DATE DEFAULT CURRENT_DATE
+);
+"""
+cursor.execute(create_table_sql)
+conn.commit()
+print("表创建成功")
+
+cursor.close()
+conn.close()</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>插入数据</h3>
+    <p class="desc">三种插入方式对比</p>
+    <pre><code class="language-python"># 方式一：参数分离（推荐，防止 SQL 注入）
+sql = """INSERT INTO employees (name, age, position, salary)
+         VALUES (%s, %s, %s, %s)"""
+params = ('张三', 30, '软件工程师', 15000.00)
+cursor.execute(sql, params)
+conn.commit()
+print(f"插入成功，影响 {cursor.rowcount} 行")
+
+# 方式二：字典映射
+sql = """INSERT INTO employees (name, age, position, salary)
+         VALUES (%(name)s, %(age)s, %(pos)s, %(salary)s)"""
+data = {'name': '李四', 'age': 28, 'pos': '产品经理', 'salary': 18000}
+cursor.execute(sql, data)
+conn.commit()
+
+# 批量插入
+employees = [
+    ('王五', 35, '架构师', 25000),
+    ('赵六', 26, '前端工程师', 13000),
+    ('孙七', 32, 'DBA', 20000),
+]
+sql = """INSERT INTO employees (name, age, position, salary)
+         VALUES (%s, %s, %s, %s)"""
+cursor.executemany(sql, employees)
+conn.commit()
+print(f"批量插入 {cursor.rowcount} 行")</code></pre>
+    <div class="note">始终使用 <code>%s</code> 占位符传参，不要用 f-string 拼接 SQL，可防止 SQL 注入攻击。</div>
+  </div>
+
+  <div class="section">
+    <h3>查询数据</h3>
+    <pre><code class="language-python"># 查询所有
+cursor.execute("SELECT * FROM employees")
+records = cursor.fetchall()
+for row in records:
+    print(f"ID={row[0]}, 姓名={row[1]}, 年龄={row[2]}, 职位={row[3]}, 薪资={row[4]}")
+
+# 带条件的查询
+cursor.execute(
+    "SELECT * FROM employees WHERE salary > %s ORDER BY salary DESC",
+    (15000,)
+)
+high_earners = cursor.fetchall()
+print(f"高薪员工数: {len(high_earners)}")
+
+# 获取单条
+cursor.execute("SELECT * FROM employees WHERE id = %s", (1,))
+emp = cursor.fetchone()
+if emp:
+    print(f"姓名: {emp[1]}, 职位: {emp[3]}")
+
+# 查询一行一列
+cursor.execute("SELECT COUNT(*) FROM employees")
+count = cursor.fetchone()[0]
+print(f"员工总数: {count}")</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>更新与删除</h3>
+    <pre><code class="language-python"># 更新
+update_sql = """
+    UPDATE employees
+    SET salary = %s, position = %s
+    WHERE id = %s
+"""
+cursor.execute(update_sql, (20000, '高级工程师', 1))
+conn.commit()
+print(f"更新了 {cursor.rowcount} 行")
+
+# 删除
+delete_sql = "DELETE FROM employees WHERE id = %s"
+cursor.execute(delete_sql, (5,))
+conn.commit()
+print(f"删除了 {cursor.rowcount} 行")</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>事务管理</h3>
+    <pre><code class="language-python">try:
+    # 开始事务（默认自动开始）
+    cursor.execute("UPDATE accounts SET balance = balance - 1000 WHERE id = 1")
+    cursor.execute("UPDATE accounts SET balance = balance + 1000 WHERE id = 2")
+    # 提交
+    conn.commit()
+    print("转账成功")
+except Exception as err:
+    # 回滚
+    conn.rollback()
+    print(f"转账失败，已回滚: {err}")</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>连接池</h3>
+    <p class="desc">使用 psycopg2.pool 管理数据库连接</p>
+    <pre><code class="language-python">from psycopg2 import pool
+
+# 创建连接池（最小 2，最大 10 个连接）
+connection_pool = pool.SimpleConnectionPool(
+    2, 10,
+    user="postgres",
+    password="mysecret",
+    host="127.0.0.1",
+    port="5432",
+    database="exampledb"
+)
+
+# 从池中获取连接
+conn = connection_pool.getconn()
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM employees")
+rows = cursor.fetchall()
+
+# 归还连接到池
+cursor.close()
+connection_pool.putconn(conn)
+
+# 关闭所有连接
+connection_pool.closeall()</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>ORM 框架简介</h3>
+    <p class="desc">SQLAlchemy — Python 最流行的 ORM</p>
+    <pre><code class="language-python"># pip install sqlalchemy psycopg2-binary
+
+from sqlalchemy import create_engine, Column, Integer, String, Numeric
+from sqlalchemy.orm import declarative_base, Session
+
+engine = create_engine(
+    "postgresql://postgres:mysecret@localhost:5432/exampledb"
+)
+Base = declarative_base()
+
+class Employee(Base):
+    __tablename__ = 'employees'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    age = Column(Integer)
+    position = Column(String(100))
+    salary = Column(Numeric(10, 2))
+
+# 创建会话
+session = Session(engine)
+
+# 查询
+emps = session.query(Employee).filter(Employee.salary > 15000).all()
+for emp in emps:
+    print(f"{emp.name} - {emp.position} - {emp.salary}")
+
+session.close()</code></pre>
+    <div class="note">ORM 将数据库表映射为 Python 类，让开发者用面向对象的方式操作数据库，提高开发效率。</div>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>psycopg2 是 Python 操作 PostgreSQL 的标准库</li>
+      <li>传参使用 <code>%s</code> 占位符防止 SQL 注入</li>
+      <li>executemany() 实现批量插入</li>
+      <li>使用事务确保操作的原子性</li>
+      <li>连接池提高并发性能</li>
+      <li>ORM（如 SQLAlchemy）进一步提升开发效率</li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 - 数据库最佳实践</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #336791; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>08 - 数据库最佳实践</h1>
+
+  <div class="intro">
+    <h2>让数据库高效、安全、可靠</h2>
+    <p>数据库是大多数应用的基石，良好的实践能显著提升性能、安全性和可维护性。</p>
+  </div>
+
+  <div class="section">
+    <h3>SQL 编写规范</h3>
+    <p class="desc">好的 SQL 风格让团队协作更高效</p>
+    <ul>
+      <li><strong>关键字大写</strong> — <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>JOIN</code> 大写，增强可读性</li>
+      <li><strong>表名/列名小写</strong> — 使用下划线命名：<code>user_account</code></li>
+      <li><strong>明确列名</strong> — 避免 <code>SELECT *</code>，只取需要的列</li>
+      <li><strong>使用别名</strong> — 多表查询时用简短别名 <code>u</code>, <code>o</code></li>
+      <li><strong>格式化</strong> — 每行一个子句，逗号前置方便注释</li>
+    </ul>
+    <pre><code class="language-sql">-- 推荐风格
+SELECT u.name,
+       o.order_id,
+       o.amount,
+       o.order_date
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id
+WHERE o.amount >= 100
+  AND u.status = 'active'
+ORDER BY o.amount DESC
+LIMIT 20;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>索引策略</h3>
+    <p class="desc">索引是性能优化的核心</p>
+    <ul>
+      <li><strong>为 WHERE 条件中的列建索引</strong> — 最频繁的查询条件优先</li>
+      <li><strong>复合索引</strong> — 多列条件时，最左前缀原则</li>
+      <li><strong>不要过度索引</strong> — 索引占空间，写操作会变慢</li>
+      <li><strong>监控慢查询</strong> — 用 EXPLAIN ANALYZE 分析执行计划</li>
+    </ul>
+    <pre><code class="language-sql">-- 查看慢查询（PostgreSQL）
+SELECT query, calls, total_exec_time, rows
+FROM pg_stat_statements
+ORDER BY total_exec_time DESC
+LIMIT 5;
+
+-- 分析查询
+EXPLAIN ANALYZE
+SELECT * FROM orders
+WHERE user_id = 123
+  AND status = 'completed';</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>查询优化技巧</h3>
+    <p class="desc">常见优化手段</p>
+    <ul>
+      <li><strong>尽量使用覆盖索引</strong> — 索引包含所有查询的列，避免回表</li>
+      <li><strong>分页优化</strong> — 用 <code>WHERE id > last_id LIMIT 20</code> 替代 <code>OFFSET</code></li>
+      <li><strong>避免 SELECT *</strong> — 只取需要的列，减少 I/O</li>
+      <li><strong>合理使用 JOIN</strong> — 多表 JOIN 时确保关联列有索引</li>
+      <li><strong>子查询 vs JOIN</strong> — 通常 JOIN 性能更好，但视具体情况而定</li>
+    </ul>
+    <pre><code class="language-sql">-- ❌ 低效分页
+SELECT * FROM orders ORDER BY id LIMIT 20 OFFSET 100000;
+
+-- ✅ 高效分页（游标分页）
+SELECT * FROM orders WHERE id > 100000 ORDER BY id LIMIT 20;
+
+-- ❌ SELECT *
+SELECT * FROM users WHERE email = 'test@example.com';
+
+-- ✅ 覆盖索引查询
+SELECT id, name, email FROM users WHERE email = 'test@example.com';</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>安全最佳实践</h3>
+    <p class="desc">数据库安全是不可忽视的一环</p>
+    <ul>
+      <li><strong>最小权限原则</strong> — 每个用户只授予需要的最小权限</li>
+      <li><strong>密码加密</strong> — 不存储明文密码，使用 bcrypt/argon2 哈希</li>
+      <li><strong>参数化查询</strong> — 永远使用占位符，防止 SQL 注入</li>
+      <li><strong>网络隔离</strong> — 数据库不暴露在公网，仅内网访问</li>
+      <li><strong>SSL/TLS</strong> — 数据库连接使用加密传输</li>
+    </ul>
+    <pre><code class="language-sql">-- 权限管理
+CREATE USER readonly_user WITH PASSWORD 'strong_pass';
+GRANT CONNECT ON DATABASE myapp TO readonly_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_user;
+REVOKE INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public FROM readonly_user;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>备份与容灾</h3>
+    <p class="desc">确保数据不丢失</p>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #336791; color: white;">
+          <th style="padding: 8px 12px; text-align: left;">策略</th>
+          <th style="padding: 8px 12px; text-align: left;">说明</th>
+          <th style="padding: 8px 12px; text-align: left;">频率</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">全量备份</td>
+          <td style="padding: 8px 12px;">导出整个数据库</td>
+          <td style="padding: 8px 12px;">每天</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">增量备份</td>
+          <td style="padding: 8px 12px;">只备份变更的数据（WAL 归档）</td>
+          <td style="padding: 8px 12px;">持续/每小时</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">主从复制</td>
+          <td style="padding: 8px 12px;">实时同步到从库，故障时切换</td>
+          <td style="padding: 8px 12px;">实时</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;">异地容灾</td>
+          <td style="padding: 8px 12px;">跨地域存储备份</td>
+          <td style="padding: 8px 12px;">每天</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>运维监控</h3>
+    <p class="desc">日常运维检查清单</p>
+    <pre><code class="language-sql">-- 检查数据库大小
+SELECT pg_database_size('mydb') / 1024 / 1024 AS size_mb;
+
+-- 检查表大小
+SELECT
+    relname AS table_name,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size
+FROM pg_catalog.pg_statio_user_tables
+ORDER BY pg_total_relation_size(relid) DESC
+LIMIT 10;
+
+-- 查看当前连接
+SELECT state, COUNT(*) FROM pg_stat_activity
+WHERE datname = 'mydb'
+GROUP BY state;
+
+-- 查看锁等待
+SELECT blocked_locks.pid     AS blocked_pid,
+       blocked_activity.usename  AS blocked_user,
+       blocking_locks.pid     AS blocking_pid,
+       blocking_activity.usename AS blocking_user
+FROM pg_catalog.pg_locks blocked_locks
+JOIN pg_catalog.pg_stat_activity blocked_activity ON blocked_activity.pid = blocked_locks.pid
+JOIN pg_catalog.pg_locks blocking_locks ON blocking_locks.locktype = blocked_locks.locktype
+WHERE NOT blocked_locks.granted;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>数据库选型指南</h3>
+    <p class="desc">如何为项目选择合适的数据库</p>
+    <table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #336791; color: white;">
+          <th style="padding: 8px 12px; text-align: left;">业务场景</th>
+          <th style="padding: 8px 12px; text-align: left;">推荐数据库</th>
+          <th style="padding: 8px 12px; text-align: left;">理由</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">电商/金融/ERP</td>
+          <td style="padding: 8px 12px;">PostgreSQL</td>
+          <td style="padding: 8px 12px;">ACID 事务、数据完整性</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">博客/CMS/社交</td>
+          <td style="padding: 8px 12px;">MySQL / MongoDB</td>
+          <td style="padding: 8px 12px;">生态成熟、文档丰富</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">缓存/会话/实时</td>
+          <td style="padding: 8px 12px;">Redis</td>
+          <td style="padding: 8px 12px;">微秒级延迟、丰富的数据结构</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">搜索/日志分析</td>
+          <td style="padding: 8px 12px;">Elasticsearch</td>
+          <td style="padding: 8px 12px;">全文搜索、聚合分析</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+          <td style="padding: 8px 12px;">IoT/时序数据</td>
+          <td style="padding: 8px 12px;">TimescaleDB / InfluxDB</td>
+          <td style="padding: 8px 12px;">时序优化、压缩存储</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 12px;">社交图谱/推荐</td>
+          <td style="padding: 8px 12px;">Neo4j</td>
+          <td style="padding: 8px 12px;">关系遍历高效</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>学习路径建议</h3>
+    <p class="desc">继续深入的方向</p>
+    <ul>
+      <li>深入数据库原理：B+ 树、MVCC、查询优化器</li>
+      <li>分布式数据库：TiDB、CockroachDB、Spanner</li>
+      <li>数据仓库与 OLAP：ClickHouse、StarRocks、Snowflake</li>
+      <li>流处理与实时：Kafka + Flink、Debezium 变更数据捕获</li>
+      <li>数据库运维：pgAdmin、Prometheus + Grafana 监控</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>规范的 SQL 风格和索引策略是性能优化的基础</li>
+      <li>参数化查询和最小权限是安全底线</li>
+      <li>备份、容灾、监控是运维的三大支柱</li>
+      <li>根据业务场景选择合适的数据库</li>
+      <li>祝贺你完成了数据库与 SQL 的入门学习！</li>
+    </ul>
+  </div>
+</body>
+</html>

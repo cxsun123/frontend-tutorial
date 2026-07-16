@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06 - PostgreSQL 入门</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #336791; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>06 - PostgreSQL 入门</h1>
+
+  <div class="intro">
+    <h2>世界上最先进的开源关系数据库</h2>
+    <p>PostgreSQL 是一款功能强大的开源对象关系数据库系统，以其稳定性、标准兼容性和扩展性著称。</p>
+  </div>
+
+  <div class="section">
+    <h3>PostgreSQL 的特点</h3>
+    <ul>
+      <li>完全遵守 SQL 标准，支持事务、外键、视图、序列</li>
+      <li>丰富的扩展：PostGIS（地理空间）、pgvector（向量搜索）、TimescaleDB（时序）</li>
+      <li>自定义数据类型、函数、操作符</li>
+      <li>MVCC（多版本并发控制），读写互不阻塞</li>
+      <li>流复制实现高可用，支持逻辑复制</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>安装 PostgreSQL</h3>
+    <p class="desc">macOS、Ubuntu、Windows 安装方式</p>
+    <pre><code class="language-bash"># macOS
+brew install postgresql@16
+brew services start postgresql@16
+
+# Ubuntu / Debian
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo systemctl start postgresql
+
+# Windows — 从 https://www.postgresql.org/download/ 下载安装包
+
+# Docker（快速体验）
+docker run --name pg -e POSTGRES_PASSWORD=mysecret -d -p 5432:5432 postgres:16</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>基本管理命令</h3>
+    <p class="desc">使用 psql 命令行工具</p>
+    <pre><code class="language-bash"># 连接数据库
+psql -U postgres -h localhost
+
+# 常用元命令
+\l                    # 列出所有数据库
+\c dbname             # 切换到指定数据库
+\d                    # 列出当前库所有表
+\d table_name         # 查看表结构
+\du                   # 列出所有用户
+\df                   # 列出所有函数
+\q                    # 退出 psql</code></pre>
+    <pre><code class="language-sql">-- 创建数据库和用户
+CREATE DATABASE myapp;
+CREATE USER app_user WITH PASSWORD 'securepass';
+GRANT ALL PRIVILEGES ON DATABASE myapp TO app_user;
+
+-- PostgreSQL 特有的数据类型
+CREATE TABLE example (
+    id       UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tags     TEXT[],                    -- 数组类型
+    metadata JSONB,                    -- JSON 二进制
+    location POINT,                    -- 地理坐标
+    duration INTERVAL,                 -- 时间间隔
+    created_at TIMESTAMPTZ DEFAULT NOW()  -- 带时区时间戳
+);</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>PostgreSQL 特有功能</h3>
+
+    <h4 style="color:#1a5276; margin: 16px 0 8px;">JSONB 操作</h4>
+    <pre><code class="language-sql">-- 创建含 JSONB 的表
+CREATE TABLE articles (
+    id      SERIAL PRIMARY KEY,
+    title   TEXT,
+    content JSONB
+);
+
+-- JSONB 查询
+INSERT INTO articles (title, content) VALUES (
+    'PostgreSQL 入门',
+    '{"author": "张三", "tags": ["数据库", "SQL"], "views": 1200}'
+);
+
+-- JSONB 操作符
+SELECT content->>'author' FROM articles WHERE id = 1;
+SELECT * FROM articles WHERE content @> '{"tags": ["数据库"]}';
+SELECT jsonb_array_elements_text(content->'tags') FROM articles;</code></pre>
+
+    <h4 style="color:#1a5276; margin: 16px 0 8px;">窗口函数</h4>
+    <pre><code class="language-sql">-- 不改变行数的情况下进行聚合计算
+SELECT
+    employee_name,
+    department,
+    salary,
+    RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS 部门内排名,
+    AVG(salary) OVER (PARTITION BY department) AS 部门平均工资
+FROM employees;</code></pre>
+
+    <h4 style="color:#1a5276; margin: 16px 0 8px;">CTE (公用表表达式)</h4>
+    <pre><code class="language-sql">-- WITH 子句简化复杂查询
+WITH regional_sales AS (
+    SELECT region, SUM(amount) AS total_sales
+    FROM orders GROUP BY region
+)
+SELECT region, total_sales
+FROM regional_sales
+WHERE total_sales > 10000;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>索引</h3>
+    <p class="desc">加速查询的数据库对象</p>
+    <pre><code class="language-sql">-- B-tree 索引（默认，适合等值和范围查询）
+CREATE INDEX idx_orders_amount ON orders(amount);
+
+-- 唯一索引
+CREATE UNIQUE INDEX idx_user_email ON users(email);
+
+-- 部分索引（只索引部分数据）
+CREATE INDEX idx_active_orders ON orders(status)
+WHERE status = 'pending';
+
+-- 表达式索引
+CREATE INDEX idx_lower_email ON users(LOWER(email));
+
+-- 查看查询计划
+EXPLAIN ANALYZE SELECT * FROM orders WHERE amount > 1000;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>备份与恢复</h3>
+    <p class="desc">PostgreSQL 的备份工具</p>
+    <pre><code class="language-bash"># 备份单个数据库
+pg_dump -U postgres mydb > mydb_backup.sql
+
+# 备份所有数据库
+pg_dumpall -U postgres > all_backup.sql
+
+# 恢复
+psql -U postgres mydb < mydb_backup.sql
+
+# 并行备份（大数据量）
+pg_dump -U postgres -j 4 mydb > mydb_backup.sql</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>PostgreSQL 是功能最丰富的开源关系数据库</li>
+      <li>支持 JSONB、数组、全文搜索、地理空间等高级特性</li>
+      <li>psql 命令行工具提供丰富的管理命令</li>
+      <li>窗口函数和 CTE 是编写复杂查询的利器</li>
+      <li>索引、备份、用户管理是数据库运维的基础</li>
+    </ul>
+  </div>
+</body>
+</html>

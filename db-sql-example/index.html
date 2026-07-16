@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据库与 SQL 入门教程</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h3 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .card { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .card h3 { color: #1a5276; margin-bottom: 8px; }
+    .card p { color: #5d6d7e; margin-bottom: 12px; }
+    .card a { display: inline-block; background: #336791; color: white; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 0.9em; font-weight: 600; }
+    .card a:hover { opacity: 0.85; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+    pre { background: #253447; color: #ecf0f1; padding: 14px 18px; border-radius: 8px; overflow: auto; font-size: 0.85em; margin-top: 8px; }
+    code { font-family: "SF Mono", Consolas, monospace; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <h1>数据库与 SQL <span>入门教程</span></h1>
+
+  <div class="intro">
+    <h3>从零开始掌握数据库</h3>
+    <p>本课程覆盖数据库基础概念、SQL 语言（基础+进阶）、关系数据库设计、NoSQL、PostgreSQL 实战，以及 Python 操作数据库。<br>共 <strong>8</strong> 个章节，理论 + 代码示例结合。</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>01 - 数据库概述与基本概念</h3>
+      <p>数据库术语、DBMS 分类、SQL 语言分类、语法要点、发展历程</p>
+      <a href="01-数据库概述.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>02 - SQL 基础</h3>
+      <p>SELECT、WHERE、ORDER BY、LIMIT、INSERT、UPDATE、DELETE</p>
+      <a href="02-SQL基础.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>03 - SQL 进阶</h3>
+      <p>JOIN 多表关联、聚合函数、GROUP BY、HAVING、子查询、集合运算、CASE</p>
+      <a href="03-SQL进阶.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>04 - 关系数据库设计</h3>
+      <p>数据建模、ER 模型、三大范式（1NF/2NF/3NF）、ACID 事务</p>
+      <a href="04-关系数据库设计.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>05 - NoSQL 数据库</h3>
+      <p>文档/键值/列族/图数据库、RDBMS vs NoSQL 对比、选型指南</p>
+      <a href="05-NoSQL数据库.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>06 - PostgreSQL 入门</h3>
+      <p>安装配置、psql 命令、JSONB、窗口函数、CTE、索引、备份恢复</p>
+      <a href="06-PostgreSQL入门.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>07 - Python 操作 PostgreSQL</h3>
+      <p>psycopg2 连接、CRUD、事务、连接池、SQLAlchemy ORM</p>
+      <a href="07-Python操作PostgreSQL.html" target="_blank">查看教程</a>
+    </div>
+    <div class="card">
+      <h3>08 - 数据库最佳实践</h3>
+      <p>SQL 规范、索引策略、查询优化、安全实践、备份容灾、监控运维</p>
+      <a href="08-数据库最佳实践.html" target="_blank">查看教程</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:28px; border-top-color: #4caf50;">
+    <h3>快速开始</h3>
+    <pre><code># 安装 PostgreSQL（Docker）
+docker run --name pg -e POSTGRES_PASSWORD=mysecret -d -p 5432:5432 postgres:16
+
+# 安装 Python 驱动
+pip install psycopg2-binary
+
+# 连接数据库
+psql -U postgres -h localhost</code></pre>
+  </div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03 - SQL 进阶</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #336791; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>03 - SQL 进阶</h1>
+
+  <div class="intro">
+    <h2>SQL 进阶 — JOIN、聚合、子查询</h2>
+    <p>掌握多表关联、数据聚合和子查询，是写好 SQL 的关键。</p>
+  </div>
+
+  <div class="section">
+    <h3>示例表</h3>
+    <p class="desc">本章使用两张关联表</p>
+    <pre><code class="language-sql">CREATE TABLE Customers (
+    customer_id CHAR(4) PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL,
+    city        VARCHAR(50)
+);
+
+CREATE TABLE Orders (
+    order_id    CHAR(4) PRIMARY KEY,
+    customer_id CHAR(4) REFERENCES Customers(customer_id),
+    amount      INTEGER NOT NULL,
+    order_date  DATE
+);
+
+INSERT INTO Customers VALUES
+    ('C001', '张三', '北京'),
+    ('C002', '李四', '上海'),
+    ('C003', '王五', '广州'),
+    ('C004', '赵六', '深圳');
+
+INSERT INTO Orders VALUES
+    ('O001', 'C001', 1500, '2024-01-15'),
+    ('O002', 'C001', 800,  '2024-02-20'),
+    ('O003', 'C002', 3200, '2024-03-10'),
+    ('O004', 'C003', 500,  '2024-04-05'),
+    ('O005', 'C003', 2100, '2024-05-01');</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>JOIN — 多表关联</h3>
+    <p class="desc">将多张表的数据组合在一起</p>
+    <pre><code class="language-sql">-- INNER JOIN：只返回匹配的行
+SELECT c.name, o.order_id, o.amount
+FROM Customers c
+INNER JOIN Orders o ON c.customer_id = o.customer_id;
+
+-- LEFT JOIN：左表所有行保留
+SELECT c.name, o.order_id, o.amount
+FROM Customers c
+LEFT JOIN Orders o ON c.customer_id = o.customer_id;
+-- 赵六没有订单，但也会显示，订单列为 NULL
+
+-- RIGHT JOIN：右表所有行保留
+SELECT c.name, o.order_id, o.amount
+FROM Customers c
+RIGHT JOIN Orders o ON c.customer_id = o.customer_id;
+
+-- FULL OUTER JOIN：两表所有行保留
+SELECT c.name, o.order_id, o.amount
+FROM Customers c
+FULL OUTER JOIN Orders o ON c.customer_id = o.customer_id;</code></pre>
+    <div class="note">MySQL 不支持 FULL OUTER JOIN，可用 UNION 实现。</div>
+  </div>
+
+  <div class="section">
+    <h3>聚合函数</h3>
+    <p class="desc">对多行数据进行汇总计算</p>
+    <pre><code class="language-sql">-- 常用聚合函数
+SELECT COUNT(*)       AS 订单总数 FROM Orders;
+SELECT SUM(amount)    AS 总金额  FROM Orders;
+SELECT AVG(amount)    AS 平均金额 FROM Orders;
+SELECT MAX(amount)    AS 最大金额 FROM Orders;
+SELECT MIN(amount)    AS 最小金额 FROM Orders;
+
+-- COUNT 的不同用法
+SELECT COUNT(*)      FROM Orders;   -- 6 行
+SELECT COUNT(amount) FROM Orders;   -- 6 行
+SELECT COUNT(DISTINCT customer_id)
+  FROM Orders;                      -- 3 个不同用户</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>GROUP BY — 分组</h3>
+    <p class="desc">将数据按照某列分组后聚合</p>
+    <pre><code class="language-sql">-- 按客户分组统计订单
+SELECT customer_id,
+       COUNT(*) AS 订单数,
+       SUM(amount) AS 总金额,
+       AVG(amount) AS 平均金额
+FROM Orders
+GROUP BY customer_id;
+
+-- GROUP BY + WHERE
+SELECT customer_id, SUM(amount) AS 总金额
+FROM Orders
+WHERE order_date >= '2024-03-01'
+GROUP BY customer_id;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>HAVING — 分组后过滤</h3>
+    <p class="desc">WHERE 过滤行，HAVING 过滤组</p>
+    <pre><code class="language-sql">-- 筛选总金额超过 2000 的客户
+SELECT customer_id, SUM(amount) AS 总金额
+FROM Orders
+GROUP BY customer_id
+HAVING SUM(amount) > 2000;
+
+-- WHERE vs HAVING 的执行顺序
+-- FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</code></pre>
+    <div class="note">WHERE 在分组前过滤行，HAVING 在分组后过滤组。HAVING 中可以使用聚合函数，WHERE 不行。</div>
+  </div>
+
+  <div class="section">
+    <h3>子查询</h3>
+    <p class="desc">在查询中嵌套另一个查询</p>
+    <pre><code class="language-sql">-- 标量子查询（返回单个值）
+SELECT product_name, price
+FROM Product
+WHERE price > (SELECT AVG(price) FROM Product);
+
+-- 列子查询（返回一列）
+SELECT name FROM Customers
+WHERE customer_id IN (
+    SELECT customer_id FROM Orders
+    WHERE amount > 1000
+);
+
+-- 关联子查询（引用外层列）
+SELECT product_name, category, price
+FROM Product p1
+WHERE price > (
+    SELECT AVG(price) FROM Product p2
+    WHERE p2.category = p1.category
+);</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>集合运算</h3>
+    <p class="desc">对多个查询结果进行集合操作</p>
+    <pre><code class="language-sql">-- UNION：并集（去重）
+SELECT name FROM Customers
+UNION
+SELECT name FROM Employees;
+
+-- UNION ALL：并集（不去重）
+SELECT city FROM Customers
+UNION ALL
+SELECT city FROM Employees;
+
+-- INTERSECT：交集
+SELECT customer_id FROM Orders
+INTERSECT
+SELECT customer_id FROM Customers;
+
+-- EXCEPT：差集
+SELECT customer_id FROM Customers
+EXCEPT
+SELECT customer_id FROM Orders;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>CASE 表达式</h3>
+    <p class="desc">在 SQL 中实现条件分支</p>
+    <pre><code class="language-sql">-- 简单 CASE
+SELECT product_name,
+    CASE category
+        WHEN '衣物'   THEN '服装类'
+        WHEN '厨房'   THEN '厨具类'
+        WHEN '办公'   THEN '办公类'
+        ELSE '其他'
+    END AS 分类名称
+FROM Product;
+
+-- 搜索 CASE
+SELECT product_name, price,
+    CASE
+        WHEN price < 1000  THEN '便宜'
+        WHEN price < 3000  THEN '中等'
+        WHEN price < 5000  THEN '偏贵'
+        ELSE '高端'
+    END AS 价格档次
+FROM Product;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>JOIN 将多表数据关联，INNER/LEFT/RIGHT/FULL 四种</li>
+      <li>聚合函数：COUNT / SUM / AVG / MAX / MIN</li>
+      <li>GROUP BY 分组聚合，HAVING 过滤组</li>
+      <li>子查询可嵌套在 SELECT/FROM/WHERE 中</li>
+      <li>UNION/INTERSECT/EXCEPT 进行集合运算</li>
+      <li>CASE 表达式实现 SQL 内的条件分支</li>
+    </ul>
+  </div>
+</body>
+</html>

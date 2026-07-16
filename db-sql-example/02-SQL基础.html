@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02 - SQL 基础</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fb; padding: 20px 40px; color: #27313f; line-height: 1.7; }
+    h1 { font-size: 1.9em; color: #1a5276; border-bottom: 3px solid #336791; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 span { color: #336791; }
+    .intro { background: linear-gradient(135deg, #336791, #1a365d); color: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 24px; }
+    .intro h2 { color: white; border: none; padding: 0; margin: 0 0 12px; font-size: 1.3em; }
+    .intro p { opacity: 0.95; }
+    .section { background: white; border-radius: 10px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #336791; }
+    .section h3 { color: #1a5276; margin-bottom: 8px; }
+    .section .desc { color: #5d6d7e; margin-bottom: 12px; font-size: 0.95em; }
+    pre { border-radius: 8px; overflow: auto; margin-top: 8px; }
+    pre code { font-family: "SF Mono", Consolas, monospace; font-size: 0.9em; }
+    .tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #336791; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .note { background: #fff8e1; border-left: 4px solid #ffa000; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 0.92em; }
+    ul { margin: 8px 0 0 20px; color: #5d6d7e; }
+    li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← 返回数据库与 SQL 教程</a>
+  <h1>02 - SQL 基础</h1>
+
+  <div class="intro">
+    <h2>SQL 基础 — 数据库操作的核心</h2>
+    <p>本章涵盖 SELECT、INSERT、UPDATE、DELETE 四大 DML 语句，以及 WHERE、ORDER BY、LIMIT 等常用子句。</p>
+  </div>
+
+  <div class="section">
+    <h3>创建表示例</h3>
+    <p class="desc">本章示例基于以下 Product（商品）表</p>
+    <pre><code class="language-sql">-- 创建数据库
+CREATE DATABASE shop;
+
+-- 创建商品表
+CREATE TABLE Product (
+    product_id   CHAR(4)      NOT NULL PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    price        INTEGER      NOT NULL,
+    category     VARCHAR(50),
+    regist_date  DATE
+);
+
+-- 插入示例数据
+INSERT INTO Product VALUES ('0001', 'T恤', 1000, '衣物', '2024-01-15');
+INSERT INTO Product VALUES ('0002', '打孔器', 500, '办公', '2024-02-20');
+INSERT INTO Product VALUES ('0003', '运动鞋', 3000, '衣物', '2024-03-10');
+INSERT INTO Product VALUES ('0004', '菜刀', 1500, '厨房', '2024-04-05');
+INSERT INTO Product VALUES ('0005', '高压锅', 6800, '厨房', '2024-05-01');</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>SELECT — 查询数据</h3>
+    <p class="desc">最基本的查询语句</p>
+    <pre><code class="language-sql">-- 查询所有列
+SELECT * FROM Product;
+
+-- 查询指定列
+SELECT product_name, price FROM Product;
+
+-- 为列起别名 (AS)
+SELECT product_name AS 名称, price AS 价格 FROM Product;
+
+-- 去重查询 (DISTINCT)
+SELECT DISTINCT category FROM Product;
+
+-- 常数列
+SELECT '商品信息' AS 标题, product_name FROM Product;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>WHERE — 条件筛选</h3>
+    <p class="desc">过滤出符合条件的行</p>
+    <pre><code class="language-sql">-- 比较运算符
+SELECT * FROM Product WHERE price > 1000;
+SELECT * FROM Product WHERE category = '衣物';
+SELECT * FROM Product WHERE price BETWEEN 500 AND 3000;
+
+-- 逻辑运算符
+SELECT * FROM Product
+WHERE category = '衣物' AND price >= 1000;
+
+SELECT * FROM Product
+WHERE category = '厨房' OR price >= 5000;
+
+SELECT * FROM Product
+WHERE NOT category = '办公';
+
+-- IN 和 NOT IN
+SELECT * FROM Product
+WHERE category IN ('衣物', '厨房');
+
+-- LIKE 模糊匹配
+SELECT * FROM Product
+WHERE product_name LIKE '%T%';
+
+-- IS NULL 判断空值
+SELECT * FROM Product WHERE regist_date IS NULL;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>ORDER BY — 排序</h3>
+    <p class="desc">对查询结果进行排序</p>
+    <pre><code class="language-sql">-- 升序排列 (ASC)
+SELECT product_name, price
+FROM Product
+ORDER BY price ASC;
+
+-- 降序排列 (DESC)
+SELECT product_name, price
+FROM Product
+ORDER BY price DESC;
+
+-- 多列排序
+SELECT product_name, category, price
+FROM Product
+ORDER BY category ASC, price DESC;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>LIMIT / OFFSET — 分页</h3>
+    <p class="desc">限制返回的行数（不同数据库语法略有不同）</p>
+    <pre><code class="language-sql">-- 只取前 3 行 (PostgreSQL / MySQL)
+SELECT * FROM Product LIMIT 3;
+
+-- 跳过前 2 行，取 3 行
+SELECT * FROM Product LIMIT 3 OFFSET 2;
+
+-- MySQL 另一种写法
+SELECT * FROM Product LIMIT 2, 3;</code></pre>
+    <div class="note">SQL Server 使用 <code>TOP 3</code>，Oracle 使用 <code>FETCH FIRST 3 ROWS ONLY</code>。</div>
+  </div>
+
+  <div class="section">
+    <h3>INSERT — 插入数据</h3>
+    <p class="desc">向表中添加新行</p>
+    <pre><code class="language-sql">-- 全列插入（按表定义顺序）
+INSERT INTO Product
+VALUES ('0006', '叉子', 300, '厨房', '2024-06-01');
+
+-- 指定列插入
+INSERT INTO Product (product_id, product_name, price)
+VALUES ('0007', '抹布', 200);
+
+-- 多行插入
+INSERT INTO Product VALUES
+    ('0008', '杯子', 800, '厨房', '2024-06-10'),
+    ('0009', '笔记本', 700, '办公', '2024-06-15');</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>UPDATE — 更新数据</h3>
+    <p class="desc">修改表中已有的数据</p>
+    <pre><code class="language-sql">-- 更新单列
+UPDATE Product
+SET price = 1200
+WHERE product_id = '0001';
+
+-- 更新多列
+UPDATE Product
+SET price = price * 1.1, regist_date = '2024-12-31'
+WHERE category = '衣物';
+
+-- ⚠️ 没有 WHERE 会更新所有行
+UPDATE Product SET price = 0;</code></pre>
+  </div>
+
+  <div class="section">
+    <h3>DELETE — 删除数据</h3>
+    <p class="desc">从表中删除行</p>
+    <pre><code class="language-sql">-- 删除指定行
+DELETE FROM Product
+WHERE product_id = '0009';
+
+-- 删除所有行（但保留表结构）
+DELETE FROM Product;
+
+-- TRUNCATE：更快地清空表（DDL，不可回滚）
+TRUNCATE TABLE Product;</code></pre>
+    <div class="note">DELETE 是 DML，可以回滚；TRUNCATE 是 DDL，不能回滚但速度更快。</div>
+  </div>
+
+  <div class="section">
+    <h3>小结</h3>
+    <ul>
+      <li>SELECT + FROM + WHERE 是 SQL 最核心的查询模式</li>
+      <li>ORDER BY 排序，LIMIT/OFFSET 分页</li>
+      <li>INSERT 添加行，UPDATE 修改行，DELETE 删除行</li>
+      <li>WHERE 子句支持 AND/OR/NOT/IN/LIKE/IS NULL</li>
+      <li>没有 WHERE 条件的 UPDATE/DELETE 会作用于所有行</li>
+    </ul>
+  </div>
+</body>
+</html>
